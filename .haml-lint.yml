@@ -1,0 +1,14 @@
+require:
+  - rubocop
+
+included_files:
+  - 'app/views/**/*.haml'
+
+linters:
+  Rubocop:
+    enabled: true
+    config_file: .rubocop.yml
+
+  LineLength:
+    enabled: true
+    max: 200

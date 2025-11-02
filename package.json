@@ -7,7 +7,9 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "build": "esbuild app/javascript/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+    "build": "esbuild app/javascript/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "openapi:generate": "openapi-typescript swagger/v1/swagger.yaml -o app/javascript/src/types/generated/openapi.d.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hotwired/turbo-rails": "^8.0.20"

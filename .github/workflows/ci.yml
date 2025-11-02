@@ -27,7 +27,7 @@ jobs:
         image: postgres:16-alpine
         ports: [ "5432:5432" ]
         env:
-          POSTGRES_DB: boards_todo_app_test
+          POSTGRES_DB: instagram_like_app_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -35,7 +35,7 @@ jobs:
           --health-interval=10s --health-timeout=5s --health-retries=5
     env:
       RAILS_ENV: test
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/boards_todo_app_test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/instagram_like_app_test
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -44,12 +44,12 @@ jobs:
           bundler-cache: true
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: .node-version
+          cache: 'yarn'
       - name: Install JS dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
       - name: Compile JS bundles
-        run: bundle exec rails shakapacker:compile
+        run: yarn build
       - name: Build Tailwind CSS
         run: bundle exec rails tailwindcss:build
       - name: Prepare database
@@ -65,7 +65,7 @@ jobs:
         image: postgres:16-alpine
         ports: [ "5432:5432" ]
         env:
-          POSTGRES_DB: boards_todo_app_test
+          POSTGRES_DB: instagram_like_app_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -73,7 +73,7 @@ jobs:
           --health-interval=10s --health-timeout=5s --health-retries=5
     env:
       RAILS_ENV: test
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/boards_todo_app_test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/instagram_like_app_test
     steps:
       - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
@@ -82,12 +82,12 @@ jobs:
           bundler-cache: true
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: .node-version
+          cache: 'yarn'
       - name: Install JS dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
       - name: Compile JS bundles
-        run: bundle exec rails shakapacker:compile
+        run: yarn build
       - name: Build Tailwind CSS
         run: bundle exec rails tailwindcss:build
       - name: Prepare database
@@ -108,13 +108,13 @@ jobs:
           bundler-cache: true
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: .node-version
+          cache: 'yarn'
       - name: Install JS dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
       - name: Generate OpenAPI types
-        run: npm run openapi:generate
+        run: yarn openapi:generate
       - name: Ensure generated types committed
         run: git diff --exit-code
       - name: Type check
-        run: npm run typecheck
+        run: yarn typecheck

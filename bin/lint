@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+cd "${ROOT_DIR}"
+
+echo "Running RuboCop (auto-correct enabled)..."
+bundle exec rubocop -a
+
+echo "Running HAML-Lint..."
+bundle exec haml-lint -a
+
+echo "Linting completed successfully."

@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - name: Run RuboCop
+        run: bundle exec rubocop --format github
+      - name: Run HAML-Lint
+        run: bundle exec haml-lint
+
+  # TODO: Uncomment when tests are added
+  # test:
+  #   runs-on: ubuntu-latest
+  #   needs: lint
+  #   services:
+  #     postgres:
+  #       image: postgres:16-alpine
+  #       ports: [ "5432:5432" ]
+  #       env:
+  #         POSTGRES_DB: instagram_like_app_test
+  #         POSTGRES_USER: postgres
+  #         POSTGRES_PASSWORD: postgres
+  #       options: >-
+  #         --health-cmd="pg_isready -U postgres"
+  #         --health-interval=10s --health-timeout=5s --health-retries=5
+  #   env:
+  #     RAILS_ENV: test
+  #     DATABASE_URL: postgres://postgres:postgres@localhost:5432/instagram_like_app_test
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: .ruby-version
+  #         bundler-cache: true
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version-file: .node-version
+  #         cache: 'yarn'
+  #     - name: Install JS dependencies
+  #       run: yarn install --frozen-lockfile
+  #     - name: Compile JS bundles
+  #       run: yarn build
+  #     - name: Build Tailwind CSS
+  #       run: bundle exec rails tailwindcss:build
+  #     - name: Prepare database
+  #       run: bundle exec rails db:schema:load
+  #     - name: Run RSpec
+  #       run: bundle exec rspec
+
+  # TODO: Uncomment when Swagger specs are added
+  # swagger:
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   services:
+  #     postgres:
+  #       image: postgres:16-alpine
+  #       ports: [ "5432:5432" ]
+  #       env:
+  #         POSTGRES_DB: instagram_like_app_test
+  #         POSTGRES_USER: postgres
+  #         POSTGRES_PASSWORD: postgres
+  #       options: >-
+  #         --health-cmd="pg_isready -U postgres"
+  #         --health-interval=10s --health-timeout=5s --health-retries=5
+  #   env:
+  #     RAILS_ENV: test
+  #     DATABASE_URL: postgres://postgres:postgres@localhost:5432/instagram_like_app_test
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: .ruby-version
+  #         bundler-cache: true
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version-file: .node-version
+  #         cache: 'yarn'
+  #     - name: Install JS dependencies
+  #       run: yarn install --frozen-lockfile
+  #     - name: Compile JS bundles
+  #       run: yarn build
+  #     - name: Build Tailwind CSS
+  #       run: bundle exec rails tailwindcss:build
+  #     - name: Prepare database
+  #       run: bundle exec rails db:schema:load
+  #     - name: Generate Swagger docs
+  #       run: bundle exec rails rswag:specs:swaggerize
+  #     - name: Ensure swagger spec committed
+  #       run: git diff --exit-code
+
+  typecheck:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: 'yarn'
+      - name: Install JS dependencies
+        run: yarn install --frozen-lockfile
+      # TODO: Uncomment when swagger.yaml is generated
+      # - name: Generate OpenAPI types
+      #   run: yarn openapi:generate
+      # - name: Ensure generated types committed
+      #   run: git diff --exit-code
+      - name: Type check
+        run: yarn typecheck

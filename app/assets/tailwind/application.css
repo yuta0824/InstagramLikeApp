@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+body {
+  @apply text-sm text-brandBlack bg-white leading-none tracking-normal h-screen font-poppins;
+}
+
+@theme {
+  --font-poppins: "Poppins", sans-serif;
+  --color-brandBlack: #333;
+  --color-brandGray: #979797;
+  --color-brandGrayLight: #cccccc;
+  --color-accent: #ffe600;
+  --color-danger: #f87171;
+  --color-link: #2f80ed;
+}

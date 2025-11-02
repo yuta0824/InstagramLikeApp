@@ -44,7 +44,7 @@ jobs:
           bundler-cache: true
       - uses: actions/setup-node@v4
         with:
-          node-version: .node-version
+          node-version-file: .node-version
           cache: 'yarn'
       - name: Install JS dependencies
         run: yarn install --frozen-lockfile
@@ -82,7 +82,7 @@ jobs:
           bundler-cache: true
       - uses: actions/setup-node@v4
         with:
-          node-version: .node-version
+          node-version-file: .node-version
           cache: 'yarn'
       - name: Install JS dependencies
         run: yarn install --frozen-lockfile
@@ -108,7 +108,7 @@ jobs:
           bundler-cache: true
       - uses: actions/setup-node@v4
         with:
-          node-version: .node-version
+          node-version-file: .node-version
           cache: 'yarn'
       - name: Install JS dependencies
         run: yarn install --frozen-lockfile

@@ -7,7 +7,7 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "build": "esbuild app/javascript/src/index.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+    "build": "esbuild app/javascript/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
   },
   "dependencies": {
     "@hotwired/turbo-rails": "^8.0.20"

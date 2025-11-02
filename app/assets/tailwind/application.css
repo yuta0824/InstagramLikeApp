@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 body {
-  @apply text-sm text-brandBlack bg-white leading-1 tracking-normal h-screen font-poppins;
+  @apply text-sm text-brandBlack bg-white leading-none tracking-normal h-screen font-poppins;
 }
 
 @theme {

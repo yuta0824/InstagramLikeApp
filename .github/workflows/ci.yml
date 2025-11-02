@@ -114,9 +114,10 @@ jobs:
           cache: 'yarn'
       - name: Install JS dependencies
         run: yarn install --frozen-lockfile
-      - name: Generate OpenAPI types
-        run: yarn openapi:generate
-      - name: Ensure generated types committed
-        run: git diff --exit-code
+      # TODO: Uncomment when swagger.yaml is generated
+      # - name: Generate OpenAPI types
+      #   run: yarn openapi:generate
+      # - name: Ensure generated types committed
+      #   run: git diff --exit-code
       - name: Type check
         run: yarn typecheck

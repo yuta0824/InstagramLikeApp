@@ -5,10 +5,9 @@
     %h1.text-center= @user.name
     %span
   .text-center
-    %button#js-avatar-button.cursor-pointer
-      = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto'
-    #js-avatar-input.invisible.w-0.h-0
-      %input(type="file" accept="image/*")
+    %label.cursor-pointer.inline-block
+      = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto', id: "js-avatar-image"
+      %input#js-avatar-input.hidden(type="file" accept="image/*")
   .grid.grid-cols-3.gap-10.w-fit.mx-auto
     -# TODO: 数字を動的にする
     .text-center

@@ -41,7 +41,7 @@ img {
 }
 
 .flash {
-  @apply fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm;
+  @apply fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm;
 }
 
 .flash__text {

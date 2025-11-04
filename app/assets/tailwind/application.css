@@ -39,3 +39,11 @@ img {
 .submit-button {
   @apply bg-accent py-4 block w-full text-center;
 }
+
+.flash {
+  @apply fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm;
+}
+
+.flash__text {
+  @apply border-l-4 p-4 mb-2 shadow-lg;
+}

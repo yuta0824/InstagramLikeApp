@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
-body {
-  @apply text-sm text-brandBlack bg-white leading-none tracking-normal h-screen font-poppins;
-}
+@layer base {
+  body {
+    @apply text-sm text-brandBlack bg-white leading-none tracking-normal h-screen font-poppins;
+  }
 
-img {
-  @apply w-full h-auto block;
+  img {
+    @apply w-full h-auto block;
+  }
 }
 
 @theme {

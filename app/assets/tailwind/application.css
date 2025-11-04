@@ -47,3 +47,19 @@ img {
 .flash__text {
   @apply border-l-4 p-4 shadow-lg;
 }
+
+#error_explanation {
+  @apply bg-red-50 border border-red-200 rounded-lg p-4 space-y-3 text-red-700;
+
+  h2 {
+    @apply font-semibold;
+  }
+
+  ul {
+    @apply list-disc list-inside space-y-1;
+
+    li {
+      @apply text-sm;
+    }
+  }
+}

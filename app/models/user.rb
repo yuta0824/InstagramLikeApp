@@ -24,4 +24,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   validates :name, presence: true, uniqueness: true, length: { maximum: 20 }
+  has_one_attached :avatar
+
+  def avatar_url
+    avatar.attached? ? avatar : 'icon_avatar-default.png'
+  end
 end

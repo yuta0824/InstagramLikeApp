@@ -4,6 +4,10 @@ body {
   @apply text-sm text-brandBlack bg-white leading-none tracking-normal h-screen font-poppins;
 }
 
+img {
+  @apply w-full h-auto block;
+}
+
 @theme {
   --font-poppins: "Poppins", sans-serif;
   --color-brandBlack: #333;
@@ -12,4 +16,50 @@ body {
   --color-accent: #ffe600;
   --color-danger: #f87171;
   --color-link: #2f80ed;
+}
+
+.inner {
+  @apply container mx-auto max-w-md px-4;
+}
+
+.inner--wide {
+  @apply px-0;
+}
+
+.field {
+  label {
+    @apply text-xs text-brandGrayLight block;
+  }
+
+  input {
+    @apply border-b border-brandGray py-2 block w-full;
+  }
+}
+
+.submit-button {
+  @apply bg-accent py-4 block w-full text-center;
+}
+
+.flash {
+  @apply fixed top-0 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm;
+}
+
+.flash__text {
+  @apply border-l-4 p-4 shadow-lg;
+}
+
+#error_explanation {
+  @apply bg-red-50 border border-red-200 rounded-lg p-4 space-y-3 text-red-700;
+
+  h2 {
+    @apply font-semibold;
+  }
+
+  ul {
+    @apply list-disc list-inside space-y-1;
+
+    li {
+      @apply text-sm;
+    }
+  }
 }

@@ -45,5 +45,5 @@ img {
 }
 
 .flash__text {
-  @apply border-l-4 p-4 mb-2 shadow-lg;
+  @apply border-l-4 p-4 shadow-lg;
 }

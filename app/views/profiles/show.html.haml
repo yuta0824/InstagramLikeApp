@@ -2,8 +2,7 @@
   %div{ class: "grid grid-cols-[16px_1fr_16px] gap-2" }
     = link_to root_path do
       = image_tag 'icon_arrow-left.svg', alt: 'アバター', height: '12', width: '17', class: 'w-4 block'
-    -# TODO: プロフィールを動的にする
-    %h1.text-center Yuta
+    %h1.text-center= @user.name
     %span
   .text-center
     %button#js-avatar-button.cursor-pointer

@@ -27,6 +27,9 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   def avatar_url
-    avatar.attached? ? avatar : 'icon_avatar-default.png'
+    # return '/icon_avatar-default.png' unless avatar.attached?
+    # Rails.application.routes.url_helpers.url_for(avatar)
+
+    avatar.attached? ? avatar : 'default-avatar.png'
   end
 end

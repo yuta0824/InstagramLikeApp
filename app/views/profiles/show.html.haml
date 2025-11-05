@@ -1,13 +1,13 @@
 .inner.py-5.space-y-10
-  %div{ class: "grid grid-cols-[16px_1fr_16px] gap-2" }
+  %div{ class: 'grid grid-cols-[16px_1fr_16px] gap-2' }
     = link_to root_path do
       = image_tag 'icon_arrow-left.svg', alt: '左向き矢印', height: '12', width: '17', class: 'w-4 block'
     %h1.text-center= @user.name
     %span
   .text-center
     %label.cursor-pointer.inline-block
-      = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto aspect-square object-cover', id: "js-avatar-image"
-      %input#js-avatar-input.hidden(type="file" accept="image/*")
+      = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', id: 'js-avatar-image', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto aspect-square object-cover'
+      %input.hidden#js-avatar-input{ type: 'file', accept: 'image/*' }
   .grid.grid-cols-3.gap-10.w-fit.mx-auto
     -# TODO: 数字を動的にする
     .text-center

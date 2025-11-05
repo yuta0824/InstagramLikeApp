@@ -24,4 +24,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   validates :name, presence: true, uniqueness: true, length: { maximum: 20 }
+  has_one_attached :avatar
+
+  def avatar_url
+    return ActionController::Base.helpers.asset_path('icon_avatar-default.png') unless avatar.attached?
+    Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true)
+  end
 end

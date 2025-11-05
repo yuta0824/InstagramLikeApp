@@ -1,6 +1,7 @@
 import { getCsrfToken } from "../utils/getCsrfToken";
 
 type AvatarResponse = {
+  // TODO: OpenAPI 生成の型に置換
   avatar_url: string;
 };
 

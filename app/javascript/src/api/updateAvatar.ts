@@ -1,9 +1,8 @@
+import type { paths } from "../types/generated/openapi";
 import { getCsrfToken } from "../utils/getCsrfToken";
 
-type AvatarResponse = {
-  // TODO: OpenAPI 生成の型に置換
-  avatar_url: string;
-};
+export type AvatarResponse =
+  paths["/api/avatar"]["patch"]["responses"][200]["content"]["application/json"];
 
 export const updateAvatar = async (file: File): Promise<AvatarResponse> => {
   const csrfToken = getCsrfToken();

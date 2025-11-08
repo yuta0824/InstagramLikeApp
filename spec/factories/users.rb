@@ -20,6 +20,8 @@
 #
 FactoryBot.define do
   factory :user do
-    # TODO: テストコードの追加
+    email { Faker::Internet.unique.email }
+    password { Faker::Internet.unique.password }
+    name { Faker::Name.unique.name[0...20] }
   end
 end

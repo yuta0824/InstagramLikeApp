@@ -1,0 +1,36 @@
+---
+openapi: 3.0.1
+info:
+  title: API Documentation
+  version: '1.0'
+paths:
+  "/api/avatar":
+    patch:
+      summary: アバター画像を更新する
+      tags:
+      - User
+      parameters: []
+      responses:
+        '200':
+          description: 作成に成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  avatar_url:
+                    type: string
+                required:
+                - avatar_url
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
+        required: true
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com

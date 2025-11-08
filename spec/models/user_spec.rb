@@ -28,4 +28,94 @@ RSpec.describe User, type: :model do
       expect(user).to be_valid
     end
   end
+
+  context "name が空の場合" do
+    let(:user) { build(:user, name: nil) }
+
+    it "user を保存できない" do
+      expect(user).to be_invalid
+    end
+  end
+
+  context "name が空文字の場合" do
+    let(:user) { build(:user, name: "") }
+
+    it "user を保存できない" do
+      expect(user).to be_invalid
+    end
+  end
+
+  context "name が重複している場合" do
+    let!(:user) { create(:user, name: "tanaka") }
+    let(:duplicate_user) { build(:user, name: "tanaka") }
+
+    it "user を保存できない" do
+      expect(duplicate_user).to be_invalid
+    end
+  end
+
+  context "name が20文字を超える場合" do
+    let(:user) { build(:user, name: "a" * 21 ) }
+
+    it "user を保存できない" do
+      expect(user).to be_invalid
+    end
+  end
+
+  context "email が空の場合" do
+    let(:user) { build(:user, email: nil) }
+
+    it "user を保存できない" do
+      expect(user).to be_invalid
+    end
+  end
+
+  context "email が空文字の場合" do
+    let(:user) { build(:user, email: "") }
+
+    it "user を保存できない" do
+      expect(user).to be_invalid
+    end
+  end
+
+  context "email が重複している場合" do
+    let!(:user) { create(:user, email: "tanaka@gmail.com") }
+    let(:duplicate_user) { build(:user, email: "tanaka@gmail.com") }
+
+    it "user を保存できない" do
+      expect(duplicate_user).to be_invalid
+    end
+  end
+
+  context "email のフォーマットが不正な場合" do
+    let(:user) { build(:user, email: "plainaddress") }
+
+    it "user を保存できない" do
+      expect(user).to be_invalid
+    end
+  end
+
+  context "password が空の場合" do
+    let(:user) { build(:user, password: nil) }
+
+    it "user を保存できない" do
+      expect(user).to be_invalid
+    end
+  end
+
+  context "password が空文字の場合" do
+    let(:user) { build(:user, password: "") }
+
+    it "user を保存できない" do
+      expect(user).to be_invalid
+    end
+  end
+
+   context "password が6文字未満の場合" do
+    let(:user) { build(:user, password: "12345" ) }
+
+    it "user を保存できない" do
+      expect(user).to be_invalid
+    end
+  end
 end

@@ -14,7 +14,7 @@ RSpec.describe 'Api::Avatars', type: :request do
                 required: true,
                 schema: { type: :string, format: :binary }
 
-      let(:avatar) { fixture_file_upload('files/test.jpg', 'image/jpeg') }
+      let(:avatar) { fixture_file_upload('test.jpg', 'image/jpeg') }
       before { sign_in user }
 
       response '200', '作成に成功' do

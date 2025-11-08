@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "esbuild app/javascript/application.ts --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
-    "openapi:generate": "openapi-typescript swagger/v1/swagger.yaml -o app/javascript/src/types/generated/openapi.d.ts",
+    "openapi:generate": "openapi-typescript swagger/swagger.yaml -o app/javascript/src/types/generated/openapi.d.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

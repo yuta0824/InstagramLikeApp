@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'swagger_helper'
 
-RSpec.describe "Api::Avatars", type: :request do
+RSpec.describe 'Api::Avatars', type: :request do
   let!(:user) { create(:user) }
 
   path '/api/avatar' do

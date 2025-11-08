@@ -21,5 +21,11 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  # TODO: テストコードの追加
+  let!(:user) { create(:user) }
+
+  context "name と email と password が入力されている場合" do
+    it "user を保存できる" do
+      expect(user).to be_valid
+    end
+  end
 end

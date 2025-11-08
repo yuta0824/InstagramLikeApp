@@ -8,6 +8,7 @@ RSpec.describe "Api::Avatars", type: :request do
     patch 'アバター画像を更新する' do
       tags 'User'
       consumes 'multipart/form-data'
+      produces 'application/json'
       parameter name: :avatar,
                 in: :formData,
                 required: true,

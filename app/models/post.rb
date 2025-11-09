@@ -21,4 +21,18 @@ class Post < ApplicationRecord
   has_many_attached :images
   validates :images, presence: true, length: { minimum: 1, maximum: 3 }
   validates :caption, length: { maximum: 100 }
+
+  def time_ago
+    seconds_diff = (Time.current - created_at).to_i
+
+    return 'now' if seconds_diff < 60
+
+    minutes = seconds_diff / 60
+    return "#{minutes} minutes ago" if minutes < 60
+
+    hours = minutes / 60
+    return "#{hours} hours ago" if hours < 24
+
+    created_at.strftime('%Y/%m/%d')
+  end
 end

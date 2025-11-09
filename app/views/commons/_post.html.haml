@@ -1,4 +1,4 @@
-.space-y-3{id: post.id}
+.space-y-3{ id: post.id }
   .flex.items-center.gap-3
     = link_to profile_path do
       = image_tag post.user.avatar_url, alt: 'アバター', height: '40', width: '40', class: 'rounded-full size-10 aspect-square object-cover'
@@ -7,8 +7,8 @@
         %p.text-sm= post.user.name
       %p.text-xs.text-brandGray= post.time_ago
   - gallery_class = case post.images.count
-    - when 3 then 'post-gallery-three'
-    - when 2 then 'post-gallery-two'
+  - when 3 then 'post-gallery-three'
+  - when 2 then 'post-gallery-two'
   %div{ class: gallery_class }
     - post.images.each do |image|
       = image_tag url_for(image), alt: ''
@@ -16,14 +16,13 @@
     %span.font-medium.pr-1= post.user.name
     %span= post.caption
   .flex.gap-3
-    -# TODO いいね機能の実装
+    -# TODO: いいね機能の実装
     %button.js-like-button.size-5
       = image_tag 'icon_like.webp', alt: 'like'
       -# = image_tag 'icon_like_active.webp', alt: 'like'
-    -# TODO コメント機能の実装
+    -# TODO: コメント機能の実装
     = link_to '#', class: 'size-5' do
       = image_tag 'icon_comment.webp', alt: 'comment'
-    -# TODO シェア機能の実装
+    -# TODO: シェア機能の実装
     %button.js-share-button.size-5
       = image_tag 'icon_share.webp', alt: 'share'
-

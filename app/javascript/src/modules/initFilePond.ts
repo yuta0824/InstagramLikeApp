@@ -19,7 +19,7 @@ export const initFilePond = () => {
     document.querySelector<HTMLInputElement>("input.filepond");
   if (!inputElement) return;
 
-  const MAX_FILES = 7;
+  const MAX_FILES = 3;
   const MAX_FILE_SIZE = "3MB";
 
   const pond = FilePond.create(inputElement, {

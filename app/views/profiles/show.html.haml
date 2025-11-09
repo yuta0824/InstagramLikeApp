@@ -19,17 +19,5 @@
     .text-center
       %p 44
       %p.text-brandGray.text-sm Following
-  .grid.grid-cols-3.gap-2.auto-rows-fr
-    -# TODO: 画像を動的にする
-    .row-span-2.col-span-2.aspect-square
-      = image_tag 'img_post1.webp', alt: '', class: 'object-cover h-full'
-    .aspect-square
-      = image_tag 'img_post2.webp', alt: '', class: 'object-cover h-full'
-    .aspect-square
-      = image_tag 'img_post3.webp', alt: '', class: 'object-cover h-full'
-    .aspect-square
-      = image_tag 'img_post4.webp', alt: '', class: 'object-cover h-full'
-    .row-span-2.col-span-2.aspect-square
-      = image_tag 'img_post5.webp', alt: '', class: 'object-cover h-full'
-    .aspect-square
-      = image_tag 'img_post6.webp', alt: '', class: 'object-cover h-full'
+  - @posts.each do |post|
+    = render "commons/post", post: post

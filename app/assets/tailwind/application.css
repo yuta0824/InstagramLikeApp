@@ -65,3 +65,11 @@
     }
   }
 }
+
+.filepond--drop-label {
+  @apply !text-sm;
+}
+
+.filepond--credits {
+  @apply hidden;
+}

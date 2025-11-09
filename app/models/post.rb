@@ -24,7 +24,6 @@ class Post < ApplicationRecord
 
   def time_ago
     seconds_diff = (Time.current - created_at).to_i
-
     return 'now' if seconds_diff < 60
 
     minutes = seconds_diff / 60

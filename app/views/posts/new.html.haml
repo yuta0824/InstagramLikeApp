@@ -1,0 +1,13 @@
+%form
+  .inner.py-5.space-y-10
+    .grid.grid-cols-3
+      = link_to "Cancel", root_path, class: 'text-link w-fit'
+      %h1.text-center Status
+      .text-right
+        %button.w-fit Post
+    .space-y-5
+      .flex.items-center.gap-3
+        = image_tag @user.avatar_url, alt: 'アバター', height: '40', width: '40', class: 'rounded-full size-10 aspect-square object-cover'
+        %p.text-center= @user.name
+      %input{ type: "text", name: "post[content]", placeholder: "What's on your mind?", class: "w-full p-2 border-b border-brandGrayLight" }
+      %input{ type: "file", class: "filepond", name: "filepond", multiple: true }

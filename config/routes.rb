@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   devise_for :users
   root to: 'posts#index'
+  resources :posts
   resource :profile
 
   namespace :api, defaults: { format: 'json'} do

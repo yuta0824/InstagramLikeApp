@@ -65,3 +65,31 @@
     }
   }
 }
+
+.filepond--drop-label {
+  @apply !text-sm;
+}
+
+.filepond--credits {
+  @apply hidden;
+}
+
+.post-gallery-three {
+  @apply grid grid-cols-3 gap-2 auto-rows-fr;
+
+  > :first-child {
+    @apply row-span-2 col-span-2;
+  }
+
+  img {
+    @apply object-cover h-full;
+  }
+}
+
+.post-gallery-two {
+  @apply grid grid-cols-2 gap-2 auto-rows-fr;
+
+  img {
+    @apply object-cover h-full;
+  }
+}

@@ -1,39 +1,6 @@
 .inner.py-5
   = link_to new_post_path, class: 'sticky top-3 size-10 p-2 block bg-[#ffffff87] rounded-full' do
     = image_tag 'icon_camera.webp', alt: 'post'
-  .mt-5.space-y-9
-    .space-y-3
-      .flex.items-center.gap-3
-        = image_tag 'icon_avatar-default.png', alt: 'アバター', height: '40', width: '40', class: 'rounded-full size-10 aspect-square object-cover'
-        %div
-          %p.text-sm Jmax_21
-          %p.text-xs.text-brandGray 3 hours ago
-      .post-gallery-three
-        = image_tag 'img_post1.webp', alt: ''
-        = image_tag 'img_post5.webp', alt: ''
-        = image_tag 'img_post8.webp', alt: ''
-      .flex.gap-3
-        %button.js-like-button.size-5
-          = image_tag 'icon_like.webp', alt: 'like'
-          -# = image_tag 'icon_like_active.webp', alt: 'like'
-        = link_to '#', class: 'size-5' do
-          = image_tag 'icon_comment.webp', alt: 'comment'
-        %button.js-share-button.size-5
-          = image_tag 'icon_share.webp', alt: 'share'
-    .space-y-3
-      .flex.items-center.gap-3
-        = image_tag 'icon_avatar-default.png', alt: 'アバター', height: '40', width: '40', class: 'rounded-full size-10 aspect-square object-cover'
-        %div
-          %p.text-sm Jmax_21
-          %p.text-xs.text-brandGray 3 hours ago
-      .post-gallery-two
-        = image_tag 'img_post5.webp', alt: ''
-        = image_tag 'img_post4.webp', alt: ''
-      .flex.gap-3
-        %button.js-like-button.size-5
-          -# = image_tag 'icon_like.webp', alt: 'like'
-          = image_tag 'icon_like_active.webp', alt: 'like'
-        = link_to '#', class: 'size-5' do
-          = image_tag 'icon_comment.webp', alt: 'comment'
-        %button.js-share-button.size-5
-          = image_tag 'icon_share.webp', alt: 'share'
+  .mt-5.space-y-10
+    - @posts.each do |post|
+      = render 'commons/post', post: post

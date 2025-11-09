@@ -24,6 +24,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   validates :name, presence: true, uniqueness: true, length: { maximum: 20 }
+  has_many :posts, dependent: :destroy
   has_one_attached :avatar
 
   def avatar_url

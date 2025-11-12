@@ -9,5 +9,8 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: 'json'} do
     resource :avatar, only: %i(update)
+    resources :posts, only: [] do
+      resource :like, only: %i[create destroy]
+    end
   end
 end

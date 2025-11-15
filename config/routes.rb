@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'posts#index'
   resources :posts, only: %i(index new create destroy)
-  resource :profile
+  resources :profiles, only: %i(show)
 
   namespace :api, defaults: { format: 'json'} do
     resource :avatar, only: %i(update)

@@ -30,6 +30,7 @@ export const initFilePond = () => {
     maxFiles: MAX_FILES,
     storeAsFile: true,
     name: originalName.replace("[]", ""),
+    labelIdle: `Drag & Drop your files or <span class="filepond--label-action"> Browse </span><br><span style="font-size: 0.9em; opacity: 0.7;">Maximum ${MAX_FILES} files</span>`,
   });
 
   return pond;

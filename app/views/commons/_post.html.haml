@@ -12,7 +12,7 @@
   %div{ class: gallery_class }
     - post.images.each do |image|
       = image_tag url_for(image), alt: ''
-  %div.space-y-1
+  .space-y-1
     %p.text-xs
       %span.font-medium.pr-1= post.user.name
       %span= post.caption

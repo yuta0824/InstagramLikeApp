@@ -12,14 +12,15 @@
   %div{ class: gallery_class }
     - post.images.each do |image|
       = image_tag url_for(image), alt: ''
-  %p.text-xs
-    %span.font-medium.pr-1= post.user.name
-    %span= post.caption
+  %div.space-y-1
+    %p.text-xs
+      %span.font-medium.pr-1= post.user.name
+      %span= post.caption
+    - likes_summary = post.likes_summary
+    - if post.owned_by?(current_user) && likes_summary
+      %p.text-xs= likes_summary
   .flex.gap-3
-    -# TODO: いいね機能の実装
-    %button.js-like-button.like-button
-      -# = image_tag 'icon_like.webp', alt: 'like'
-      -# = image_tag 'icon_like_active.webp', alt: 'like'
+    %button.js-like-button.like-button{ "data-liked": post.liked_by?(current_user) }
     -# TODO: コメント機能の実装
     = link_to '#', class: 'size-5' do
       = image_tag 'icon_comment.webp', alt: 'comment'

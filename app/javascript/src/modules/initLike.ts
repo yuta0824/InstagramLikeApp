@@ -31,7 +31,7 @@ const handleAddLike = async (
 ): Promise<void> => {
   try {
     const response = await createLike(postId);
-    if (response.is_liked) {
+    if (response.isLiked) {
       button.setAttribute("data-liked", "true");
     }
   } catch (error) {
@@ -45,7 +45,7 @@ const handleRemoveLike = async (
 ): Promise<void> => {
   try {
     const response = await deleteLike(postId);
-    if (!response.is_liked) {
+    if (!response.isLiked) {
       button.removeAttribute("data-liked");
     }
   } catch (error) {

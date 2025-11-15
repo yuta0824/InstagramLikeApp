@@ -1,7 +1,7 @@
 import { getCsrfToken } from "../utils/getCsrfToken";
 
 interface LikeResponse {
-  is_liked: boolean;
+  isLiked: boolean;
 }
 
 export const createLike = async (postId: string): Promise<LikeResponse> => {

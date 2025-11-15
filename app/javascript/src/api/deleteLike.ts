@@ -1,10 +1,12 @@
+import { paths } from "../types/generated/openapi";
 import { getCsrfToken } from "../utils/getCsrfToken";
 
-interface LikeResponse {
-  isLiked: boolean;
-}
+type DeleteLikeResponse =
+  paths["/api/posts/{post_id}/like"]["delete"]["responses"][200]["content"]["application/json"];
 
-export const deleteLike = async (postId: string): Promise<LikeResponse> => {
+export const deleteLike = async (
+  postId: string
+): Promise<DeleteLikeResponse> => {
   const csrfToken = getCsrfToken();
   const requestOptions: RequestInit = {
     method: "DELETE",

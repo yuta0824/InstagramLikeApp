@@ -46,6 +46,94 @@ export interface paths {
         };
         trace?: never;
     };
+    "/api/posts/{post_id}/like": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                post_id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** いいねを作成する */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    post_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description いいね完了 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            isLiked: boolean;
+                        };
+                    };
+                };
+                /** @description 未ログイン */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        /** いいねを削除する */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    post_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description いいね解除 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            isLiked: boolean;
+                        };
+                    };
+                };
+                /** @description 未ログイン */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {

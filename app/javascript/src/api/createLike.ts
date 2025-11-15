@@ -1,10 +1,12 @@
+import { paths } from "../types/generated/openapi";
 import { getCsrfToken } from "../utils/getCsrfToken";
 
-interface LikeResponse {
-  isLiked: boolean;
-}
+type CreateLikeResponse =
+  paths["/api/posts/{post_id}/like"]["post"]["responses"][200]["content"]["application/json"];
 
-export const createLike = async (postId: string): Promise<LikeResponse> => {
+export const createLike = async (
+  postId: string
+): Promise<CreateLikeResponse> => {
   const csrfToken = getCsrfToken();
   const requestOptions: RequestInit = {
     method: "POST",

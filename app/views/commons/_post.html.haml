@@ -1,4 +1,4 @@
-.space-y-3{ id: post.id }
+.space-y-3{ "data-post-id": post.id }
   .flex.items-center.gap-3
     = link_to profile_path do
       = image_tag post.user.avatar_url, alt: 'アバター', height: '40', width: '40', class: 'rounded-full size-10 aspect-square object-cover'
@@ -17,8 +17,8 @@
     %span= post.caption
   .flex.gap-3
     -# TODO: いいね機能の実装
-    %button.js-like-button.size-5
-      = image_tag 'icon_like.webp', alt: 'like'
+    %button.js-like-button.like-button
+      -# = image_tag 'icon_like.webp', alt: 'like'
       -# = image_tag 'icon_like_active.webp', alt: 'like'
     -# TODO: コメント機能の実装
     = link_to '#', class: 'size-5' do

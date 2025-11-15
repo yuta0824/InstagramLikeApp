@@ -1,7 +1,9 @@
 class PostsController < ApplicationController
   def index
     @user = current_user
-    @posts = Post.includes(:user).with_attached_images.order(created_at: :desc)
+    @posts = Post.includes(:user, likes: :user)
+                 .with_attached_images
+                 .order(created_at: :desc)
   end
 
   def new

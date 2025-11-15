@@ -29,6 +29,67 @@ paths:
               type: string
               format: binary
         required: true
+  "/api/posts/{post_id}/like":
+    parameters:
+    - name: post_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: いいねを作成する
+      tags:
+      - Like
+      responses:
+        '200':
+          description: いいね完了
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isLiked:
+                    type: boolean
+                required:
+                - isLiked
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+    delete:
+      summary: いいねを削除する
+      tags:
+      - Like
+      responses:
+        '200':
+          description: いいね解除
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isLiked:
+                    type: boolean
+                required:
+                - isLiked
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
 servers:
 - url: https://{defaultHost}
   variables:

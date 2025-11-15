@@ -4,9 +4,13 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   devise_for :users
   root to: 'posts#index'
-  resource :profile
+  resources :posts, only: %i(index new create destroy)
+  resources :profiles, only: %i(show)
 
   namespace :api, defaults: { format: 'json'} do
     resource :avatar, only: %i(update)
+    resources :posts, only: [] do
+      resource :like, only: %i[create destroy]
+    end
   end
 end

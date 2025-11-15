@@ -93,3 +93,11 @@
     @apply object-cover h-full;
   }
 }
+
+.like-button {
+  @apply size-5 bg-[url('./icon_like.webp')] bg-contain bg-no-repeat bg-center cursor-pointer;
+}
+
+.like-button[data-liked] {
+  @apply bg-[url('./icon_like_active.webp')];
+}

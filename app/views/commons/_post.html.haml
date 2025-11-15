@@ -6,6 +6,9 @@
       = link_to profile_path(id: post.user.id) do
         %p.text-sm= post.user.name
       %p.text-xs.text-brandGray= post.time_ago
+    - if post.owned_by?(current_user)
+      = link_to post_path(id: post.id), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'size-5 ml-auto' do
+        = image_tag 'icon_delete.webp', alt: 'delete'
   - gallery_class = case post.images.count
   - when 3 then 'post-gallery-three'
   - when 2 then 'post-gallery-two'
@@ -19,7 +22,7 @@
     - likes_summary = post.likes_summary
     - if post.owned_by?(current_user) && likes_summary
       %p.text-xs= likes_summary
-  .flex.gap-3
+  .flex.gap-3.w-full
     %button.js-like-button.like-button{ "data-liked": post.liked_by?(current_user) }
     -# TODO: コメント機能の実装
     = link_to '#', class: 'size-5' do

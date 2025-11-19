@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   devise_for :users
   root to: 'posts#index'
-  resources :posts, only: %i(index new create destroy)
+  resources :posts, only: %i(index new create destroy) do
+    resources :comments, only: %i(index)
+  end
   resources :profiles, only: %i(show)
 
   namespace :api, defaults: { format: 'json'} do

@@ -1,0 +1,5 @@
+%h1 Comments
+- @comments.each do |comment|
+  .flex.gap-1.items-center
+    %p= comment.user.name
+    %p= comment.content

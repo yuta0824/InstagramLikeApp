@@ -12,5 +12,5 @@
           %p.text-base= comment.user.name
           %p.text-sm.text-brandGray= comment.content
   %form.space-y-1.fixed.bottom-2.left-0.right-0.inner{ id: "js-comment-form" }
-    = text_area_tag :comment_content, '', id: "js-mention-input", class: 'bg-white p-3 border border-brandGrayLight leading-normal shadow-lg w-full  field-sizing-content', placeholder: 'Post comment', required: true
+    = text_area_tag :comment_content, '', id: "js-mention-input", class: 'bg-white p-3 border border-brandGrayLight leading-normal shadow-lg w-full field-sizing-content', placeholder: 'Post comment', required: true, maxlength: 100
     %button.w-full.bg-black.text-white.py-2.rounded Submit

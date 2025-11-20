@@ -103,11 +103,11 @@
 }
 
 .tribute-container {
-  @apply absolute inset-0 max-h-52 overflow-auto z-10 w-fit;
+  @apply absolute inset-0 max-h-52 overflow-auto z-10 w-fit rounded border border-brandGrayLight;
 }
 
 .tribute-container ul {
-  @apply bg-[#efefef];
+  @apply bg-white;
 }
 
 .tribute-container li {
@@ -115,5 +115,5 @@
 }
 
 .tribute-container li.highlight {
-  @apply bg-brandGrayLight;
+  @apply bg-[#efefef];
 }

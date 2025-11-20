@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: 'json'} do
     resource :avatar, only: %i(update)
+    resources :users, only: %i(index)
     resources :posts, only: [] do
       resource :like, only: %i[create destroy]
     end

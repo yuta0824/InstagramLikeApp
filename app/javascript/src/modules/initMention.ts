@@ -1,29 +1,39 @@
-import Tribute from "tributejs";
+import Tribute, { type TributeItem } from "tributejs";
+import { fetchUsers, type User } from "../api/fetchUsers";
 
-export const initMention = () => {
+interface TributeValue {
+  key: string;
+  value: string;
+  avatar: string;
+}
+
+export const initMention = async () => {
   const commentTextareas =
     document.querySelector<HTMLTextAreaElement>("#js-mention-input");
   if (!commentTextareas) return;
 
-  initTribute(commentTextareas);
+  await initTribute(commentTextareas);
 };
 
-const initTribute = (commentTextareas) => {
-  const tribute = new Tribute({
-    // TODO: APIでユーザー情報を取得する
-    values: [
-      {
-        key: "Phil Heartman",
-        value: "PhilHeartman",
-        avatar: "/assets/icon_avatar1.webp",
-      },
-      {
-        key: "Gordon Ramsey",
-        value: "GordonRamsey",
-        avatar: "/assets/icon_avatar2.webp",
-      },
-    ],
-    menuItemTemplate: function (item: any) {
+const initTribute = async (commentTextareas: HTMLTextAreaElement) => {
+  let users: User[] = [];
+
+  try {
+    users = await fetchUsers();
+  } catch (error) {
+    console.error(error);
+    users = [];
+  }
+
+  const tributeValues: TributeValue[] = users.map((user) => ({
+    key: user.name,
+    value: user.name,
+    avatar: user.avatarUrl,
+  }));
+
+  const tribute = new Tribute<TributeValue>({
+    values: tributeValues,
+    menuItemTemplate: (item: TributeItem<TributeValue>) => {
       return `
       <div class="flex items-center gap-2 p-2">
         <img src="${item.original.avatar}" class="size-6 rounded-full" alt="">
@@ -32,5 +42,6 @@ const initTribute = (commentTextareas) => {
     `;
     },
   });
+
   tribute.attach(commentTextareas);
 };

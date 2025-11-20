@@ -15,9 +15,8 @@ export const initCommentForm = () => {
     if (!postId || !content) return;
 
     try {
-      const comments = await createComment(postId, content);
-      const lastComment = comments[comments.length - 1];
-      appendComment(lastComment);
+      const comment = await createComment(postId, content);
+      appendComment(comment);
       field.value = "";
     } catch (error) {
       console.error(error);

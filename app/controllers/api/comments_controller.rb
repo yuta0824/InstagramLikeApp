@@ -8,13 +8,6 @@ class Api::CommentsController < ApplicationController
     render_comments(post)
   end
 
-  def destroy
-    comment = current_user.comments.find(params[:id])
-    post = comment.post
-    comment.destroy!
-    render_comments(post)
-  end
-
   private
 
   def comment_params

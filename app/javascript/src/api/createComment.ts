@@ -10,7 +10,7 @@ export const createComment = async (postId: string, content: string) => {
     },
     body: JSON.stringify({ comment: { content: content } }),
   };
-  const response = await fetch(`/api/posts/${postId}/comments`, requestOptions);
+  const response = await fetch(`/api/posts/${postId}/comment`, requestOptions);
   if (!response.ok) {
     throw new Error(`レスポンスステータス: (${response.status})`);
   }

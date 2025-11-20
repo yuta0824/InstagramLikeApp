@@ -23,6 +23,6 @@ class Api::CommentsController < ApplicationController
 
   def render_comments(post)
     comments = post.comments.includes(:user).order(created_at: :asc)
-    render json: comments
+    render json: comments, each_serializer: CommentSerializer
   end
 end

@@ -22,8 +22,8 @@
 class Notification < ApplicationRecord
   belongs_to :user
   belongs_to :comment
-
   after_create :send_email
+  validates :user_id, uniqueness: { scope: :comment_id }
 
   private
   def send_email

@@ -61,6 +61,9 @@ group :development do
   gem 'annotate'
   # HAML files clean and readable [https://github.com/sds/haml-lint]
   gem 'haml_lint', require: false
+  # Preview email in browser [https://github.com/ryanb/letter_opener]
+  gem 'letter_opener'
+  gem 'letter_opener_web', '~> 3.0'
 end
 
 group :test do

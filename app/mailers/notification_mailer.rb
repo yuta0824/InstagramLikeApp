@@ -6,6 +6,6 @@ class NotificationMailer < ApplicationMailer
     @post_comments_url = post_comments_url(post_id)
     @mentioning_user_name = notification.comment.user.name
 
-    mail to: 'test@example.com', subject: '【お知らせ】メンション通知'
+    mail to: notification.user.email, subject: '【お知らせ】メンション通知'
   end
 end

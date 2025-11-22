@@ -1,0 +1,13 @@
+%p
+  #{@mentioned_user_name}さん、こんにちは！
+
+%p
+  #{@mentioning_user_name}さんがコメントであなたをメンションしました。
+
+%blockquote
+  %strong コメント：
+  %br
+  = @comment_content
+
+%p
+  = link_to "投稿を見る →", @post_comments_url

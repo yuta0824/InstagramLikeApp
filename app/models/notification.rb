@@ -22,4 +22,11 @@
 class Notification < ApplicationRecord
   belongs_to :user
   belongs_to :comment
+
+  after_create :send_email
+
+  private
+  def send_email
+    NotificationMailer.mentioned(self).deliver_later
+  end
 end

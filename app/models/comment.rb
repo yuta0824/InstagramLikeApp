@@ -24,7 +24,7 @@ class Comment < ApplicationRecord
   belongs_to :post
   has_many :notifications, dependent: :destroy
   validates :content, presence: true, length: { maximum: 100 }
-  after_create :create_mention_notifications
+  after_create_commit :create_mention_notifications
 
   private
   def create_mention_notifications

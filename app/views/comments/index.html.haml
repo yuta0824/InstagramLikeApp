@@ -6,11 +6,11 @@
     %span
   .space-y-8.mt-10#js-comment-container
     - @comments.each do |comment|
-      .flex.gap-2.items-center
+      .flex.gap-2
         = image_tag comment.user.avatar_url, class: 'size-8 rounded-full', alt: "#{comment.user.name}のアバター"
         .space-y-1
           %p.text-base= comment.user.name
-          %p.text-sm.text-brandGray= comment.content
+          %p.text-sm.text-brandGray.whitespace-pre-line= comment.content
   %form.space-y-1.fixed.bottom-2.left-0.right-0.inner{ id: 'js-comment-form' }
     = text_area_tag :comment_content, '', id: 'js-mention-input',
                                           class: 'bg-white p-3 border border-brandGrayLight leading-normal shadow-lg w-full field-sizing-content',

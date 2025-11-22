@@ -38,13 +38,15 @@ const appendComment = (comment) => {
   if (!commentContainer) return;
 
   const commentHtml = `
-    <div class="flex gap-2 items-center">
+    <div class="flex gap-2">
       <img class="size-8 rounded-full" src="${escapeHtml(
         comment.userAvatar
       )}" alt="User avatar">
       <div class="space-y-1">
         <p class="text-base">${escapeHtml(comment.userName)}</p>
-        <p class="text-sm text-brandGray">${escapeHtml(comment.content)}</p>
+        <p class="text-sm text-brandGray whitespace-pre-line">${escapeHtml(
+          comment.content
+        )}</p>
       </div>
     </div>
   `;

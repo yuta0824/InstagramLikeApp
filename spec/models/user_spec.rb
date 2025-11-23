@@ -62,6 +62,17 @@ RSpec.describe User, type: :model do
     end
   end
 
+  context 'name に無効な文字が含まれる場合' do
+    ['john-doe', 'john.doe', 'john@doe', 'john doe', 'user!', '田中太郎'].each do |invalid_name|
+      it "#{invalid_name.inspect} は無効" do
+        user = build(:user, name: invalid_name)
+
+        expect(user).to be_invalid
+        expect(user.errors[:name]).to be_present
+      end
+    end
+  end
+
   context 'email が空の場合' do
     let(:user) { build(:user, email: nil) }
 

@@ -23,9 +23,15 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  validates :name, presence: true, uniqueness: true, length: { maximum: 20 }
+  validates :name,
+            presence: true,
+            uniqueness: true,
+            length: { maximum: 20 },
+            format: { with: /\A[a-zA-Z0-9_]+\z/, message: 'only allows letters, digits, and underscores' }
   has_many :likes, dependent: :destroy
   has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :notifications, dependent: :destroy
   has_one_attached :avatar
 
   def avatar_url

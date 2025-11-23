@@ -18,10 +18,6 @@
 #  index_users_on_name                  (name) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
-FactoryBot.define do
-  factory :user do
-    sequence(:email) { |n| "user#{n}@example.com" }
-    sequence(:name) { |n| "user_#{n}" }
-    password { 'password123' }
-  end
+class UserSerializer < ActiveModel::Serializer
+  attributes :name, :avatar_url
 end

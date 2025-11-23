@@ -25,7 +25,7 @@
   .flex.gap-3.w-full
     %button.js-like-button.like-button{ "data-liked": post.liked_by?(current_user) }
     -# TODO: コメント機能の実装
-    = link_to '#', class: 'size-5' do
+    = link_to post_comments_path(post_id: post.id), class: 'size-5' do
       = image_tag 'icon_comment.webp', alt: 'comment'
     = link_to "https://x.com/intent/post?url=#{root_url}%23#{post.id}", class: 'size-5', target: '_blank', rel: 'noopener noreferrer' do
       = image_tag 'icon_share.webp', alt: 'share'

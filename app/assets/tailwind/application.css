@@ -101,3 +101,19 @@
 .like-button[data-liked] {
   @apply bg-[url('./icon_like_active.webp')];
 }
+
+.tribute-container {
+  @apply absolute inset-0 max-h-52 overflow-auto z-10 w-fit rounded border border-brandGrayLight;
+}
+
+.tribute-container ul {
+  @apply bg-white;
+}
+
+.tribute-container li {
+  @apply cursor-pointer;
+}
+
+.tribute-container li.highlight {
+  @apply bg-[#efefef];
+}

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :posts, only: %i(index new create destroy) do
     resources :comments, only: %i(index)
   end
-  resources :profiles, only: %i(show)
+  resources :accounts, only: %i(show), param: :username, constraints: { username: /[a-zA-Z0-9_]+/ }
 
   namespace :api, defaults: { format: 'json'} do
     resource :avatar, only: %i(update)

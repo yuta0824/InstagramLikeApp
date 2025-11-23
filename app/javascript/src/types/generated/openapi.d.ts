@@ -46,6 +46,65 @@ export interface paths {
         };
         trace?: never;
     };
+    "/api/posts/{post_id}/comment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                post_id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** コメントを保存できる */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    post_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        comment: {
+                            content: string;
+                        };
+                    };
+                };
+            };
+            responses: {
+                /** @description 成功時 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            content: string;
+                            userName: string;
+                            userAvatar: string;
+                        };
+                    };
+                };
+                /** @description 未認証 */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/posts/{post_id}/like": {
         parameters: {
             query?: never;

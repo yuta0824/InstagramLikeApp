@@ -1,4 +1,5 @@
 import { createComment } from "../api/createComment";
+import { CommentResponse } from "../types/api";
 import { escapeHtml } from "../utils/escapeHtml";
 
 export const initCommentForm = () => {
@@ -31,7 +32,7 @@ const getPostId = (): string | null => {
   return element.dataset.postId ?? null;
 };
 
-const appendComment = (comment) => {
+const appendComment = (comment: CommentResponse) => {
   if (!comment) return;
 
   const commentContainer = document.querySelector("#js-comment-container");

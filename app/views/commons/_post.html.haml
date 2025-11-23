@@ -1,9 +1,9 @@
 .space-y-3{ "id": post.id, "data-post-id": post.id }
   .flex.items-center.gap-3
-    = link_to profile_path(id: post.user.id) do
+    = link_to account_path(post.user.name) do
       = image_tag post.user.avatar_url, alt: 'アバター', height: '40', width: '40', class: 'rounded-full size-10 aspect-square object-cover'
     %div
-      = link_to profile_path(id: post.user.id) do
+      = link_to account_path(post.user.name) do
         %p.text-sm= post.user.name
       %p.text-xs.text-brandGray= post.time_ago
     - if post.owned_by?(current_user)

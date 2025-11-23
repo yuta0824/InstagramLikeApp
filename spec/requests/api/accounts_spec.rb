@@ -1,16 +1,16 @@
 require 'rails_helper'
 require 'swagger_helper'
 
-RSpec.describe 'Api::Users', type: :request do
-  path '/api/users' do
-    get 'ユーザー一覧を取得する' do
-      tags 'User'
+RSpec.describe 'Api::Accounts', type: :request do
+  path '/api/accounts' do
+    get 'アカウント一覧を取得する' do
+      tags 'Account'
       produces 'application/json'
 
       let!(:users) { create_list(:user, 3) }
       before { sign_in users.first }
 
-      response '200', 'ユーザー一覧取得成功' do
+      response '200', 'アカウント一覧取得成功' do
         schema type: :array,
                items: {
                  type: :object,

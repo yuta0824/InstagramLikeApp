@@ -1,4 +1,4 @@
-class Api::CommentsController < ApplicationController
+class Api::Posts::CommentsController < ApplicationController
   def create
     post = Post.find(params[:post_id])
     comment = current_user.comments.build(comment_params.merge(post: post))

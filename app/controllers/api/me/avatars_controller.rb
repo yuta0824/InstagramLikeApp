@@ -1,4 +1,4 @@
-class Api::AvatarsController < ApplicationController
+class Api::Me::AvatarsController < ApplicationController
   def update
     current_user.update!(user_params)
     render json: { avatar_url: current_user.avatar_url }

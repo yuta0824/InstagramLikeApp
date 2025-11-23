@@ -5,14 +5,21 @@ Rails.application.routes.draw do
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   devise_for :users
+
   root to: 'posts#index'
+
   resources :posts, only: %i(index new create destroy) do
     resources :comments, only: %i(index)
   end
-  resources :accounts, only: %i(show), param: :username, constraints: { username: /[a-zA-Z0-9_]+/ }
+  resources :accounts, only: %i(show), param: :username, constraints: { username: /[a-zA-Z0-9_]+/ } do
+    resources :followers, only: %i[index]
+    resources :followings, only: %i[index]
+  end
 
   namespace :api, defaults: { format: 'json' } do
-    resources :accounts, only: %i[index]
+    resources :accounts, only: %i[index] do
+      resource  :relationship, only: [:create, :destroy]
+    end
     namespace :me do
       resource :avatar, only: %i[update]
     end

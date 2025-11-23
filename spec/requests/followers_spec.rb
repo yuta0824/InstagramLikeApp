@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Followers', type: :request do
   let(:user) { create(:user) }
 
-  describe 'GET /profiles/:profile_id/followers' do
+  describe 'GET /accounts/:account_username/followers' do
     context 'ログインしている場合' do
       before { sign_in user }
 

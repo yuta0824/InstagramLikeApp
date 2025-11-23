@@ -2,15 +2,15 @@ require 'rails_helper'
 require 'swagger_helper'
 
 RSpec.describe 'Api::Relationships', type: :request do
-  path '/api/users/{user_id}/relationship' do
-    parameter name: :user_id, in: :path, required: true, schema: { type: :integer }
+  path '/api/accounts/{account_id}/relationship' do
+    parameter name: :account_id, in: :path, required: true, schema: { type: :integer }
 
     post 'フォロー関係を作成する' do
       tags 'Relationship'
       consumes 'application/json'
       produces 'application/json'
 
-      let(:user_id) { 0 } # TODO: 実装後に適切な値に置き換え
+      let(:account_id) { 0 } # TODO: 実装後に適切な値に置き換え
 
       response '200', 'フォロー成功' do
         # TODO: 実装後に追加
@@ -29,7 +29,7 @@ RSpec.describe 'Api::Relationships', type: :request do
       tags 'Relationship'
       produces 'application/json'
 
-      let(:user_id) { 0 } # TODO: 実装後に適切な値に置き換え
+      let(:account_id) { 0 } # TODO: 実装後に適切な値に置き換え
 
       response '200', 'フォロー削除成功' do
         # TODO: 実装後に追加

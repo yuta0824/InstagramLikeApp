@@ -1,8 +1,5 @@
-import { paths } from "../types/generated/openapi";
+import { DeleteLikeResponse } from "../types/api";
 import { getCsrfToken } from "../utils/getCsrfToken";
-
-type DeleteLikeResponse =
-  paths["/api/posts/{post_id}/like"]["delete"]["responses"][200]["content"]["application/json"];
 
 export const deleteLike = async (
   postId: string

@@ -1,8 +1,5 @@
-import type { paths } from "../types/generated/openapi";
+import { AvatarResponse } from "../types/api";
 import { getCsrfToken } from "../utils/getCsrfToken";
-
-export type AvatarResponse =
-  paths["/api/avatar"]["patch"]["responses"][200]["content"]["application/json"];
 
 export const updateAvatar = async (file: File): Promise<AvatarResponse> => {
   const csrfToken = getCsrfToken();

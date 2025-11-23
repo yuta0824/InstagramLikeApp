@@ -135,6 +135,28 @@ paths:
                     type: string
                 required:
                 - error
+  "/api/users":
+    get:
+      summary: ユーザー一覧を取得する
+      tags:
+      - User
+      responses:
+        '200':
+          description: ユーザー一覧取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    avatarUrl:
+                      type: string
+                  required:
+                  - name
+                  - avatarUrl
 servers:
 - url: https://{defaultHost}
   variables:

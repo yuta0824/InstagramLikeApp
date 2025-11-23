@@ -14,7 +14,10 @@ RSpec.describe 'Followers', type: :request do
 
       context 'フォロワーが存在しない場合' do
         it '空のリストを返す' do
-          # TODO: 実装後に追加
+          get account_followers_path(account_username: user.name)
+          expect(response).to have_http_status(:ok)
+          other_user = create(:user)
+          expect(response.body).not_to include(other_user.name)
         end
       end
 

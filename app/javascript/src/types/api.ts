@@ -16,8 +16,8 @@ export type DeleteLikeResponse =
 
 // Avatar API
 export type AvatarResponse =
-  paths["/api/avatar"]["patch"]["responses"][200]["content"]["application/json"];
+  paths["/api/me/avatar"]["patch"]["responses"][200]["content"]["application/json"];
 
-// User API
-export type UsersResponse =
-  paths["/api/users"]["get"]["responses"][200]["content"]["application/json"];
+// Accounts API
+export type AccountsResponse =
+  paths["/api/accounts"]["get"]["responses"][200]["content"]["application/json"];

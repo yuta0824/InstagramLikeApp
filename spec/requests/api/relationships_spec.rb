@@ -10,37 +10,64 @@ RSpec.describe 'Api::Relationships', type: :request do
       consumes 'application/json'
       produces 'application/json'
 
-      let(:account_id) { 0 } # TODO: 実装後に適切な値に置き換え
+      let(:account) { create(:user) }
+      let(:account_id) { account.id }
 
       response '200', 'フォロー成功' do
-        # TODO: 実装後に追加
+        let(:current_user) { create(:user) }
+        before { sign_in current_user }
+        run_test! do
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include(account.name)
+        end
       end
 
       response '401', '未ログイン' do
-        # TODO: 実装後に追加
+        run_test! do
+          expect(response).to have_http_status(:unauthorized)
+        end
       end
 
       response '422', '自分自身または重複フォローで失敗' do
-        # TODO: 実装後に追加
+        let(:current_user) { create(:user) }
+        before do
+          sign_in current_user
+          create(:relationship, follower: current_user, following: account)
+        end
+        run_test! do
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
       end
     end
 
     delete 'フォロー関係を削除する' do
       tags 'Relationship'
       produces 'application/json'
-
-      let(:account_id) { 0 } # TODO: 実装後に適切な値に置き換え
-
+      let(:account) { create(:user) }
+      let(:account_id) { account.id }
       response '200', 'フォロー削除成功' do
-        # TODO: 実装後に追加
+        let(:current_user) { create(:user) }
+        before do
+          sign_in current_user
+          create(:relationship, follower: current_user, following: account)
+        end
+        run_test! do
+          expect(response).to have_http_status(:ok)
+        end
       end
 
       response '401', '未ログイン' do
-        # TODO: 実装後に追加
+        run_test! do
+          expect(response).to have_http_status(:unauthorized)
+        end
       end
 
       response '422', 'フォローしていない相手を削除しようとした場合' do
-        # TODO: 実装後に追加
+        let(:current_user) { create(:user) }
+        before { sign_in current_user }
+        run_test! do
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
       end
     end
   end

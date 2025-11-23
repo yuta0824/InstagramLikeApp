@@ -1,8 +1,5 @@
-import { paths } from "../types/generated/openapi";
+import { CreateLikeResponse } from "../types/api";
 import { getCsrfToken } from "../utils/getCsrfToken";
-
-type CreateLikeResponse =
-  paths["/api/posts/{post_id}/like"]["post"]["responses"][200]["content"]["application/json"];
 
 export const createLike = async (
   postId: string

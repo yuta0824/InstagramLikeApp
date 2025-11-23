@@ -1,0 +1,31 @@
+require 'rails_helper'
+
+RSpec.describe 'Followers', type: :request do
+  let(:user) { create(:user) }
+
+  describe 'GET /profiles/:profile_id/followers' do
+    context 'ログインしている場合' do
+      before { sign_in user }
+
+      it '200ステータスが返ってくる' do
+      end
+
+      context 'フォロワーが存在しない場合' do
+        it '空のリストを返す' do
+          # TODO: 実装後に追加
+        end
+      end
+
+      context 'フォロワーが存在する場合' do
+        it 'フォロワー一覧を返す' do
+          # TODO: 実装後に追加
+        end
+      end
+    end
+
+    context 'ログインしていない場合' do
+      it 'ログイン画面に遷移する' do
+      end
+    end
+  end
+end

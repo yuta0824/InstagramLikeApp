@@ -11,12 +11,14 @@ Rails.application.routes.draw do
   end
   resources :accounts, only: %i(show), param: :username, constraints: { username: /[a-zA-Z0-9_]+/ }
 
-  namespace :api, defaults: { format: 'json'} do
-    resource :avatar, only: %i(update)
-    resources :users, only: %i(index)
+  namespace :api, defaults: { format: 'json' } do
+    resources :accounts, only: %i[index]
+    namespace :me do
+      resource :avatar, only: %i[update]
+    end
     resources :posts, only: [] do
-      resource :like, only: %i[create destroy]
-      resource :comment, only: %i[create]
+      resource :like, only: %i[create destroy], module: :posts
+      resource :comment, only: %i[create], module: :posts
     end
   end
 end

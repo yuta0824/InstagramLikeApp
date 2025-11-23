@@ -1,10 +1,10 @@
 require 'rails_helper'
 require 'swagger_helper'
 
-RSpec.describe 'Api::Avatars', type: :request do
+RSpec.describe 'Api::Me::Avatars', type: :request do
   let!(:user) { create(:user) }
 
-  path '/api/avatar' do
+  path '/api/me/avatar' do
     patch 'アバター画像を更新する' do
       tags 'User'
       consumes 'multipart/form-data'

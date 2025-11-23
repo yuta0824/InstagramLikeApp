@@ -29,6 +29,51 @@ paths:
               type: string
               format: binary
         required: true
+  "/api/posts/{post_id}/comment":
+    parameters:
+    - name: post_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: コメントを保存できる
+      parameters: []
+      responses:
+        '200':
+          description: 成功時
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+                  userName:
+                    type: string
+                  userAvatar:
+                    type: string
+                required:
+                - content
+                - userName
+                - userAvatar
+        '401':
+          description: 未認証
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: object
+                  properties:
+                    content:
+                      type: string
+                  required:
+                  - content
+              required:
+              - comment
   "/api/posts/{post_id}/like":
     parameters:
     - name: post_id

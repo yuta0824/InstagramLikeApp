@@ -1,0 +1,4 @@
+= link_to account_path(user.name) do
+  .flex.gap-2.py-4.items-center.border-b.border-b-brandGrayLight
+    = image_tag user.avatar_url, class: 'size-8 rounded-full', alt: "#{user.name}のアバター"
+    %p.text-base= user.name

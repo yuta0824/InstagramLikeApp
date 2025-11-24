@@ -44,12 +44,28 @@ class User < ApplicationRecord
     Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true)
   end
 
-  def follow!(user)
-    following_relationships.create!(following_id: user.id)
+  def follow!(target_user)
+    following_relationships.create!(following_id: target_user.id)
   end
 
-  def unfollow!(user)
-    relation = following_relationships.find_by!(following_id: user.id)
+  def unfollow!(target_user)
+    relation = following_relationships.find_by!(following_id: target_user.id)
     relation.destroy!
+  end
+
+  def following?(target_user)
+    following_relationships.exists?(following_id: target_user.id)
+  end
+
+  def last_post_ago
+    last_post =
+      if posts.loaded?
+        posts.max_by(&:created_at)
+      else
+        posts.order(created_at: :desc).first
+      end
+    return "Haven't posted yet" unless last_post
+
+    "The last post was #{last_post.time_ago}"
   end
 end

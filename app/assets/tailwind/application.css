@@ -8,6 +8,10 @@
   img {
     @apply w-full h-auto block;
   }
+
+  button {
+    @apply w-fit py-1 block cursor-pointer;
+  }
 }
 
 @theme {

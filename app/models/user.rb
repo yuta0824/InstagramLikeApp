@@ -58,7 +58,12 @@ class User < ApplicationRecord
   end
 
   def last_post_ago
-    last_post = posts.order(:created_at).last
+    last_post =
+      if posts.loaded?
+        posts.max_by(&:created_at)
+      else
+        posts.order(created_at: :desc).first
+      end
     return "Haven't posted yet" unless last_post
 
     "The last post was #{last_post.time_ago}"

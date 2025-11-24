@@ -157,6 +157,35 @@ paths:
               type: string
               format: binary
         required: true
+  "/api/accounts/{account_id}/relationship":
+    parameters:
+    - name: account_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: フォロー関係を作成する
+      tags:
+      - Relationship
+      responses:
+        '201':
+          description: フォロー成功
+        '401':
+          description: 未ログイン
+        '422':
+          description: 自分自身または重複フォローで失敗
+    delete:
+      summary: フォロー関係を削除する
+      tags:
+      - Relationship
+      responses:
+        '204':
+          description: フォロー削除成功
+        '401':
+          description: 未ログイン
+        '404':
+          description: フォローしていない相手を削除しようとした場合
 servers:
 - url: https://{defaultHost}
   variables:

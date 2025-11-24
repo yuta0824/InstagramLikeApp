@@ -13,12 +13,12 @@ RSpec.describe 'Api::Relationships', type: :request do
       let(:account) { create(:user) }
       let(:account_id) { account.id }
 
-      response '200', 'フォロー成功' do
+      response '201', 'フォロー成功' do
         let(:current_user) { create(:user) }
         before { sign_in current_user }
         run_test! do
-          expect(response).to have_http_status(:ok)
-          expect(response.body).to include(account.name)
+          expect(response).to have_http_status(:created)
+          expect(current_user.followings).to include(account)
         end
       end
 
@@ -43,16 +43,18 @@ RSpec.describe 'Api::Relationships', type: :request do
     delete 'フォロー関係を削除する' do
       tags 'Relationship'
       produces 'application/json'
+
       let(:account) { create(:user) }
       let(:account_id) { account.id }
-      response '200', 'フォロー削除成功' do
+
+      response '204', 'フォロー削除成功' do
         let(:current_user) { create(:user) }
         before do
           sign_in current_user
           create(:relationship, follower: current_user, following: account)
         end
         run_test! do
-          expect(response).to have_http_status(:ok)
+          expect(response).to have_http_status(:no_content)
         end
       end
 
@@ -62,11 +64,11 @@ RSpec.describe 'Api::Relationships', type: :request do
         end
       end
 
-      response '422', 'フォローしていない相手を削除しようとした場合' do
+      response '404', 'フォローしていない相手を削除しようとした場合' do
         let(:current_user) { create(:user) }
         before { sign_in current_user }
         run_test! do
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:not_found)
         end
       end
     end

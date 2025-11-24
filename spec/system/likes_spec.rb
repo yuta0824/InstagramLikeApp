@@ -7,6 +7,7 @@ RSpec.describe 'Like button', type: :system do
 
   before do
     login_as(user, scope: :user)
+    user.follow!(post_owner)
   end
 
   it 'いいねボタンクリック時に data-liked 属性が切り替わる' do

@@ -61,14 +61,14 @@ RSpec.describe 'Posts', type: :request do
         expect(ids.size).to eq(5)
       end
 
-      it '表示順は新着順' do
-        older = create_post_with_likes(user: followed_user, created_at: 3.hours.ago, likes_count: 10)
-        newest = create_post_with_likes(user: followed_user, created_at: 1.hour.ago, likes_count: 10)
+      it '表示順は新着順（いいね数が多い古い投稿があっても新しい方が先）' do
+        older_most_liked = create_post_with_likes(user: followed_user, created_at: 3.hours.ago, likes_count: 100)
+        newest_less_liked = create_post_with_likes(user: followed_user, created_at: 1.hour.ago, likes_count: 5)
         middle = create_post_with_likes(user: followed_user, created_at: 2.hours.ago, likes_count: 10)
 
         get posts_path
 
-        expect(post_ids_from_response).to eq([newest.id, middle.id, older.id])
+        expect(post_ids_from_response).to eq([newest_less_liked.id, middle.id, older_most_liked.id])
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe 'Posts', type: :request do
   end
 
   def create_post_with_likes(user:, created_at:, likes_count:)
-    create(:post, user: user, created_at: created_at, images_count: 0).tap do |post|
+    create(:post, user: user, created_at: created_at).tap do |post|
       create_list(:like, likes_count, post: post)
     end
   end

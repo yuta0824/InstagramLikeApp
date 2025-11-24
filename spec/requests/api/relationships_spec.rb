@@ -35,7 +35,7 @@ RSpec.describe 'Api::Relationships', type: :request do
           create(:relationship, follower: current_user, following: account)
         end
         run_test! do
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

@@ -27,25 +27,30 @@ RSpec.describe Relationship, type: :model do
 
   context 'follower_id と following_id の組み合わせが一意の場合' do
     it '保存できる' do
-      # TODO: 実装後に追加
+      relationship = build(:relationship, follower: follower, following: following)
+      expect(relationship).to be_valid
     end
   end
 
   context 'follower_id と following_id の組み合わせが一意ではない場合' do
     it '保存できない' do
-      # TODO: 実装後に追加
+      create(:relationship, follower: follower, following: following)
+      duplicate = build(:relationship, follower: follower, following: following)
+      expect(duplicate).not_to be_valid
     end
   end
 
   context '自分自身をフォローしようとした場合' do
     it '保存できない' do
-      # TODO: 実装後に追加
+      relationship = build(:relationship, follower: follower, following: follower)
+      expect(relationship).not_to be_valid
     end
   end
 
   context 'follower_id または following_id が空の場合' do
     it '保存できない' do
-      # TODO: 実装後に追加
+      expect(build(:relationship, follower: nil)).not_to be_valid
+      expect(build(:relationship, following: nil)).not_to be_valid
     end
   end
 end

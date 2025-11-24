@@ -12,15 +12,14 @@
     - else
       = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto aspect-square object-cover'
   .grid.grid-cols-3.gap-10.w-fit.mx-auto
-    -# TODO: 数字を動的にする
     .text-center
-      %p 44
+      %p= @posts_count
       %p.text-brandGray.text-sm Posts
     .text-center
-      %p 44
-      %p.text-brandGray.text-sm Followers
+      %p= @followers_count
+      = link_to "Followers", account_followers_path(@user.name), { class: "text-brandGray text-sm" }
     .text-center
-      %p 44
-      %p.text-brandGray.text-sm Following
+      %p= @followings_count
+      = link_to "Followings", account_followings_path(@user.name), { class: "text-brandGray text-sm" }
   - @posts.each do |post|
     = render 'commons/post', post: post

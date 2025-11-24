@@ -5,9 +5,12 @@
     %h1.text-center= @user.name
     %span
   .text-center
-    %label.cursor-pointer.inline-block
-      = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', id: 'js-avatar-image', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto aspect-square object-cover'
-      %input.hidden#js-avatar-input{ type: 'file', accept: 'image/*' }
+    - if @user == current_user
+      %label.cursor-pointer.inline-block
+        = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', id: 'js-avatar-image', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto aspect-square object-cover'
+        %input.hidden#js-avatar-input{ type: 'file', accept: 'image/*' }
+    - else
+      = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto aspect-square object-cover'
   .grid.grid-cols-3.gap-10.w-fit.mx-auto
     -# TODO: 数字を動的にする
     .text-center

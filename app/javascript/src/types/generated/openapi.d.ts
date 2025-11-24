@@ -4,46 +4,43 @@
  */
 
 export interface paths {
-    "/api/avatar": {
+    "/api/accounts": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** アバター画像を更新する */
-        patch: {
+        /** アカウント一覧を取得する */
+        get: {
             parameters: {
                 query?: never;
                 header?: never;
                 path?: never;
                 cookie?: never;
             };
-            requestBody: {
-                content: {
-                    "multipart/form-data": string;
-                };
-            };
+            requestBody?: never;
             responses: {
-                /** @description 作成に成功 */
+                /** @description アカウント一覧取得成功 */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
                         "application/json": {
-                            avatar_url: string;
-                        };
+                            name: string;
+                            avatarUrl: string;
+                        }[];
                     };
                 };
             };
         };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/posts/{post_id}/comment": {
@@ -193,40 +190,129 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/users": {
+    "/api/me/avatar": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** ユーザー一覧を取得する */
-        get: {
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** アバター画像を更新する */
+        patch: {
             parameters: {
                 query?: never;
                 header?: never;
                 path?: never;
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody: {
+                content: {
+                    "multipart/form-data": string;
+                };
+            };
             responses: {
-                /** @description ユーザー一覧取得成功 */
+                /** @description 作成に成功 */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
                         "application/json": {
-                            name: string;
-                            avatarUrl: string;
-                        }[];
+                            avatar_url: string;
+                        };
                     };
                 };
             };
         };
+        trace?: never;
+    };
+    "/api/accounts/{account_id}/relationship": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                account_id: number;
+            };
+            cookie?: never;
+        };
+        get?: never;
         put?: never;
-        post?: never;
-        delete?: never;
+        /** フォロー関係を作成する */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    account_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description フォロー成功 */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 未ログイン */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 自分自身または重複フォローで失敗 */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** フォロー関係を削除する */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    account_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description フォロー削除成功 */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description 未ログイン */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description フォローしていない相手を削除しようとした場合 */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;

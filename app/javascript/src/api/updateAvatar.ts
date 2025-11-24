@@ -16,7 +16,7 @@ export const updateAvatar = async (file: File): Promise<AvatarResponse> => {
     credentials: "same-origin",
   };
 
-  const response = await fetch("/api/avatar", requestOptions);
+  const response = await fetch("/api/me/avatar", requestOptions);
   if (!response.ok) {
     throw new Error(`レスポンスステータス: (${response.status})`);
   }

@@ -1,6 +1,6 @@
 import Tribute, { type TributeItem } from "tributejs";
 import { fetchUsers } from "../api/fetchUsers";
-import type { UsersResponse } from "../types/api";
+import type { AccountsResponse } from "../types/api";
 
 interface TributeValue {
   key: string;
@@ -17,7 +17,7 @@ export const initMention = async () => {
 };
 
 const initTribute = async (commentTextareas: HTMLTextAreaElement) => {
-  let users: UsersResponse = [];
+  let users: AccountsResponse = [];
 
   try {
     users = await fetchUsers();

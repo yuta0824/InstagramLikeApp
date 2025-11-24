@@ -1,0 +1,31 @@
+.inner.py-5.space-y-10
+  %div{ class: 'grid grid-cols-[1fr_3fr_1fr] gap-2 items-center' }
+    = link_to root_path do
+      = image_tag 'icon_arrow-left.svg', alt: '左向き矢印', height: '12', width: '17', class: 'w-4 block'
+    %h1.text-center= @user.name
+    - if @user != current_user
+      %button.ml-auto#js-follow-button{ 'data-following': current_user.following?(@user) ? 'true' : 'false', 'data-user-id': @user.id }
+        %span.text-brandGray= current_user.following?(@user) ? 'Following' : 'Follow'
+  .text-center
+    - if @user == current_user
+      %label.cursor-pointer.inline-block
+        = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', id: 'js-avatar-image', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto aspect-square object-cover'
+        %input.hidden#js-avatar-input{ type: 'file', accept: 'image/*' }
+    - else
+      = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto aspect-square object-cover'
+  .grid.grid-cols-3.gap-10.w-fit.mx-auto
+    .text-center
+      %p= @posts_count
+      %p.text-brandGray.text-sm Posts
+    .text-center
+      %p#js-followers-count= @followers_count
+      = link_to 'Followers', account_followers_path(@user.name), { class: 'text-brandGray text-sm' }
+    .text-center
+      %p= @followings_count
+      = link_to 'Followings', account_followings_path(@user.name), { class: 'text-brandGray text-sm' }
+  - if @posts.present?
+    - @posts.each do |post|
+      = render 'commons/post', post: post
+  - else
+    .text-center.py-10
+      %p.text-brandGray Haven't posted yet

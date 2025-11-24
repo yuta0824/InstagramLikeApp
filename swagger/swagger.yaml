@@ -4,31 +4,28 @@ info:
   title: API Documentation
   version: '1.0'
 paths:
-  "/api/avatar":
-    patch:
-      summary: アバター画像を更新する
+  "/api/accounts":
+    get:
+      summary: アカウント一覧を取得する
       tags:
-      - User
-      parameters: []
+      - Account
       responses:
         '200':
-          description: 作成に成功
+          description: アカウント一覧取得成功
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  avatar_url:
-                    type: string
-                required:
-                - avatar_url
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: string
-              format: binary
-        required: true
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    avatarUrl:
+                      type: string
+                  required:
+                  - name
+                  - avatarUrl
   "/api/posts/{post_id}/comment":
     parameters:
     - name: post_id
@@ -135,28 +132,60 @@ paths:
                     type: string
                 required:
                 - error
-  "/api/users":
-    get:
-      summary: ユーザー一覧を取得する
+  "/api/me/avatar":
+    patch:
+      summary: アバター画像を更新する
       tags:
       - User
+      parameters: []
       responses:
         '200':
-          description: ユーザー一覧取得成功
+          description: 作成に成功
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    avatarUrl:
-                      type: string
-                  required:
-                  - name
-                  - avatarUrl
+                type: object
+                properties:
+                  avatar_url:
+                    type: string
+                required:
+                - avatar_url
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
+        required: true
+  "/api/accounts/{account_id}/relationship":
+    parameters:
+    - name: account_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: フォロー関係を作成する
+      tags:
+      - Relationship
+      responses:
+        '201':
+          description: フォロー成功
+        '401':
+          description: 未ログイン
+        '422':
+          description: 自分自身または重複フォローで失敗
+    delete:
+      summary: フォロー関係を削除する
+      tags:
+      - Relationship
+      responses:
+        '204':
+          description: フォロー削除成功
+        '401':
+          description: 未ログイン
+        '404':
+          description: フォローしていない相手を削除しようとした場合
 servers:
 - url: https://{defaultHost}
   variables:

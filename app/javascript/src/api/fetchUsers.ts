@@ -1,7 +1,7 @@
-import { UsersResponse } from "../types/api";
+import { AccountsResponse } from "../types/api";
 
-export const fetchUsers = async (): Promise<UsersResponse> => {
-  const response = await fetch("/api/users");
+export const fetchUsers = async (): Promise<AccountsResponse> => {
+  const response = await fetch("/api/accounts");
   if (!response.ok) {
     throw new Error(`レスポンスステータス: (${response.status})`);
   }

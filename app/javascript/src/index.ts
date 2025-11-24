@@ -1,6 +1,7 @@
 import { initAvatar } from "./modules/initAvatar";
 import { initFilePond } from "./modules/initFilePond";
 import { initFlash } from "./modules/initFlash";
+import { initFollowButton } from "./modules/initFollowButton";
 import { initLikeButton } from "./modules/initLike";
 import { initMention } from "./modules/initMention";
 import { initCommentForm } from "./modules/initPostComment";
@@ -12,6 +13,7 @@ document.addEventListener("turbo:load", () => {
   initCommentForm();
   initFlash();
   initLikeButton();
+  initFollowButton();
 });
 
 document.addEventListener("turbo:render", () => {

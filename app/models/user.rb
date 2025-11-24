@@ -56,4 +56,11 @@ class User < ApplicationRecord
   def following?(target_user)
     following_relationships.exists?(following_id: target_user.id)
   end
+
+  def last_post_ago
+    last_post = posts.order(:created_at).last
+    return "No posts yet" unless last_post
+
+    "The last post was #{last_post.time_ago}"
+  end
 end

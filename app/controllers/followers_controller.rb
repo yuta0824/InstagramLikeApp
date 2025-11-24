@@ -1,6 +1,6 @@
 class FollowersController < ApplicationController
   def index
     @user = User.find_by!(name: params[:account_username])
-    @followers = @user.followers
+    @followers = @user.followers.includes(:posts)
   end
 end

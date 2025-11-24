@@ -32,10 +32,24 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :following_relationships, foreign_key: "follower_id", class_name: "Relationship", dependent: :destroy
+  has_many :followings, through: :following_relationships, source: :following
+  has_many :follower_relationships, foreign_key: "following_id", class_name: "Relationship", dependent: :destroy
+  has_many :followers, through: :follower_relationships, source: :follower
+
   has_one_attached :avatar
 
   def avatar_url
     return ActionController::Base.helpers.asset_path('icon_avatar-default.png') unless avatar.attached?
     Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true)
+  end
+
+  def follow!(user)
+    following_relationships.create!(following_id: user.id)
+  end
+
+  def unfollow!(user)
+    relation = following_relationships.find_by!(following_id: user.id)
+    relation.destroy!
   end
 end

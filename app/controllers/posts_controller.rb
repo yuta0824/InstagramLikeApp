@@ -2,9 +2,9 @@ class PostsController < ApplicationController
   def index
     # フォローしてるユーザーが24時間以内に投稿したいいねが多い5記事を新着順で表示
     following_posts = Post.where(user_id: current_user.followings)
-    recent_following_posts = recent_posts(following_posts)
-    filtered_ids = popular_post_ids(recent_following_posts)
-    @posts = Post.where(id: filtered_ids)
+    recent_posts = recent_posts(following_posts)
+    popular_ids = popular_post_ids(recent_posts)
+    @posts = Post.where(id: popular_ids)
                  .includes(:user, likes: :user)
                  .with_attached_images
                  .order('posts.created_at DESC')

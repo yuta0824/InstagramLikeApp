@@ -23,5 +23,9 @@
     .text-center
       %p= @followings_count
       = link_to 'Followings', account_followings_path(@user.name), { class: 'text-brandGray text-sm' }
-  - @posts.each do |post|
-    = render 'commons/post', post: post
+  - if @posts.present?
+    - @posts.each do |post|
+      = render 'commons/post', post: post
+  - else
+    .text-center.py-10
+      %p.text-brandGray Haven't posted yet

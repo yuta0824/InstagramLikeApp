@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   root to: 'posts#index'
 
+  resource :explore, only: %i[show]
   resources :posts, only: %i(index new create destroy) do
     resources :comments, only: %i(index)
   end

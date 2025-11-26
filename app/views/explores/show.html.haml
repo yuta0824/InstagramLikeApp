@@ -1,0 +1,14 @@
+.inner.pt-5.pb-10
+  %div{ class: 'grid grid-cols-[16px_1fr_16px] gap-2' }
+    = link_to root_path do
+      = image_tag 'icon_arrow-left.svg', alt: '左向き矢印', height: '12', width: '17', class: 'w-4 block'
+    %h1.text-center Explore Users
+    %span
+
+  .mt-8
+    - if @users.any?
+      - @users.each do |user|
+        = render 'commons/user_list_item', user: user
+    - else
+      .text-center.py-10.text-gray-500
+        %p No users found

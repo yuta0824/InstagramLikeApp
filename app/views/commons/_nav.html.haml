@@ -4,8 +4,7 @@
       = image_tag 'icon_home.svg', class: 'size-6 md:size-5', alt: 'Home'
       %span.hidden.md:inline.text-lg Home
 
-    -# TODO: Exploreページを実装後にURLを変更
-    = link_to '#', class: 'nav-link' do
+    = link_to explore_path, class: 'nav-link' do
       = image_tag 'icon_explore.svg', class: 'size-6 md:size-5', alt: 'Explore'
       %span.hidden.md:inline.text-lg Explore
 

@@ -1,6 +1,7 @@
 .inner.py-5.space-y-10
+  - back_path = request.referer.presence || root_path
   %div{ class: 'grid grid-cols-[1fr_3fr_1fr] gap-2 items-center' }
-    = link_to root_path do
+    = link_to back_path do
       = image_tag 'icon_arrow-left.svg', alt: '左向き矢印', height: '12', width: '17', class: 'w-4 block'
     %h1.text-center= @user.name
     - if @user != current_user

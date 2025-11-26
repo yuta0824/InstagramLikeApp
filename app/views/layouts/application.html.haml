@@ -20,4 +20,6 @@
     = javascript_include_tag 'application', "data-turbo-track": 'reload', type: 'module'
   %body
     = render 'commons/flash' if notice.present? || alert.present?
-    = yield
+    = render 'commons/nav' if user_signed_in?
+    %main{ class: user_signed_in? ? 'pb-16 md:pb-0 md:ml-64' : '' }
+      = yield

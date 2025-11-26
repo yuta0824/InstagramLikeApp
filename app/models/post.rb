@@ -35,7 +35,6 @@ class Post < ApplicationRecord
   scope :with_associations, -> {
     includes(:user, likes: :user)
       .with_attached_images
-      .order('posts.created_at DESC')
   }
 
   def owned_by?(user)

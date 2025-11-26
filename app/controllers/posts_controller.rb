@@ -1,13 +1,13 @@
 class PostsController < ApplicationController
   def index
     # フォローしてるユーザーが24時間以内に投稿したいいねが多い5記事を新着順で表示
-    following_posts = Post.where(user_id: current_user.followings)
-    recent_posts = recent_posts(following_posts)
-    popular_ids = popular_post_ids(recent_posts)
-    @posts = Post.where(id: popular_ids)
-                 .includes(:user, likes: :user)
-                 .with_attached_images
-                 .order('posts.created_at DESC')
+    popular_scope = Post.by_users(current_user.followings)
+                        .recent_within(24.hours)
+                        .popular(limit: 5)
+
+    @posts = Post.from(popular_scope, :posts)
+                 .with_associations
+                 .reorder('posts.created_at DESC')
   end
 
   def new
@@ -36,17 +36,5 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:caption, images: [])
-  end
-
-  def recent_posts(posts)
-    posts.where('posts.created_at >= ?', 24.hours.ago)
-  end
-
-  def popular_post_ids(posts)
-    posts.left_joins(:likes)
-      .group('posts.id')
-      .order('COUNT(likes.id) DESC, posts.created_at DESC')
-      .limit(5)
-      .pluck(:id)
   end
 end

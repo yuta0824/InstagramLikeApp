@@ -24,6 +24,20 @@ class Post < ApplicationRecord
   validates :images, presence: true, length: { minimum: 1, maximum: 3 }
   validates :caption, length: { maximum: 100 }
 
+  scope :by_users, ->(users) { where(user_id: users) }
+  scope :recent_within, ->(time) { where('posts.created_at >= ?', Time.current - time) }
+  scope :popular, ->(limit: 5) {
+    left_joins(:likes)
+      .group('posts.id')
+      .order('COUNT(likes.id) DESC, posts.created_at DESC')
+      .limit(limit)
+  }
+  scope :with_associations, -> {
+    includes(:user, likes: :user)
+      .with_attached_images
+      .order('posts.created_at DESC')
+  }
+
   def owned_by?(user)
     return false unless user
     user_id == user.id

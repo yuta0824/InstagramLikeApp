@@ -1,0 +1,21 @@
+%nav.fixed.bottom-0.left-0.right-0.z-50.bg-white.backdrop-blur-sm.border-t.border-gray-200.md:top-0.md:left-0.md:right-auto.md:h-screen.md:w-64.md:border-r.md:border-t-0.md:px-4.md:py-6
+  .flex.flex-row.justify-around.items-center.py-2.max-w-80.mx-auto.md:flex-col.md:justify-start.md:gap-3.md:h-full.md:py-0
+    = link_to root_path, class: 'nav-link' do
+      = image_tag 'icon_home.svg', class: 'size-6 md:size-5', alt: 'Home'
+      %span.hidden.md:inline.text-lg Home
+
+    -# TODO: Exploreページを実装後にURLを変更
+    = link_to '#', class: 'nav-link' do
+      = image_tag 'icon_explore.svg', class: 'size-6 md:size-5', alt: 'Explore'
+      %span.hidden.md:inline.text-lg Explore
+
+    = link_to new_post_path, class: 'nav-link' do
+      = image_tag 'icon_post.svg', class: 'size-6 md:size-5', alt: 'Post'
+      %span.hidden.md:inline.text-lg Post
+
+    = link_to account_path(current_user.name), class: 'nav-link md:gap-3 md:mt-auto md:max-w-full' do
+      = image_tag current_user.avatar_url, class: 'size-8 rounded-full object-cover flex-shrink-0', alt: current_user.name
+      .min-w-0.hidden.md:flex.md:flex-col
+        %span.text-lg.truncate= current_user.name
+        %span.text-sm.text-gray-500.truncate= current_user.email
+

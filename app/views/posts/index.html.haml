@@ -1,6 +1,3 @@
-.inner.py-5
-  = link_to new_post_path, class: 'sticky top-3 size-10 p-2 block bg-[#ffffff87] rounded-full' do
-    = image_tag 'icon_camera.webp', alt: 'post'
-  .mt-5.space-y-10
-    - @posts.each do |post|
-      = render 'commons/post', post: post
+.inner.py-10.space-y-10
+  - @posts.each do |post|
+    = render 'commons/post', post: post

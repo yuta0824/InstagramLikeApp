@@ -35,7 +35,7 @@ const handleAddLike = async (
       button.setAttribute("data-liked", "true");
     }
   } catch (error) {
-    console.error("いいね処理に失敗しました", error);
+    console.error(error);
   }
 };
 
@@ -49,6 +49,6 @@ const handleRemoveLike = async (
       button.removeAttribute("data-liked");
     }
   } catch (error) {
-    console.error("いいね解除に失敗しました", error);
+    console.error(error);
   }
 };

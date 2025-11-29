@@ -21,7 +21,6 @@ export const initCommentForm = () => {
       field.value = "";
     } catch (error) {
       console.error(error);
-      alert("コメントの投稿に失敗しました");
     }
   });
 };

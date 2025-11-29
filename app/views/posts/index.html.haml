@@ -4,7 +4,7 @@
       = render 'commons/post', post: post
   - else
     .text-center.space-y-6.py-20
-      %p.text-xl.text-gray-700 Your timeline is empty
-      %p.text-base.text-gray-500 Follow some users to see their posts here
+      %p.text-xl.text-gray-700= t('posts.index.empty_title')
+      %p.text-base.text-gray-500= t('posts.index.empty_description')
       = link_to explore_path, class: 'inline-block px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors' do
-        Find users to follow
+        = t('posts.index.find_users')

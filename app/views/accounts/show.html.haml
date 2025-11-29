@@ -6,7 +6,7 @@
     %h1.text-center= @user.name
     - if @user != current_user
       %button.ml-auto#js-follow-button{ 'data-following': current_user.following?(@user) ? 'true' : 'false', 'data-user-id': @user.id }
-        %span.text-brandGray= current_user.following?(@user) ? 'Following' : 'Follow'
+        %span.text-brandGray= current_user.following?(@user) ? t('javascript.button.following') : t('javascript.button.follow')
   .text-center
     - if @user == current_user
       %label.cursor-pointer.inline-block
@@ -17,16 +17,16 @@
   .grid.grid-cols-3.gap-10.w-fit.mx-auto
     .text-center
       %p= @posts_count
-      %p.text-brandGray.text-sm Posts
+      %p.text-brandGray.text-sm= t('accounts.posts')
     .text-center
       %p#js-followers-count= @followers_count
-      = link_to 'Followers', account_followers_path(@user.name), { class: 'text-brandGray text-sm' }
+      = link_to t('accounts.followers'), account_followers_path(@user.name), { class: 'text-brandGray text-sm' }
     .text-center
       %p= @followings_count
-      = link_to 'Followings', account_followings_path(@user.name), { class: 'text-brandGray text-sm' }
+      = link_to t('accounts.followings'), account_followings_path(@user.name), { class: 'text-brandGray text-sm' }
   - if @posts.present?
     - @posts.each do |post|
       = render 'commons/post', post: post
   - else
     .text-center.py-10
-      %p.text-brandGray Haven't posted yet
+      %p.text-brandGray= t('accounts.no_posts')

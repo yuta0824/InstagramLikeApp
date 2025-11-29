@@ -1,0 +1,14 @@
+ja:
+  javascript:
+    confirm:
+      unfollow: "このアカウントのフォローを解除しますか？"
+      change_avatar: "アバター画像を変更しますか？"
+    button:
+      follow: "フォロー"
+      following: "フォロー中"
+  filepond:
+    label_idle: 'ファイルをドラッグ&ドロップ または <span class="filepond--label-action">参照</span><br><span style="font-size: 0.9em; opacity: 0.7;">最大 %{max_files} ファイル</span>'
+    label_file_processing: "アップロード中"
+    label_file_processing_complete: "アップロード完了"
+    label_tap_to_cancel: "タップしてキャンセル"
+    label_tap_to_retry: "タップして再試行"

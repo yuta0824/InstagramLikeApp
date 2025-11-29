@@ -7,7 +7,7 @@
         %p.text-sm= post.user.name
       %p.text-xs.text-brandGray= post.time_ago
     - if post.owned_by?(current_user)
-      = link_to post_path(id: post.id), method: :delete, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'size-5 ml-auto' do
+      = link_to post_path(id: post.id), method: :delete, data: { turbo_method: :delete, turbo_confirm: t('commons.post.delete_confirm') }, class: 'size-5 ml-auto' do
         = image_tag 'icon_delete.webp', alt: 'delete'
   - gallery_class = case post.images.count
   - when 3 then 'post-gallery-three'

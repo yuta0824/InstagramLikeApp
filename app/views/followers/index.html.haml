@@ -2,7 +2,7 @@
   %div{ class: 'grid grid-cols-[16px_1fr_16px] gap-2' }
     = link_to account_path(@user.name) do
       = image_tag 'icon_arrow-left.svg', alt: '左向き矢印', height: '12', width: '17', class: 'w-4 block'
-    %h1.text-center Followers
+    %h1.text-center= t('accounts.followers')
     %span
   .space-y-8.mt-10
     - if @followers.any?
@@ -10,4 +10,4 @@
         = render 'commons/user_list_item', user: follower
     - else
       .text-center.py-10
-        %p.text-brandGray No followers yet.
+        %p.text-brandGray= t('followers.index.no_followers')

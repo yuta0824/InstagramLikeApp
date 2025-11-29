@@ -57,7 +57,8 @@ class User < ApplicationRecord
     following_relationships.exists?(following_id: target_user.id)
   end
 
-  def last_post_ago
+  def last_post_status_message
+    # 既にロード済みの場合はメモリ上で検索。N+1クエリを避けるため
     last_post =
       if posts.loaded?
         posts.max_by(&:created_at)

@@ -47,7 +47,7 @@ class Post < ApplicationRecord
     likes.exists?(user_id: user.id)
   end
 
-  def liked_user
+  def most_recent_liker_name
     likes.last&.user&.name
   end
 
@@ -55,11 +55,13 @@ class Post < ApplicationRecord
     likes.count
   end
 
+  # TODO: 多言語対応
   def likes_summary
     return nil if liked_count.zero?
-    return "#{liked_user} liked your post" if liked_count == 1
+    return "#{most_recent_liker_name} liked your post" if liked_count == 1
 
-    "#{liked_user} and #{liked_count - 1} other liked your post"
+    remaining_likes = liked_count - 1
+    "#{most_recent_liker_name} and #{remaining_likes} other liked your post"
   end
 
   def time_ago

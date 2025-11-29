@@ -6,7 +6,7 @@
     %h1.text-center= @user.name
     - if @user != current_user
       %button.ml-auto#js-follow-button{ 'data-following': current_user.following?(@user) ? 'true' : 'false', 'data-user-id': @user.id }
-        %span.text-brandGray= current_user.following?(@user) ? 'Following' : 'Follow'
+        %span.text-brandGray= current_user.following?(@user) ? t('javascript.button.following') : t('javascript.button.follow')
   .text-center
     - if @user == current_user
       %label.cursor-pointer.inline-block

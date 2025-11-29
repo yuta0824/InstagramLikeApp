@@ -1,0 +1,13 @@
+ja:
+  javascript:
+    confirm:
+      unfollow: "このアカウントのフォローを解除しますか？"
+      change_avatar: "アバター画像を変更しますか？"
+    button:
+      follow: "フォロー"
+      following: "フォロー中"
+  accounts:
+    posts: "投稿"
+    followers: "フォロワー"
+    followings: "フォロー中"
+    no_posts: "まだ投稿がありません"

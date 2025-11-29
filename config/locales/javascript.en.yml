@@ -1,0 +1,13 @@
+en:
+  javascript:
+    confirm:
+      unfollow: "Are you sure you want to unfollow this account?"
+      change_avatar: "Are you sure you want to change your avatar?"
+    button:
+      follow: "Follow"
+      following: "Following"
+  accounts:
+    posts: "Posts"
+    followers: "Followers"
+    followings: "Followings"
+    no_posts: "Haven't posted yet"

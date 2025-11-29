@@ -2,6 +2,19 @@ ja:
   languages:
     en: "英語"
     ja: "日本語"
+  drawer:
+    language: "言語"
+    my_page: "マイページ"
+    logout: "ログアウト"
+  gnav:
+    home: "ホーム"
+    explore: "検索"
+    post: "投稿"
+  accounts:
+    posts: "投稿"
+    followers: "フォロワー"
+    followings: "フォロー中"
+    no_posts: "まだ投稿がありません"
   comments:
     title: "コメント"
     placeholder: "コメントを入力..."

@@ -6,8 +6,9 @@ en:
     button:
       follow: "Follow"
       following: "Following"
-  accounts:
-    posts: "Posts"
-    followers: "Followers"
-    followings: "Followings"
-    no_posts: "Haven't posted yet"
+  filepond:
+    label_idle: 'Drag & Drop your files or <span class="filepond--label-action">Browse</span><br><span style="font-size: 0.9em; opacity: 0.7;">Maximum %{max_files} files</span>'
+    label_file_processing: "Uploading"
+    label_file_processing_complete: "Upload complete"
+    label_tap_to_cancel: "tap to cancel"
+    label_tap_to_retry: "tap to retry"

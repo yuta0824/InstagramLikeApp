@@ -2,6 +2,19 @@ en:
   languages:
     en: "EN"
     ja: "JA"
+  drawer:
+    language: "Language"
+    my_page: "My Page"
+    logout: "Logout"
+  gnav:
+    home: "Home"
+    explore: "Explore"
+    post: "Post"
+  accounts:
+    posts: "Posts"
+    followers: "Followers"
+    followings: "Followings"
+    no_posts: "Haven't posted yet"
   comments:
     title: "Comment"
     placeholder: "Post comment"

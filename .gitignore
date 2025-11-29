@@ -39,6 +39,9 @@
 
 /node_modules
 
+# Ignore Redis dump files
+dump.rdb
+
 # Ignore Private files
 .claude/
 .private/

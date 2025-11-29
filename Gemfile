@@ -30,6 +30,8 @@ gem 'aws-sdk-s3', require: false
 gem 'active_model_serializers'
 # rswag [https://github.com/rswag/rswag]
 gem 'rswag'
+# sidekiq [https://github.com/sidekiq/sidekiq]
+gem 'sidekiq'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

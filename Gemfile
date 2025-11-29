@@ -27,7 +27,7 @@ gem 'devise-i18n'
 # Rails internationalization [https://github.com/svenfuchs/rails-i18n]
 gem 'rails-i18n'
 # JavaScript internationalization [https://github.com/svenfuchs/rails-i18n]
-gem "i18n-js", "~> 4.2"
+gem 'i18n-js', '~> 4.2'
 
 # Use Haml for templating [https://haml.info]
 gem 'hamlit'

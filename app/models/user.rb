@@ -65,8 +65,8 @@ class User < ApplicationRecord
       else
         posts.order(created_at: :desc).first
       end
-    return "Haven't posted yet" unless last_post
+    return I18n.t('models.user.no_posts_yet') unless last_post
 
-    "The last post was #{last_post.time_ago}"
+    I18n.t('models.user.last_post_was', time_ago: last_post.time_ago)
   end
 end

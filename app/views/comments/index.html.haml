@@ -2,7 +2,7 @@
   %div{ class: 'grid grid-cols-[16px_1fr_16px] gap-2' }
     = link_to root_path do
       = image_tag 'icon_arrow-left.svg', alt: '左向き矢印', height: '12', width: '17', class: 'w-4 block'
-    %h1.text-center Comment
+    %h1.text-center= t('comments.title')
     %span
   .space-y-8.mt-10#js-comment-container
     - @comments.each do |comment|
@@ -14,7 +14,7 @@
   %form.space-y-1.fixed.bottom-20.md:bottom-2.left-0.right-0.md:left-64.inner{ id: 'js-comment-form' }
     = text_area_tag :comment_content, '', id: 'js-mention-input',
                                           class: 'bg-white p-3 border border-brandGrayLight leading-normal shadow-lg w-full field-sizing-content',
-                                          placeholder: 'Post comment',
+                                          placeholder: t('comments.placeholder'),
                                           required: true,
                                           maxlength: 100
-    %button.w-full.bg-black.text-white.py-2 Submit
+    %button.w-full.bg-black.text-white.py-2= t('comments.submit')

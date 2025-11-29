@@ -1,0 +1,31 @@
+ja:
+  languages:
+    en: "英語"
+    ja: "日本語"
+  comments:
+    title: "コメント"
+    placeholder: "コメントを入力..."
+    submit: "送信"
+  posts:
+    index:
+      empty_title: "タイムラインにはまだ何もありません"
+      empty_description: "ユーザーをフォローして投稿を表示しましょう"
+      find_users: "ユーザーを探す"
+    new:
+      title: "投稿作成"
+      cancel: "キャンセル"
+      submit: "投稿する"
+      placeholder: "いまどうしてる？"
+  explores:
+    show:
+      title: "ユーザーを探す"
+      no_users: "ユーザーが見つかりませんでした"
+  followers:
+    index:
+      no_followers: "まだフォロワーがいません"
+  followings:
+    index:
+      no_followings: "まだ誰もフォローしていません"
+  commons:
+    post:
+      delete_confirm: "本当に削除しますか？"

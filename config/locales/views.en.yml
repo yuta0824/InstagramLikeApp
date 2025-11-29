@@ -1,0 +1,31 @@
+en:
+  languages:
+    en: "EN"
+    ja: "JA"
+  comments:
+    title: "Comment"
+    placeholder: "Post comment"
+    submit: "Submit"
+  posts:
+    index:
+      empty_title: "Your timeline is empty"
+      empty_description: "Follow some users to see their posts here"
+      find_users: "Find users to follow"
+    new:
+      title: "Status"
+      cancel: "Cancel"
+      submit: "Post"
+      placeholder: "What's on your mind?"
+  explores:
+    show:
+      title: "Explore Users"
+      no_users: "No users found"
+  followers:
+    index:
+      no_followers: "No followers yet."
+  followings:
+    index:
+      no_followings: "No followings yet."
+  commons:
+    post:
+      delete_confirm: "Are you sure?"

@@ -22,6 +22,11 @@ gem 'bootsnap', require: false
 gem 'tailwindcss-rails', '~> 4.3'
 # Use Devise for authentication [https://github.com/heartcombo/devise]
 gem 'devise'
+# Devise internationalization [https://github.com/tigrish/devise-i18n]
+gem 'devise-i18n'
+# Rails internationalization [https://github.com/svenfuchs/rails-i18n]
+gem 'rails-i18n'
+
 # Use Haml for templating [https://haml.info]
 gem 'hamlit'
 # AWS SDK for Ruby - S3 [https://github.com/aws/aws-sdk-ruby]

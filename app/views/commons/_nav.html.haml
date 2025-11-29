@@ -2,15 +2,15 @@
   .flex.flex-row.justify-around.items-center.py-2.max-w-80.mx-auto.md:flex-col.md:justify-start.md:gap-3.md:h-full.md:py-0
     = link_to root_path, class: 'nav-link' do
       = image_tag 'icon_home.svg', class: 'size-6 md:size-5', alt: 'Home'
-      %span.hidden.md:inline.text-lg Home
+      %span.hidden.md:inline.text-lg= I18n.t('gnav.home')
 
     = link_to explore_path, class: 'nav-link' do
       = image_tag 'icon_explore.svg', class: 'size-6 md:size-5', alt: 'Explore'
-      %span.hidden.md:inline.text-lg Explore
+      %span.hidden.md:inline.text-lg= I18n.t('gnav.explore')
 
     = link_to new_post_path, class: 'nav-link' do
       = image_tag 'icon_post.svg', class: 'size-6 md:size-5', alt: 'Post'
-      %span.hidden.md:inline.text-lg Post
+      %span.hidden.md:inline.text-lg= I18n.t('gnav.post')
 
     = link_to account_path(current_user.name), class: 'nav-link md:gap-3 md:mt-auto md:max-w-full' do
       = image_tag current_user.avatar_url, class: 'size-8 rounded-full object-cover flex-shrink-0', alt: current_user.name

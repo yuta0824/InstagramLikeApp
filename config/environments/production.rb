@@ -102,4 +102,21 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # 送信者のメールアドレスのドメイン
+  config.action_mailer.default_url_options = {
+    host: 'instagram-like-app-946b2ba6d960.herokuapp.com',
+    protocol: 'https'
+  }
+
+  # Mailgun
+  ActionMailer::Base.smtp_settings = {
+    :port           => ENV['MAILGUN_SMTP_PORT'],
+    :address        => ENV['MAILGUN_SMTP_SERVER'],
+    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+    :domain         => ENV['HEROKU_DOMAIN'],
+    :authentication => :plain,
+  }
+  ActionMailer::Base.delivery_method = :smtp
 end

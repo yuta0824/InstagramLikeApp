@@ -1,13 +1,23 @@
 = render 'devise/shared/auth_layout' do
-  = form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'h-full' }) do |f|
-    .flex.flex-col.gap-5.auto-cols-max.h-full
-      .field
-        = f.label :email
-        = f.email_field :email, autofocus: true, autocomplete: 'email'
-      .field
-        = f.label :password
-        = f.password_field :password, autocomplete: 'current-password'
-      .mt-auto
-        = f.submit 'LOGIN', {class: 'submit-button'}
-      .text-link.underline.text-right{ class: '[&>a]:py-1 [&>a]:inline-block' }
-        = render 'devise/shared/links'
+  .space-y-6
+    .p-4.bg-gray-100.rounded-md.text-sm.text-gray-700
+      %p.font-bold Guest Login:
+      %p Email: guest@example.com
+      %p Password: password
+      %button.mt-3.px-4.py-2.bg-blue-500.text-white.rounded.hover:bg-blue-600{ type: 'button', onclick: "document.getElementById('user_email').value='guest@example.com'; document.getElementById('user_password').value='password';" }
+        Login as Guest
+      %p.mt-2.text-xs.text-gray-500
+        * Data may be reset periodically.
+
+    = form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'h-full' }) do |f|
+      .flex.flex-col.gap-5.auto-cols-max.h-full
+        .field
+          = f.label :email
+          = f.email_field :email, autofocus: true, autocomplete: 'email'
+        .field
+          = f.label :password
+          = f.password_field :password, autocomplete: 'current-password'
+        .mt-auto
+          = f.submit 'LOGIN', {class: 'submit-button'}
+        .text-link.underline.text-right{ class: '[&>a]:py-1 [&>a]:inline-block' }
+          = render 'devise/shared/links'

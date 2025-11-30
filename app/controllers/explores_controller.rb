@@ -1,6 +1,7 @@
 class ExploresController < ApplicationController
   def show
-    suggested_users = User.where.not(id: current_user.id).includes(:posts)
-    @users = suggested_users.order(Arel.sql('RANDOM()')).limit(50)
+    @users = User.recently_active
+                 .where.not(id: current_user.id)
+                 .includes(avatar_attachment: :blob)
   end
 end

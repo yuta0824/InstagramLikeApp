@@ -36,8 +36,16 @@ class User < ApplicationRecord
   has_many :followings, through: :following_relationships, source: :following
   has_many :follower_relationships, foreign_key: 'following_id', class_name: 'Relationship', dependent: :destroy
   has_many :followers, through: :follower_relationships, source: :follower
-
   has_one_attached :avatar
+
+  scope :recently_active, ->(limit: 30, within: 24.hours) {
+    joins(:posts)
+      .where('posts.created_at >= ?', within.ago)
+      .select('users.*, MAX(posts.created_at) as latest_post_at')
+      .group('users.id')
+      .order('latest_post_at DESC')
+      .limit(limit)
+  }
 
   def avatar_url
     return ActionController::Base.helpers.asset_path('icon_avatar-default.png') unless avatar.attached?

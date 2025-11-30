@@ -11,9 +11,11 @@ export const deleteLike = async (
       "X-CSRF-Token": csrfToken,
     },
   };
+
   const response = await fetch(`/api/posts/${postId}/like`, requestOptions);
   if (!response.ok) {
     throw new Error(`レスポンスステータス: (${response.status})`);
   }
+
   return response.json();
 };

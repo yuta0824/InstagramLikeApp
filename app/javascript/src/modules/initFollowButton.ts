@@ -1,6 +1,6 @@
 import { createRelationship } from "../api/createRelationship";
 import { deleteRelationship } from "../api/deleteRelationship";
-import i18n from "../i18n";
+import i18n from "../utils/i18n";
 
 export const initFollowButton = () => {
   const button = document.querySelector<HTMLButtonElement>("#js-follow-button");
@@ -28,7 +28,12 @@ export const initFollowButton = () => {
           const response = await deleteRelationship(userIdStr);
           if (response.status === 204) {
             decreaseFollowCount();
-            updateButtonBehavior(shouldFollow, button, textFollow, textFollowing);
+            updateButtonBehavior(
+              shouldFollow,
+              button,
+              textFollow,
+              textFollowing
+            );
           }
         }
       }

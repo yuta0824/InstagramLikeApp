@@ -21,5 +21,6 @@ export const createComment = async (
   if (!response.ok) {
     throw new Error(`レスポンスステータス: (${response.status})`);
   }
+
   return response.json();
 };

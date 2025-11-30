@@ -5,6 +5,7 @@ export const updateAvatar = async (file: File): Promise<AvatarResponse> => {
   const csrfToken = getCsrfToken();
   const formData = new FormData();
   formData.append("avatar", file);
+
   const requestOptions: RequestInit = {
     method: "PATCH",
     headers: {
@@ -17,8 +18,10 @@ export const updateAvatar = async (file: File): Promise<AvatarResponse> => {
   };
 
   const response = await fetch("/api/me/avatar", requestOptions);
+
   if (!response.ok) {
     throw new Error(`レスポンスステータス: (${response.status})`);
   }
+
   return response.json();
 };

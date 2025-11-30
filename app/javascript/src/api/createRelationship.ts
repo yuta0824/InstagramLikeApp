@@ -8,12 +8,15 @@ export const createRelationship = async (accountId: string) => {
       "X-CSRF-Token": csrfToken,
     },
   };
+
   const response = await fetch(
     `/api/accounts/${accountId}/relationship`,
     requestOptions
   );
+
   if (!response.ok) {
     throw new Error(`レスポンスステータス: (${response.status})`);
   }
+
   return response;
 };

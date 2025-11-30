@@ -3,9 +3,9 @@
     .flex.flex-col.gap-5.auto-cols-max.h-full
       = render 'devise/shared/error_messages', resource: resource
       .field
-        = f.label :email
+        = f.label :email, t('auth.password_reset.email_label')
         = f.email_field :email, autofocus: true, autocomplete: 'email'
       .mt-auto
-        = f.submit 'Send me reset password instructions', {class: 'submit-button'}
+        = f.submit t('auth.password_reset.submit'), {class: 'submit-button'}
       .text-link.underline.text-right{ class: '[&>a]:py-1 [&>a]:inline-block' }
         = render 'devise/shared/links'

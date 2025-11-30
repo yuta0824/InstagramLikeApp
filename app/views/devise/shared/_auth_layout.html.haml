@@ -2,4 +2,15 @@
   .inner.inner--wide
     = image_tag 'bg_auth-fv.webp', alt: '', height: '298', width: '375'
   .inner.pb-20
+    .mb-6.space-y-2
+      %p.text-xs.font-semibold.text-gray-600= t('drawer.language')
+      .rounded-2xl.border.border-gray-200.bg-gray-50.p-1.flex.gap-1
+        :ruby
+          base_classes = 'flex-1 px-4 py-2 text-sm font-semibold rounded-xl text-center transition-colors focus-visible:outline-hidden'
+          active_classes = 'bg-blue-500 text-white shadow-sm'
+          inactive_classes = 'text-gray-700 hover:bg-white'
+        = link_to url_for(locale: :en), class: "#{base_classes} #{I18n.locale == :en ? active_classes : inactive_classes}" do
+          %span= t('languages.en')
+        = link_to url_for(locale: :ja), class: "#{base_classes} #{I18n.locale == :ja ? active_classes : inactive_classes}" do
+          %span= t('languages.ja')
     = yield

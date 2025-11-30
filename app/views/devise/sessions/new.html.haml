@@ -7,7 +7,7 @@
         %p.font-semibold.text-gray-900= t('auth.login.guest_login.title')
         %p.font-mono.text-gray-800= t('auth.login.guest_login.email', email: guest_email)
         %p.font-mono.text-gray-800= t('auth.login.guest_login.password', password: guest_password)
-      %button.inline-flex.items-center.justify-center.w-full.sm:w-auto.px-4.py-2.rounded-xl.font-semibold.text-sm.bg-blue-500.text-white.transition-colors.hover:bg-blue-600.focus-visible:outline.focus-visible:outline-2.focus-visible:outline-offset-2.focus-visible:outline-blue-500#js-guest-login-button
+      %button.px-4.py-2.rounded-xl.font-semibold.text-sm.bg-blue-500.text-white.transition-colors.hover:bg-blue-600#js-guest-login-button
         = t('auth.login.guest_login.button')
       %p.text-xs.text-gray-500.leading-relaxed
         = t('auth.login.guest_login.note')

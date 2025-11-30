@@ -80,6 +80,4 @@ test:
 #
 production:
   <<: *default
-  database: instagram_like_app_production
-  username: instagram_like_app
-  password: <%= ENV["INSTAGRAM_LIKE_APP_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>

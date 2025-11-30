@@ -57,15 +57,16 @@ class User < ApplicationRecord
     following_relationships.exists?(following_id: target_user.id)
   end
 
-  def last_post_ago
+  def last_post_status_message
+    # 既にロード済みの場合はメモリ上で検索。N+1クエリを避けるため
     last_post =
       if posts.loaded?
         posts.max_by(&:created_at)
       else
         posts.order(created_at: :desc).first
       end
-    return "Haven't posted yet" unless last_post
+    return I18n.t('models.user.no_posts_yet') unless last_post
 
-    "The last post was #{last_post.time_ago}"
+    I18n.t('models.user.last_post_was', time_ago: last_post.time_ago)
   end
 end

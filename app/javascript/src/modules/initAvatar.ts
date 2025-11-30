@@ -1,5 +1,5 @@
 import { updateAvatar } from "../api/updateAvatar";
-import i18n from "../i18n";
+import i18n from "../utils/i18n";
 
 export const initAvatar = () => {
   const fileInput =

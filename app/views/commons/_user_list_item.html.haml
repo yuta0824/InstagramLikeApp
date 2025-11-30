@@ -3,4 +3,4 @@
     = image_tag user.avatar_url, class: 'size-8 rounded-full', alt: "#{user.name}のアバター"
     .space-y-1
       %p.text-base= user.name
-      %p.text-sm.text-brandGray= user.last_post_ago
+      %p.text-sm.text-brandGray= user.last_post_status_message

@@ -47,7 +47,7 @@ class Post < ApplicationRecord
     likes.exists?(user_id: user.id)
   end
 
-  def liked_user
+  def most_recent_liker_name
     likes.last&.user&.name
   end
 
@@ -57,20 +57,21 @@ class Post < ApplicationRecord
 
   def likes_summary
     return nil if liked_count.zero?
-    return "#{liked_user} liked your post" if liked_count == 1
+    return I18n.t('models.post.single_like', name: most_recent_liker_name) if liked_count == 1
 
-    "#{liked_user} and #{liked_count - 1} other liked your post"
+    remaining_likes = liked_count - 1
+    I18n.t('models.post.multiple_likes', name: most_recent_liker_name, count: remaining_likes)
   end
 
   def time_ago
     seconds_diff = (Time.current - created_at).to_i
-    return 'now' if seconds_diff < 60
+    return I18n.t('models.post.now') if seconds_diff < 60
 
     minutes = seconds_diff / 60
-    return "#{minutes} minutes ago" if minutes < 60
+    return I18n.t('models.post.minutes_ago', count: minutes) if minutes < 60
 
     hours = minutes / 60
-    return "#{hours} hours ago" if hours < 24
+    return I18n.t('models.post.hours_ago', count: hours) if hours < 24
 
     created_at.strftime('%Y/%m/%d')
   end

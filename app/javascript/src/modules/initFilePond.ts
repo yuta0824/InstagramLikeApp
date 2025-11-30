@@ -6,7 +6,7 @@ import FilePondPluginImageEdit from "filepond-plugin-image-edit";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import "filepond-plugin-image-edit/dist/filepond-plugin-image-edit.min.css";
-import i18n from "../i18n";
+import i18n from "../utils/i18n";
 
 FilePond.registerPlugin(
   FilePondPluginImagePreview,
@@ -20,10 +20,8 @@ export const initFilePond = () => {
     document.querySelector<HTMLInputElement>("input.filepond");
   if (!inputElement) return;
   const originalName = inputElement.getAttribute("name");
-
   const MAX_FILES = 3;
   const MAX_FILE_SIZE = "3MB";
-
   const labelIdle = i18n.t("filepond.label_idle", { max_files: MAX_FILES });
 
   const pond = FilePond.create(inputElement, {

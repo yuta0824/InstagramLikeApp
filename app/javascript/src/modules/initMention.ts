@@ -17,16 +17,16 @@ export const initMention = async () => {
 };
 
 const initTribute = async (commentTextareas: HTMLTextAreaElement) => {
-  let users: AccountsResponse = [];
+  let mentionableUsers: AccountsResponse = [];
 
   try {
-    users = await fetchUsers();
+    mentionableUsers = await fetchUsers();
   } catch (error) {
     console.error(error);
-    users = [];
+    mentionableUsers = [];
   }
 
-  const tributeValues: TributeValue[] = users.map((user) => ({
+  const tributeValues: TributeValue[] = mentionableUsers.map((user) => ({
     key: user.name,
     value: user.name,
     avatar: user.avatarUrl,

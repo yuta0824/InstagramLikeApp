@@ -1,20 +1,17 @@
-.grid.h-full{ class: 'grid-rows-[auto_1fr]' }
-  .inner.inner--wide
-    = image_tag 'bg_auth-fv.webp', alt: '', height: '298', width: '375'
-  .inner.pt-8.pb-20
-    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'h-full' }) do |f|
-      .flex.flex-col.gap-5.auto-cols-max.h-full
-        = render 'devise/shared/error_messages', resource: resource
-        .field
-          = f.label :name
-          = f.text_field :name, autofocus: true
-        .field
-          = f.label :email
-          = f.email_field :email, autocomplete: 'email'
-        .field
-          = f.label :password
-          = f.password_field :password, autocomplete: 'new-password'
-        .mt-auto
-          = f.submit 'CREATE ACCOUNT', {class: 'submit-button'}
-        .text-link.underline.text-right{ class: '[&>a]:py-1 [&>a]:inline-block' }
-          = render 'devise/shared/links'
+= render 'devise/shared/auth_layout' do
+  = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'h-full' }) do |f|
+    .flex.flex-col.gap-5.auto-cols-max.h-full
+      = render 'devise/shared/error_messages', resource: resource
+      .field
+        = f.label :name
+        = f.text_field :name, autofocus: true
+      .field
+        = f.label :email
+        = f.email_field :email, autocomplete: 'email'
+      .field
+        = f.label :password
+        = f.password_field :password, autocomplete: 'new-password'
+      .mt-auto
+        = f.submit 'CREATE ACCOUNT', {class: 'submit-button'}
+      .text-link.underline.text-right{ class: '[&>a]:py-1 [&>a]:inline-block' }
+        = render 'devise/shared/links'

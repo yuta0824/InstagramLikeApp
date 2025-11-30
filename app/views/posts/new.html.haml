@@ -1,7 +1,7 @@
 = form_with(model: @post, local: true, html: { multipart: true }, data: { turbo: false }) do |f|
-  .inner.py-5.space-y-10
+  .inner.space-y-10
     -# ナビゲーション
-    .grid.grid-cols-3
+    .navigation
       = link_to t('posts.new.cancel'), root_path, class: 'text-link w-fit'
       %h1.text-center= t('posts.new.title')
       .text-right

@@ -1,7 +1,7 @@
-.inner.py-5.space-y-10
+.inner.space-y-10
   -# ナビゲーション
   - back_path = request.referer.presence || root_path
-  %div{ class: 'grid grid-cols-[1fr_3fr_1fr] gap-2 items-center' }
+  .navigation
     = link_to back_path do
       = image_tag 'icon_arrow-left.svg', alt: '左向き矢印', height: '12', width: '17', class: 'w-4 block'
     %h1.text-center= @user.name

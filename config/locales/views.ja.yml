@@ -42,3 +42,29 @@ ja:
   commons:
     post:
       delete_confirm: "本当に削除しますか？"
+  auth:
+    login:
+      title: "ログイン"
+      email_label: "メールアドレス"
+      password_label: "パスワード"
+      submit: "ログイン"
+      guest_login:
+        title: "ゲストログイン"
+        email: "メールアドレス: %{email}"
+        password: "パスワード: %{password}"
+        button: "ゲストとしてログイン"
+        note: "* データは定期的にリセットされます。"
+    registration:
+      title: "アカウント作成"
+      name_label: "名前"
+      email_label: "メールアドレス"
+      password_label: "パスワード"
+      submit: "アカウント作成"
+    password_reset:
+      title: "パスワードを忘れた場合"
+      email_label: "メールアドレス"
+      submit: "パスワード再設定メールを送信"
+    links:
+      sign_up: "新規登録"
+      log_in: "ログイン"
+      forgot_password: "パスワードをお忘れですか？"

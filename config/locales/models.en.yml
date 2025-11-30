@@ -11,11 +11,21 @@ en:
       now: "now"
 
   activerecord:
+    models:
+      user: "User"
     attributes:
+      user:
+        email: "Email"
+        password: "Password"
+        name: "Name"
       post:
         images: "Image"
     errors:
       models:
+        user:
+          attributes:
+            name:
+              invalid_format: "can only contain letters, digits, and underscores"
         post:
           attributes:
             images:

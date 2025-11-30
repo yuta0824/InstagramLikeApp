@@ -42,3 +42,29 @@ en:
   commons:
     post:
       delete_confirm: "Are you sure?"
+  auth:
+    login:
+      title: "Login"
+      email_label: "Email"
+      password_label: "Password"
+      submit: "LOGIN"
+      guest_login:
+        title: "Guest Login"
+        email: "Email: %{email}"
+        password: "Password: %{password}"
+        button: "Login as Guest"
+        note: "* Data may be reset periodically."
+    registration:
+      title: "Sign Up"
+      name_label: "Name"
+      email_label: "Email"
+      password_label: "Password"
+      submit: "CREATE ACCOUNT"
+    password_reset:
+      title: "Forgot Password"
+      email_label: "Email"
+      submit: "Send me reset password instructions"
+    links:
+      sign_up: "Sign up"
+      log_in: "Log in"
+      forgot_password: "Forgot your password?"

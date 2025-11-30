@@ -27,7 +27,7 @@ class User < ApplicationRecord
             presence: true,
             uniqueness: true,
             length: { maximum: 20 },
-            format: { with: /\A[a-zA-Z0-9_]+\z/, message: 'only allows letters, digits, and underscores' }
+            format: { with: /\A[a-zA-Z0-9_]+\z/, message: :invalid_format }
   has_many :likes, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy

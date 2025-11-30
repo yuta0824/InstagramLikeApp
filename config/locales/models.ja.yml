@@ -9,3 +9,16 @@ ja:
       minutes_ago: "%{count}分前"
       hours_ago: "%{count}時間前"
       now: "たった今"
+
+  activerecord:
+    attributes:
+      post:
+        images: "画像"
+    errors:
+      models:
+        post:
+          attributes:
+            images:
+              blank: "を選択してください"
+              too_short: "は最低1枚選択してください"
+              too_long: "は最大3枚までです"

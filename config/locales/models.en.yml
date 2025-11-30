@@ -9,3 +9,16 @@ en:
       minutes_ago: "%{count} minutes ago"
       hours_ago: "%{count} hours ago"
       now: "now"
+
+  activerecord:
+    attributes:
+      post:
+        images: "Image"
+    errors:
+      models:
+        post:
+          attributes:
+            images:
+              blank: "must be selected"
+              too_short: "must have at least 1"
+              too_long: "can have up to 3"

@@ -44,7 +44,7 @@
 }
 
 .submit-button {
-  @apply bg-accent py-4 block w-full text-center;
+  @apply bg-accent py-4 block w-full text-center cursor-pointer;
 }
 
 .flash {

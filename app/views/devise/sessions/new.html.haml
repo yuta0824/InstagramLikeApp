@@ -1,12 +1,13 @@
 = render 'devise/shared/auth_layout' do
   .space-y-6
-    .p-4.bg-gray-100.rounded-md.text-sm.text-gray-700
-      %p.font-bold Guest Login:
-      %p Email: guest@example.com
-      %p Password: password
-      %button.mt-3.px-4.py-2.bg-blue-500.text-white.rounded.hover:bg-blue-600{ type: 'button', onclick: "document.getElementById('user_email').value='guest@example.com'; document.getElementById('user_password').value='password';" }
+    .p-4.bg-gray-100.rounded-md.text-sm.space-y-2
+      %div
+        %p.font-bold Guest Login:
+        %p Email: guest@example.com
+        %p Password: password
+      %button.p-2.bg-blue-500.text-white.rounded.hover:bg-blue-600#js-guest-login-button
         Login as Guest
-      %p.mt-2.text-xs.text-gray-500
+      %p.text-xs.text-gray-500
         * Data may be reset periodically.
 
     = form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'h-full' }) do |f|

@@ -5,6 +5,7 @@ import { initFollowButton } from "./modules/initFollowButton";
 import { initLikeButton } from "./modules/initLike";
 import { initMention } from "./modules/initMention";
 import { initCommentForm } from "./modules/initPostComment";
+import { initGuestLoginButton } from "./guest_login";
 
 document.addEventListener("turbo:load", () => {
   initMention();
@@ -14,6 +15,7 @@ document.addEventListener("turbo:load", () => {
   initFlash();
   initLikeButton();
   initFollowButton();
+  initGuestLoginButton();
 });
 
 document.addEventListener("turbo:render", () => {

@@ -3,7 +3,7 @@
   .navigation
     = render 'commons/back_link'
     %h1.text-center= t('accounts.followings')
-    %span
+    = image_tag @user.avatar_url, alt: "#{@user.name}のアバター", class: 'size-8 rounded-full ml-auto'
 
   -# フォロー中一覧
   .space-y-8.mt-10

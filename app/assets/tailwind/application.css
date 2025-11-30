@@ -146,3 +146,15 @@
 .flash--with-sidebar {
   @apply md:left-[calc(50%+calc(var(--spacing-sidebar)/2))];
 }
+
+.locale-switch-button {
+  @apply flex-1 px-4 py-2 text-sm font-semibold rounded-xl text-center transition-colors focus-visible:outline-hidden;
+}
+
+.locale-switch-button--active {
+  @apply bg-blue-500 text-white shadow-sm;
+}
+
+.locale-switch-button--inactive {
+  @apply text-gray-700 hover:bg-white;
+}

@@ -20,7 +20,7 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params)
 
     if @post.save
-      redirect_to root_path, notice: '投稿しました'
+      redirect_to account_path(current_user.name), notice: '投稿しました'
     else
       render :new, status: :unprocessable_entity
     end
@@ -29,7 +29,7 @@ class PostsController < ApplicationController
   def destroy
     @post = current_user.posts.find(params[:id])
     @post.destroy!
-    redirect_to root_path, notice: '削除しました'
+    redirect_to account_path(current_user.name), notice: '削除しました'
   end
 
   private

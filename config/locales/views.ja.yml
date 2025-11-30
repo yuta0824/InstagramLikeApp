@@ -31,8 +31,8 @@ ja:
       placeholder: "いまどうしてる？"
   explores:
     show:
-      title: "ユーザーを探す"
-      no_users: "ユーザーが見つかりませんでした"
+      title: "最近投稿したユーザー"
+      no_users: "まだ投稿したユーザーがいません"
   followers:
     index:
       no_followers: "まだフォロワーがいません"

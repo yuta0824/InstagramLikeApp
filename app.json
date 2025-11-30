@@ -1,0 +1,17 @@
+{
+  "name": "InstagramLikeApp",
+  "description": "This is InstagramLikeApp",
+  "keywords": [],
+  "website": "",
+  "repository": "https://github.com/yuta0824/InstagramLikeApp",
+  "env": {},
+  "addons": ["heroku-postgresql:essential-0"],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}

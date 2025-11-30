@@ -29,7 +29,7 @@
 }
 
 .inner--wide {
-  @apply px-0;
+  @apply px-0 py-0;
 }
 
 .field {

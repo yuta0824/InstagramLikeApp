@@ -1,4 +1,5 @@
 .inner.py-5.space-y-10
+  -# ナビゲーション
   - back_path = request.referer.presence || root_path
   %div{ class: 'grid grid-cols-[1fr_3fr_1fr] gap-2 items-center' }
     = link_to back_path do
@@ -7,6 +8,8 @@
     - if @user != current_user
       %button.ml-auto#js-follow-button{ 'data-following': current_user.following?(@user) ? 'true' : 'false', 'data-user-id': @user.id }
         %span.text-brandGray= current_user.following?(@user) ? t('javascript.button.following') : t('javascript.button.follow')
+
+  -# プロフィール画像
   .text-center
     - if @user == current_user
       %label.cursor-pointer.inline-block
@@ -14,6 +17,8 @@
         %input.hidden#js-avatar-input{ type: 'file', accept: 'image/*' }
     - else
       = image_tag @user.avatar_url, alt: 'アバター', height: '76', width: '76', class: 'rounded-full w-20 p-1 border border-[#E91E63] mx-auto aspect-square object-cover'
+
+  -# 統計情報（投稿・フォロワー・フォロー中）
   .grid.grid-cols-3.gap-10.w-fit.mx-auto
     .text-center
       %p= @posts_count
@@ -24,6 +29,8 @@
     .text-center
       %p= @followings_count
       = link_to t('accounts.followings'), account_followings_path(@user.name), { class: 'text-brandGray text-sm' }
+
+  -# 投稿一覧
   - if @posts.present?
     - @posts.each do |post|
       = render 'commons/post', post: post

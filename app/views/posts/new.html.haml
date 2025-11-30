@@ -1,10 +1,13 @@
 = form_with(model: @post, local: true, html: { multipart: true }, data: { turbo: false }) do |f|
   .inner.py-5.space-y-10
+    -# ナビゲーション
     .grid.grid-cols-3
       = link_to t('posts.new.cancel'), root_path, class: 'text-link w-fit'
       %h1.text-center= t('posts.new.title')
       .text-right
         = f.submit t('posts.new.submit'), class: 'w-fit'
+
+    -# 投稿フォーム
     .space-y-5
       .flex.items-center.gap-3
         = image_tag @user.avatar_url, alt: 'アバター', height: '40', width: '40', class: 'rounded-full size-10 aspect-square object-cover'

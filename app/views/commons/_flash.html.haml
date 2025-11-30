@@ -1,4 +1,4 @@
-.js-flash.flash
+.js-flash.flash{ class: user_signed_in? ? 'flash--with-sidebar' : '' }
   - if notice.present?
     %p{ class: 'flash__text bg-green-50 border-green-500 text-green-800' }= notice
   - if alert.present?

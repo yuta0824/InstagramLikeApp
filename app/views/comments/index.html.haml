@@ -17,7 +17,7 @@
             %p.text-sm.text-brandGray.whitespace-pre-line= comment.content
 
     -# コメント投稿フォーム
-    %form.space-y-1.px-4.mx-auto.max-w-md.fixed.left-0.right-0.bottom-20.md:bottom-2.md:left-64{ id: 'js-comment-form' }
+    %form.space-y-1.px-4.mx-auto.max-w-md.fixed.left-0.right-0.bottom-20.md:bottom-2.sidebar-offset-fixed{ id: 'js-comment-form' }
       = text_area_tag :comment_content, '', id: 'js-mention-input',
                                             class: 'bg-white p-3 border border-brandGrayLight leading-normal shadow-lg w-full field-sizing-content',
                                             placeholder: t('comments.placeholder'),

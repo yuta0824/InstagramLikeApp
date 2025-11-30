@@ -21,5 +21,5 @@
   %body{ data: { locale: I18n.locale } }
     = render 'commons/flash' if notice.present? || alert.present?
     = render 'commons/nav' if user_signed_in?
-    %main{ class: user_signed_in? ? 'pb-16 md:pb-0 md:ml-64' : '' }
+    %main{ class: user_signed_in? ? 'pb-16 md:pb-0 sidebar-offset' : '' }
       = yield

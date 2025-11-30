@@ -32,7 +32,7 @@ RSpec.describe Post, type: :model do
     it '保存できない' do
       post = build(:post, user: owner, images_count: 0)
       expect(post).to be_invalid
-      expect(post.errors[:images]).to include(/can't be blank/i)
+      expect(post.errors[:images]).to include(/must be selected/i)
     end
   end
 

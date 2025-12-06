@@ -12,7 +12,7 @@ if redis_url.start_with?('rediss://')
     else
       # 本番環境では証明書検証を必須とする
       if Rails.env.production?
-        raise "Redis TLS CA bundle not found. Please set REDIS_SSL_CA_FILE or HEROKU_REDIS_CA_BUNDLE environment variable."
+        raise 'Redis TLS CA bundle not found. Please set REDIS_SSL_CA_FILE or HEROKU_REDIS_CA_BUNDLE environment variable.'
       else
         Rails.logger.warn('[Sidekiq] Redis TLS CA bundle not found; disabling certificate verification (development only)') if defined?(Rails)
         { verify_mode: OpenSSL::SSL::VERIFY_NONE }

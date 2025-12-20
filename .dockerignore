@@ -1,0 +1,11 @@
+.git
+.gitignore
+.env
+.DS_Store
+log
+tmp
+node_modules
+vendor/bundle
+storage
+coverage
+spec

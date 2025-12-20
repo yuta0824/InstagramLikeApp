@@ -32,7 +32,7 @@ $ bin/rails db:migrate RAILS_ENV=test
 
 ### 5. 動作確認
 
-以上の作業完了後 `http://localhost:3000` で動作確認可能
+以上の作業完了後 `http://localhost:3030` で動作確認可能
 
 ## その他、コンテナ内の汎用コマンド
 

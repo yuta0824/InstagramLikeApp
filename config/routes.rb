@@ -3,12 +3,12 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   devise_for :users
 
-  mount Sidekiq::Web => '/sidekiq' if Rails.env.development?
-  mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
-
-  # TODO: API Docs へ認証を掛けるか非本番のみで公開する
-  mount Rswag::Ui::Engine => '/api-docs'
-  mount Rswag::Api::Engine => '/api-docs'
+  if Rails.env.development?
+    mount Sidekiq::Web => '/sidekiq'
+    mount LetterOpenerWeb::Engine, at: '/letter_opener'
+    mount Rswag::Ui::Engine => '/api-docs'
+    mount Rswag::Api::Engine => '/api-docs'
+  end
 
   namespace :api, defaults: { format: 'json' } do
     resources :accounts, only: %i[index] do

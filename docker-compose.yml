@@ -1,0 +1,59 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "15432:5432"
+
+  redis:
+    image: redis:7
+    ports:
+      - "16379:6379"
+
+  rails:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+    ports:
+      - "3030:3000"
+    environment:
+      RAILS_ENV: development
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      REDIS_URL: ${REDIS_URL}
+    depends_on:
+      - db
+      - redis
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+    environment:
+      RAILS_ENV: development
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      REDIS_URL: ${REDIS_URL}
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
+  bundle:

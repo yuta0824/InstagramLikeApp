@@ -26,8 +26,8 @@ $ bin/rails db:seed
 ### 4. RSpec テスト用 DB 構築
 
 ```bash
-$ bin/rails db:create RAILS_ENV=test
-$ bin/rails db:migrate RAILS_ENV=test
+$ RAILS_ENV=test bin/rails db:create
+$ RAILS_ENV=test bin/rails db:migrate
 ```
 
 ### 5. 動作確認
@@ -36,22 +36,22 @@ $ bin/rails db:migrate RAILS_ENV=test
 
 ## その他、コンテナ内の汎用コマンド
 
-### RSpec テスト
-
-```bash
-$ bundle exec rspec # 全テスト
-$ bundle exec rspec spec/models # モデルテスト
-$ bundle exec rspec spec/requests # API テスト
-```
-
 ### Rubocop 構文チェック
 
 ```bash
 $ bundle exec rubocop --auto-correct
 ```
 
+### RSpec テスト
+
+```bash
+$ RAILS_ENV=test bundle exec rspec # 全テスト
+$ RAILS_ENV=test bundle exec rspec spec/models # モデルテスト
+$ RAILS_ENV=test bundle exec rspec spec/requests # API テスト
+```
+
 ### OpenAPI(swagger) 生成
 
 ```bash
-$ bundle exec rake rswag:specs:swaggerize
+$ RAILS_ENV=test bundle exec rake rswag:specs:swaggerize
 ```

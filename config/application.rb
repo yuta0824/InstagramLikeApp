@@ -29,7 +29,7 @@ module InstagramLikeApp
 
     if Rails.env.development? || Rails.env.test?
       Bundler.require(*Rails.groups)
-      Dotenv::Railtie.load
+      Dotenv::Rails.load
     end
 
     # Configuration for the application, engines, and railties goes here.

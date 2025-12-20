@@ -23,12 +23,15 @@ begin
     { name: 'hina',       email: 'hina@example.com',   avatar_idx: 7 }
   ]
 
-  demo_users_data.each do |u|
+  demo_users_data.each_with_index do |u, index|
+    password = Devise.friendly_token[0, 20]
     user = User.create!(
       email: u[:email],
       name: u[:name],
-      password: 'password',
-      password_confirmation: 'password'
+      provider: 'google_oauth2',
+      uid: "seed-google-#{index + 1}",
+      password: password,
+      password_confirmation: password
     )
 
     avatar_path = Rails.root.join("app/assets/images/icon_avatar#{u[:avatar_idx]}.webp")
@@ -36,11 +39,14 @@ begin
     demo_users_list << user
   end
 
+  guest_password = Devise.friendly_token[0, 20]
   guest_user = User.create!(
     email: 'guest@example.com',
     name: 'guest',
-    password: 'password',
-    password_confirmation: 'password'
+    provider: 'google_oauth2',
+    uid: 'seed-google-guest',
+    password: guest_password,
+    password_confirmation: guest_password
   )
 
   default_avatar_path = Rails.root.join('app/assets/images/icon_avatar-default.png')

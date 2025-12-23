@@ -1,7 +1,9 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'api/users/omniauth_callbacks'
+  }
 
   if Rails.env.development?
     mount Sidekiq::Web => '/sidekiq'
@@ -11,6 +13,11 @@ Rails.application.routes.draw do
   end
 
   namespace :api, defaults: { format: 'json' } do
+    namespace :users do
+      get '/auth', to: 'auth#index'
+      get 'token_exchange', to: 'token_exchanges#show'
+      delete 'logout', to: 'logout#destroy'
+    end
     resources :accounts, only: %i[index] do
       resource  :relationship, only: [:create, :destroy]
     end

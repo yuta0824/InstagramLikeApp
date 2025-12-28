@@ -132,31 +132,73 @@ paths:
                     type: string
                 required:
                 - error
-  "/api/me/avatar":
-    patch:
-      summary: アバター画像を更新する
+  "/api/me":
+    get:
+      summary: ログイン中ユーザーを取得する
       tags:
       - User
-      parameters: []
       responses:
         '200':
-          description: 作成に成功
+          description: 取得成功
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  avatar_url:
+                  name:
+                    type: string
+                  avatarUrl:
                     type: string
                 required:
-                - avatar_url
+                - name
+                - avatarUrl
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+    patch:
+      summary: ユーザー情報を更新する
+      tags:
+      - User
+      parameters: []
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  avatarUrl:
+                    type: string
+                required:
+                - name
+                - avatarUrl
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           multipart/form-data:
             schema:
               type: string
-              format: binary
-        required: true
   "/api/accounts/{account_id}/relationship":
     parameters:
     - name: account_id

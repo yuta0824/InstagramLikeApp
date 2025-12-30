@@ -132,6 +132,32 @@ paths:
                     type: string
                 required:
                 - error
+  "/api/users/logout":
+    delete:
+      summary: ログアウトする
+      tags:
+      - User
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          example: Bearer <jwt>
+      responses:
+        '204':
+          description: ログアウト成功
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
   "/api/me":
     get:
       summary: ログイン中ユーザーを取得する
@@ -228,6 +254,45 @@ paths:
           description: 未ログイン
         '404':
           description: フォローしていない相手を削除しようとした場合
+  "/api/users/token_exchange":
+    get:
+      summary: 認可コードからJWTを取得する
+      tags:
+      - User
+      parameters:
+      - name: auth_code
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 取得成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwt:
+                    type: string
+                  exp:
+                    type: integer
+                required:
+                - jwt
+                - exp
+        '401':
+          description: 認可コードが無効
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - errors
 servers:
 - url: https://{defaultHost}
   variables:

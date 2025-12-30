@@ -1,6 +1,8 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
+# JWT の秘密鍵が未設定だと Devise JWT が初期化時に失敗するため、テスト専用のデフォルトを用意
+ENV['DEVISE_JWT_SECRET_KEY'] ||= 'dummy-test-secret-key'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?

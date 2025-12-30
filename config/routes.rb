@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     resources :accounts, only: %i[index] do
       resource  :relationship, only: %i[create destroy]
     end
-    resource :me, only: %i[show update]
+    resource :me, only: %i[show update], controller: :me
     resources :posts, only: [] do
       resource :like, only: %i[create destroy], module: :posts
       resource :comment, only: %i[create], module: :posts

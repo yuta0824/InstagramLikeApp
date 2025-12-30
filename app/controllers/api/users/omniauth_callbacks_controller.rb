@@ -10,4 +10,3 @@ class Api::Users::OmniauthCallbacksController < Devise::OmniauthCallbacksControl
       redirect_to "#{ENV.fetch('FRONTEND_URL')}/?auth_error=google", allow_other_host: true
   end
 end
-

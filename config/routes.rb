@@ -19,9 +19,9 @@ Rails.application.routes.draw do
       delete 'logout', to: 'logout#destroy'
     end
     resources :accounts, only: %i[index] do
-      resource  :relationship, only: [:create, :destroy]
+      resource  :relationship, only: %i[create destroy]
     end
-    resource :me, only: %i[show, update]
+    resource :me, only: %i[show update]
     resources :posts, only: [] do
       resource :like, only: %i[create destroy], module: :posts
       resource :comment, only: %i[create], module: :posts

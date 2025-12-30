@@ -1,4 +1,4 @@
-class Api::MeController < ApplicationController
+class Api::MesController < ApplicationController
   def show
     render json: current_user, serializer: UserSerializer
   end

@@ -6,9 +6,11 @@
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  name                   :string           not null
+#  provider               :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  uid                    :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -16,13 +18,18 @@
 #
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_name                  (name) UNIQUE
+#  index_users_on_provider_and_uid      (provider,uid) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, :jwt_authenticatable,
+         omniauth_providers: %i[google_oauth2],
+         jwt_revocation_strategy: JwtDenylist
+
   validates :name,
             presence: true,
             uniqueness: true,
@@ -76,5 +83,34 @@ class User < ApplicationRecord
     return I18n.t('models.user.no_posts_yet') unless last_post
 
     I18n.t('models.user.last_post_was', time_ago: last_post.time_ago)
+  end
+
+  def self.from_omniauth(auth)
+    user = find_or_initialize_by(provider: auth.provider, uid: auth.uid)
+
+    if user.new_record?
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+      user.name = build_unique_name(auth)
+    end
+
+    user.save!
+    user
+  end
+
+  def self.build_unique_name(auth)
+    base = auth.info.email.to_s.split('@').first
+    sanitized = base.to_s.gsub(/[^a-zA-Z0-9_]/, '_')[0, 20]
+    base_name = sanitized.presence || "user_#{SecureRandom.hex(4)}"
+    return base_name unless User.exists?(name: base_name)
+
+    loop do
+      suffix = SecureRandom.hex(3)
+      prefix_length = 20 - (suffix.length + 1)
+      prefix = base_name[0, prefix_length]
+      prefix = 'user' if prefix.blank?
+      candidate = "#{prefix}_#{suffix}"
+      return candidate unless User.exists?(name: candidate)
+    end
   end
 end

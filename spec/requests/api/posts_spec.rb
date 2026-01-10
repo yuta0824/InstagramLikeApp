@@ -62,10 +62,8 @@ RSpec.describe 'Api::Posts', type: :request do
 
       response '201', '作成成功' do
         schema type: :object,
-               properties: {
-                 id: { type: :integer }
-               },
-               required: %w[id]
+         properties: POST_DETAIL_PROPERTIES,
+         required: POST_DETAIL_REQUIRED
 
         let!(:posts_count_before) { Post.count }
 

@@ -25,6 +25,12 @@ class Api::PostsController < ApplicationController
     end
   end
 
+  def destroy
+    post = current_user.posts.find(params[:id])
+    post.destroy!
+    head :no_content
+  end
+
   private
 
   def post_params

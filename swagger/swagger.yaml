@@ -225,6 +225,352 @@ paths:
           multipart/form-data:
             schema:
               type: string
+  "/api/posts":
+    get:
+      summary: 投稿一覧を取得する
+      tags:
+      - Post
+      responses:
+        '200':
+          description: 取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    caption:
+                      type: string
+                      nullable: true
+                    imageUrls:
+                      type: array
+                      items:
+                        type: string
+                    userName:
+                      type: string
+                    userAvatar:
+                      type: string
+                    likedCount:
+                      type: integer
+                    likesSummary:
+                      type: string
+                      nullable: true
+                    timeAgo:
+                      type: string
+                    isLiked:
+                      type: boolean
+                    isOwn:
+                      type: boolean
+                    mostRecentLikerName:
+                      type: string
+                    comments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          content:
+                            type: string
+                          userName:
+                            type: string
+                          userAvatar:
+                            type: string
+                        required:
+                        - content
+                        - userName
+                        - userAvatar
+                  required:
+                  - id
+                  - imageUrls
+                  - userName
+                  - userAvatar
+                  - likedCount
+                  - timeAgo
+                  - isLiked
+                  - isOwn
+                  - mostRecentLikerName
+                  - comments
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+    post:
+      summary: 投稿を作成する
+      tags:
+      - Post
+      parameters: []
+      responses:
+        '201':
+          description: 作成成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  caption:
+                    type: string
+                    nullable: true
+                  imageUrls:
+                    type: array
+                    items:
+                      type: string
+                  userName:
+                    type: string
+                  userAvatar:
+                    type: string
+                  likedCount:
+                    type: integer
+                  likesSummary:
+                    type: string
+                    nullable: true
+                  timeAgo:
+                    type: string
+                  isLiked:
+                    type: boolean
+                  isOwn:
+                    type: boolean
+                  mostRecentLikerName:
+                    type: string
+                  comments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        content:
+                          type: string
+                        userName:
+                          type: string
+                        userAvatar:
+                          type: string
+                      required:
+                      - content
+                      - userName
+                      - userAvatar
+                required:
+                - id
+                - imageUrls
+                - userName
+                - userAvatar
+                - likedCount
+                - timeAgo
+                - isLiked
+                - isOwn
+                - mostRecentLikerName
+                - comments
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+  "/api/posts/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: 投稿詳細を取得する
+      tags:
+      - Post
+      responses:
+        '200':
+          description: 取得成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  caption:
+                    type: string
+                    nullable: true
+                  imageUrls:
+                    type: array
+                    items:
+                      type: string
+                  userName:
+                    type: string
+                  userAvatar:
+                    type: string
+                  likedCount:
+                    type: integer
+                  likesSummary:
+                    type: string
+                    nullable: true
+                  timeAgo:
+                    type: string
+                  isLiked:
+                    type: boolean
+                  isOwn:
+                    type: boolean
+                  mostRecentLikerName:
+                    type: string
+                  comments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        content:
+                          type: string
+                        userName:
+                          type: string
+                        userAvatar:
+                          type: string
+                      required:
+                      - content
+                      - userName
+                      - userAvatar
+                required:
+                - id
+                - imageUrls
+                - userName
+                - userAvatar
+                - likedCount
+                - timeAgo
+                - isLiked
+                - isOwn
+                - mostRecentLikerName
+                - comments
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+    patch:
+      summary: 投稿を更新する
+      tags:
+      - Post
+      parameters: []
+      responses:
+        '200':
+          description: 更新成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  caption:
+                    type: string
+                    nullable: true
+                  imageUrls:
+                    type: array
+                    items:
+                      type: string
+                  userName:
+                    type: string
+                  userAvatar:
+                    type: string
+                  likedCount:
+                    type: integer
+                  likesSummary:
+                    type: string
+                    nullable: true
+                  timeAgo:
+                    type: string
+                  isLiked:
+                    type: boolean
+                  isOwn:
+                    type: boolean
+                  mostRecentLikerName:
+                    type: string
+                  comments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        content:
+                          type: string
+                        userName:
+                          type: string
+                        userAvatar:
+                          type: string
+                      required:
+                      - content
+                      - userName
+                      - userAvatar
+                required:
+                - id
+                - imageUrls
+                - userName
+                - userAvatar
+                - likedCount
+                - timeAgo
+                - isLiked
+                - isOwn
+                - mostRecentLikerName
+                - comments
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post:
+                  type: object
+                  properties:
+                    caption:
+                      type: string
+    delete:
+      summary: 投稿を削除する
+      tags:
+      - Post
+      responses:
+        '204':
+          description: 削除成功
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
   "/api/accounts/{account_id}/relationship":
     parameters:
     - name: account_id

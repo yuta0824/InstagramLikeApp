@@ -168,6 +168,33 @@ RSpec.describe 'Api::Posts', type: :request do
         run_test!
       end
     end
+
+    delete '投稿を削除する' do
+      tags 'Post'
+      produces 'application/json'
+
+      let(:user) { create(:user) }
+      let(:target_post) { create(:post, user: user) }
+      let(:id) { target_post.id }
+
+      response '204', '削除成功' do
+        before { sign_in user }
+
+        run_test! do
+          expect(Post.exists?(target_post.id)).to be false
+        end
+      end
+
+      response '401', '未ログイン' do
+        schema type: :object,
+                properties: {
+                  error: { type: :string }
+                },
+                required: %w[error]
+
+        run_test!
+      end
+    end
   end
 
   def json_response

@@ -42,6 +42,39 @@ POST_DETAIL_REQUIRED = %w[
 
 RSpec.describe 'Api::Posts', type: :request do
   path '/api/posts' do
+    get '投稿一覧を取得する' do
+      tags 'Post'
+      produces 'application/json'
+
+      let(:user) { create(:user) }
+      let!(:posts) { create_list(:post, 2) }
+
+      response '200', '取得成功' do
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: POST_DETAIL_PROPERTIES,
+                 required: POST_DETAIL_REQUIRED
+               }
+
+        before { sign_in user }
+
+        run_test! do
+          expect(json_response.size).to eq(posts.size)
+        end
+      end
+
+      response '401', '未ログイン' do
+        schema type: :object,
+               properties: {
+                 error: { type: :string }
+               },
+               required: %w[error]
+
+        run_test!
+      end
+    end
+
     post '投稿を作成する' do
       tags 'Post'
       consumes 'multipart/form-data'

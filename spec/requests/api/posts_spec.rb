@@ -1,6 +1,45 @@
 require 'rails_helper'
 require 'swagger_helper'
 
+POST_DETAIL_PROPERTIES = {
+  id: { type: :integer },
+  caption: { type: :string, nullable: true },
+  imageUrls: { type: :array, items: { type: :string } },
+  userName: { type: :string },
+  userAvatar: { type: :string },
+  likedCount: { type: :integer },
+  likesSummary: { type: :string, nullable: true },
+  timeAgo: { type: :string },
+  isLiked: { type: :boolean },
+  isOwn: { type: :boolean },
+  mostRecentLikerName: { type: :string },
+  comments: {
+    type: :array,
+    items: {
+      type: :object,
+      properties: {
+        content: { type: :string },
+        userName: { type: :string },
+        userAvatar: { type: :string }
+      },
+      required: %w[content userName userAvatar]
+    }
+  }
+}.freeze
+
+POST_DETAIL_REQUIRED = %w[
+  id
+  imageUrls
+  userName
+  userAvatar
+  likedCount
+  timeAgo
+  isLiked
+  isOwn
+  mostRecentLikerName
+  comments
+].freeze
+
 RSpec.describe 'Api::Posts', type: :request do
   path '/api/posts' do
     post '投稿を作成する' do
@@ -55,7 +94,7 @@ RSpec.describe 'Api::Posts', type: :request do
     end
   end
 
-   path '/api/posts/{id}' do
+  path '/api/posts/{id}' do
     parameter name: :id, in: :path, required: true, schema: { type: :integer }
 
     get '投稿詳細を取得する' do
@@ -68,32 +107,8 @@ RSpec.describe 'Api::Posts', type: :request do
 
       response '200', '取得成功' do
         schema type: :object,
-               properties: {
-                 id: { type: :integer },
-                 caption: { type: :string, nullable: true },
-                 imageUrls: { type: :array, items: { type: :string } },
-                 userName: { type: :string },
-                 userAvatar: { type: :string },
-                 likedCount: { type: :integer },
-                 likesSummary: { type: :string, nullable: true },
-                 timeAgo: { type: :string },
-                 isLiked: { type: :boolean },
-                 isOwn: { type: :boolean },
-                 mostRecentLikerName: { type: :string },
-                 comments: {
-                   type: :array,
-                   items: {
-                     type: :object,
-                     properties: {
-                       content: { type: :string },
-                       userName: { type: :string },
-                       userAvatar: { type: :string }
-                     },
-                     required: %w[content userName userAvatar]
-                   }
-                 }
-               },
-               required: %w[id imageUrls userName userAvatar likedCount timeAgo isLiked isOwn mostRecentLikerName comments]
+               properties: POST_DETAIL_PROPERTIES,
+               required: POST_DETAIL_REQUIRED
 
         before { sign_in user }
 
@@ -106,6 +121,51 @@ RSpec.describe 'Api::Posts', type: :request do
                  error: { type: :string }
                },
                required: %w[error]
+
+        run_test!
+      end
+    end
+
+    patch '投稿を更新する' do
+      tags 'Post'
+      consumes 'application/json'
+      produces 'application/json'
+
+      parameter name: :post, in: :body, schema: {
+        type: :object,
+        properties: {
+          post: {
+            type: :object,
+            properties: {
+              caption: { type: :string }
+            }
+          }
+        }
+      }
+
+      let(:user) { create(:user) }
+      let(:target_post) { create(:post, user: user, caption: 'before') }
+      let(:id) { target_post.id }
+      let(:post) { { post: { caption: 'after' } } }
+
+      response '200', '更新成功' do
+        schema type: :object,
+         properties: POST_DETAIL_PROPERTIES,
+         required: POST_DETAIL_REQUIRED
+
+        before { sign_in user }
+
+        run_test! do
+          expect(target_post.reload.caption).to eq('after')
+        end
+      end
+
+      response '401', '未ログイン' do
+        schema type: :object,
+                properties: {
+                  error: { type: :string }
+                },
+                required: %w[error]
 
         run_test!
       end

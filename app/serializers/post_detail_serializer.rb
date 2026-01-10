@@ -59,7 +59,4 @@ class PostDetailSerializer < ActiveModel::Serializer
     object.most_recent_liker_name.to_s
   end
 
-  def comments
-    object.comments.order(created_at: :asc)
-  end
 end

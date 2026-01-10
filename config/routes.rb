@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       resource  :relationship, only: %i[create destroy]
     end
     resource :me, only: %i[show update], controller: :me
-    resources :posts, only: %i[show create update destroy] do
+    resources :posts, only: %i[index show create update destroy] do
       resource :like, only: %i[create destroy], module: :posts
       resource :comment, only: %i[create], module: :posts
     end

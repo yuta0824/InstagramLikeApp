@@ -55,6 +55,61 @@ RSpec.describe 'Api::Posts', type: :request do
     end
   end
 
+   path '/api/posts/{id}' do
+    parameter name: :id, in: :path, required: true, schema: { type: :integer }
+
+    get '投稿詳細を取得する' do
+      tags 'Post'
+      produces 'application/json'
+
+      let(:target_post) { create(:post) }
+      let(:id) { target_post.id }
+      let(:user) { create(:user) }
+
+      response '200', '取得成功' do
+        schema type: :object,
+               properties: {
+                 id: { type: :integer },
+                 caption: { type: :string, nullable: true },
+                 imageUrls: { type: :array, items: { type: :string } },
+                 userName: { type: :string },
+                 userAvatar: { type: :string },
+                 likedCount: { type: :integer },
+                 likesSummary: { type: :string, nullable: true },
+                 timeAgo: { type: :string },
+                 isLiked: { type: :boolean },
+                 comments: {
+                   type: :array,
+                   items: {
+                     type: :object,
+                     properties: {
+                       content: { type: :string },
+                       userName: { type: :string },
+                       userAvatar: { type: :string }
+                     },
+                     required: %w[content userName userAvatar]
+                   }
+                 }
+               },
+               required: %w[id imageUrls userName userAvatar likedCount timeAgo isLiked comments]
+
+        before { sign_in user }
+
+        run_test!
+      end
+
+      response '401', '未ログイン' do
+        schema type: :object,
+               properties: {
+                 error: { type: :string }
+               },
+               required: %w[error]
+
+        run_test!
+      end
+    end
+  end
+
   def json_response
     JSON.parse(response.body)
   end

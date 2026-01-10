@@ -78,6 +78,8 @@ RSpec.describe 'Api::Posts', type: :request do
                  likesSummary: { type: :string, nullable: true },
                  timeAgo: { type: :string },
                  isLiked: { type: :boolean },
+                 isOwn: { type: :boolean },
+                 mostRecentLikerName: { type: :string },
                  comments: {
                    type: :array,
                    items: {
@@ -91,7 +93,7 @@ RSpec.describe 'Api::Posts', type: :request do
                    }
                  }
                },
-               required: %w[id imageUrls userName userAvatar likedCount timeAgo isLiked comments]
+               required: %w[id imageUrls userName userAvatar likedCount timeAgo isLiked isOwn mostRecentLikerName comments]
 
         before { sign_in user }
 

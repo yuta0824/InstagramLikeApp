@@ -1,4 +1,13 @@
 class Api::PostsController < ApplicationController
+  def show
+    post = Post
+             .with_associations
+             .includes(comments: [user: { avatar_attachment: :blob }])
+             .find(params[:id])
+
+    render json: post, serializer: PostDetailSerializer, scope: current_user, status: :ok
+  end
+
   def create
     post = current_user.posts.new(post_params)
 

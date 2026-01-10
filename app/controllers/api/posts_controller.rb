@@ -8,7 +8,7 @@ class Api::PostsController < ApplicationController
     post = current_user.posts.new(post_params)
 
     if post.save
-      render json: { id: post.id }, status: :created
+      render json: post, serializer: PostDetailSerializer, scope: current_user, status: :created
     else
       render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
     end

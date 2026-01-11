@@ -24,7 +24,10 @@ class PostDetailSerializer < ActiveModel::Serializer
   has_many :comments, serializer: CommentSerializer
 
   def image_urls
-    object.images.map { |image| rails_blob_path(image, only_path: true) }
+    url_options = ActiveStorage::Current.url_options || {}
+    return object.images.map { |image| rails_blob_path(image, only_path: true) } unless url_options[:host]
+
+    object.images.map { |image| rails_blob_url(image, url_options) }
   end
 
   def user_name

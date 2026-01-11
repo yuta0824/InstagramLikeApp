@@ -55,8 +55,11 @@ class User < ApplicationRecord
   }
 
   def avatar_url
-    return ActionController::Base.helpers.asset_path('icon_avatar-default.png') unless avatar.attached?
-    Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true)
+    return nil unless avatar.attached?
+    url_options = ActiveStorage::Current.url_options || {}
+    return Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true) unless url_options[:host]
+
+    Rails.application.routes.url_helpers.rails_blob_url(avatar, url_options)
   end
 
   def follow!(target_user)
@@ -113,4 +116,5 @@ class User < ApplicationRecord
       return candidate unless User.exists?(name: candidate)
     end
   end
+
 end

@@ -13,7 +13,7 @@ RSpec.describe 'Api::Me', type: :request do
         schema type: :object,
                properties: {
                  name: { type: :string },
-                 avatarUrl: { type: :string }
+                 avatarUrl: { type: :string, nullable: true }
                },
                required: %w[name avatarUrl]
 
@@ -50,7 +50,7 @@ RSpec.describe 'Api::Me', type: :request do
         schema type: :object,
                properties: {
                  name: { type: :string },
-                 avatarUrl: { type: :string }
+                 avatarUrl: { type: :string, nullable: true }
                },
                required: %w[name avatarUrl]
 

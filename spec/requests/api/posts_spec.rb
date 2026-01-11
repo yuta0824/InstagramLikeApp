@@ -6,7 +6,7 @@ POST_DETAIL_PROPERTIES = {
   caption: { type: :string, nullable: true },
   imageUrls: { type: :array, items: { type: :string } },
   userName: { type: :string },
-  userAvatar: { type: :string },
+  userAvatar: { type: :string, nullable: true },
   likedCount: { type: :integer },
   likesSummary: { type: :string, nullable: true },
   timeAgo: { type: :string },
@@ -20,7 +20,7 @@ POST_DETAIL_PROPERTIES = {
       properties: {
         content: { type: :string },
         userName: { type: :string },
-        userAvatar: { type: :string }
+        userAvatar: { type: :string, nullable: true }
       },
       required: %w[content userName userAvatar]
     }

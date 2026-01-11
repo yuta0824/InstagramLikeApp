@@ -23,6 +23,7 @@ paths:
                       type: string
                     avatarUrl:
                       type: string
+                      nullable: true
                   required:
                   - name
                   - avatarUrl
@@ -175,6 +176,7 @@ paths:
                     type: string
                   avatarUrl:
                     type: string
+                    nullable: true
                 required:
                 - name
                 - avatarUrl
@@ -206,6 +208,7 @@ paths:
                     type: string
                   avatarUrl:
                     type: string
+                    nullable: true
                 required:
                 - name
                 - avatarUrl
@@ -253,6 +256,7 @@ paths:
                       type: string
                     userAvatar:
                       type: string
+                      nullable: true
                     likedCount:
                       type: integer
                     likesSummary:
@@ -277,6 +281,7 @@ paths:
                             type: string
                           userAvatar:
                             type: string
+                            nullable: true
                         required:
                         - content
                         - userName
@@ -329,6 +334,7 @@ paths:
                     type: string
                   userAvatar:
                     type: string
+                    nullable: true
                   likedCount:
                     type: integer
                   likesSummary:
@@ -353,6 +359,7 @@ paths:
                           type: string
                         userAvatar:
                           type: string
+                          nullable: true
                       required:
                       - content
                       - userName
@@ -416,6 +423,7 @@ paths:
                     type: string
                   userAvatar:
                     type: string
+                    nullable: true
                   likedCount:
                     type: integer
                   likesSummary:
@@ -440,6 +448,7 @@ paths:
                           type: string
                         userAvatar:
                           type: string
+                          nullable: true
                       required:
                       - content
                       - userName
@@ -492,6 +501,7 @@ paths:
                     type: string
                   userAvatar:
                     type: string
+                    nullable: true
                   likedCount:
                     type: integer
                   likesSummary:
@@ -516,6 +526,7 @@ paths:
                           type: string
                         userAvatar:
                           type: string
+                          nullable: true
                       required:
                       - content
                       - userName

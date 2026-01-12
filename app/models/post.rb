@@ -19,7 +19,7 @@
 class Post < ApplicationRecord
   belongs_to :user
   has_many :likes, dependent: :destroy
-  has_many :comments, dependent: :destroy
+  has_many :comments, -> { order(created_at: :asc) }, dependent: :destroy
   has_many_attached :images
   validates :images, presence: true, length: { minimum: 1, maximum: 3 }
   validates :caption, length: { maximum: 100 }

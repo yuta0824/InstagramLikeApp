@@ -16,7 +16,7 @@ RSpec.describe 'Api::Accounts', type: :request do
                  type: :object,
                  properties: {
                    name: { type: :string },
-                   avatarUrl: { type: :string }
+                   avatarUrl: { type: :string, nullable: true }
                  },
                  required: %w[name avatarUrl]
                }

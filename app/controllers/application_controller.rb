@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
   before_action :set_locale
+  before_action :set_active_storage_url_options
 
   protected
 
@@ -30,5 +31,13 @@ class ApplicationController < ActionController::Base
 
   def locale_available?(locale)
     I18n.available_locales.any? { |available_locale| available_locale.to_s == locale.to_s }
+  end
+
+  def set_active_storage_url_options
+    ActiveStorage::Current.url_options = {
+      protocol: ENV['ACTIVE_STORAGE_PROTOCOL'].presence || request.scheme,
+      host: ENV['ACTIVE_STORAGE_HOST'].presence || request.host,
+      port: Integer(ENV['ACTIVE_STORAGE_PORT'], exception: false) || request.optional_port
+    }.compact
   end
 end

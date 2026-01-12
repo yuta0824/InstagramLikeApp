@@ -36,7 +36,7 @@ RSpec.describe 'Api::Comments', type: :request do
                  properties: {
                    content: { type: :string },
                    userName: { type: :string },
-                   userAvatar: { type: :string }
+                   userAvatar: { type: :string, nullable: true }
                  },
                  required: %w[content userName userAvatar]
 

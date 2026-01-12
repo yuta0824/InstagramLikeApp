@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     resource :me, only: %i[show update], controller: :me
     resources :posts, only: %i[index show create update destroy] do
       resource :like, only: %i[create destroy], module: :posts
-      resource :comment, only: %i[create], module: :posts
+      resources :comments, only: %i[create destroy], module: :posts
     end
   end
 end

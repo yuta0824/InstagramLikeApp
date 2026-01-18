@@ -18,11 +18,13 @@ POST_DETAIL_PROPERTIES = {
     items: {
       type: :object,
       properties: {
+        id: { type: :integer },
         content: { type: :string },
         userName: { type: :string },
-        userAvatar: { type: :string, nullable: true }
+        userAvatar: { type: :string, nullable: true },
+        isOwner: { type: :boolean }
       },
-      required: %w[content userName userAvatar]
+      required: %w[id content userName userAvatar isOwner]
     }
   }
 }.freeze

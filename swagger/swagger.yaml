@@ -27,7 +27,7 @@ paths:
                   required:
                   - name
                   - avatarUrl
-  "/api/posts/{post_id}/comment":
+  "/api/posts/{post_id}/comments":
     parameters:
     - name: post_id
       in: path
@@ -38,24 +38,20 @@ paths:
       summary: コメントを保存できる
       parameters: []
       responses:
-        '200':
-          description: 成功時
+        '201':
+          description: 作成成功
           content:
             application/json:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: integer
                   content:
                     type: string
-                  userName:
-                    type: string
-                  userAvatar:
-                    type: string
-                    nullable: true
                 required:
+                - id
                 - content
-                - userName
-                - userAvatar
         '401':
           description: 未認証
       requestBody:
@@ -73,6 +69,25 @@ paths:
                   - content
               required:
               - comment
+  "/api/posts/{post_id}/comments/{id}":
+    parameters:
+    - name: post_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    delete:
+      summary: コメントを削除できる
+      responses:
+        '204':
+          description: 削除成功
+        '401':
+          description: 未認証
   "/api/posts/{post_id}/like":
     parameters:
     - name: post_id
@@ -276,6 +291,8 @@ paths:
                       items:
                         type: object
                         properties:
+                          id:
+                            type: integer
                           content:
                             type: string
                           userName:
@@ -283,10 +300,14 @@ paths:
                           userAvatar:
                             type: string
                             nullable: true
+                          isOwner:
+                            type: boolean
                         required:
+                        - id
                         - content
                         - userName
                         - userAvatar
+                        - isOwner
                   required:
                   - id
                   - imageUrls
@@ -354,6 +375,8 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         content:
                           type: string
                         userName:
@@ -361,10 +384,14 @@ paths:
                         userAvatar:
                           type: string
                           nullable: true
+                        isOwner:
+                          type: boolean
                       required:
+                      - id
                       - content
                       - userName
                       - userAvatar
+                      - isOwner
                 required:
                 - id
                 - imageUrls
@@ -443,6 +470,8 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         content:
                           type: string
                         userName:
@@ -450,10 +479,14 @@ paths:
                         userAvatar:
                           type: string
                           nullable: true
+                        isOwner:
+                          type: boolean
                       required:
+                      - id
                       - content
                       - userName
                       - userAvatar
+                      - isOwner
                 required:
                 - id
                 - imageUrls
@@ -521,6 +554,8 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         content:
                           type: string
                         userName:
@@ -528,10 +563,14 @@ paths:
                         userAvatar:
                           type: string
                           nullable: true
+                        isOwner:
+                          type: boolean
                       required:
+                      - id
                       - content
                       - userName
                       - userAvatar
+                      - isOwner
                 required:
                 - id
                 - imageUrls

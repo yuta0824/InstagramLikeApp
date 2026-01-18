@@ -20,7 +20,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class CommentSerializer < ActiveModel::Serializer
-  attributes :content, :user_name, :user_avatar
+  attributes :id, :content, :user_name, :user_avatar, :is_owner
 
   def user_name
     object.user.name
@@ -28,5 +28,9 @@ class CommentSerializer < ActiveModel::Serializer
 
   def user_avatar
     object.user.avatar_url
+  end
+
+  def is_owner
+    scope&.id == object.user_id
   end
 end

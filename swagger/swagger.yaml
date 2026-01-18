@@ -298,10 +298,13 @@ paths:
                           userAvatar:
                             type: string
                             nullable: true
+                          isOwner:
+                            type: boolean
                         required:
                         - content
                         - userName
                         - userAvatar
+                        - isOwner
                   required:
                   - id
                   - imageUrls
@@ -376,10 +379,13 @@ paths:
                         userAvatar:
                           type: string
                           nullable: true
+                        isOwner:
+                          type: boolean
                       required:
                       - content
                       - userName
                       - userAvatar
+                      - isOwner
                 required:
                 - id
                 - imageUrls
@@ -465,10 +471,13 @@ paths:
                         userAvatar:
                           type: string
                           nullable: true
+                        isOwner:
+                          type: boolean
                       required:
                       - content
                       - userName
                       - userAvatar
+                      - isOwner
                 required:
                 - id
                 - imageUrls
@@ -543,10 +552,13 @@ paths:
                         userAvatar:
                           type: string
                           nullable: true
+                        isOwner:
+                          type: boolean
                       required:
                       - content
                       - userName
                       - userAvatar
+                      - isOwner
                 required:
                 - id
                 - imageUrls

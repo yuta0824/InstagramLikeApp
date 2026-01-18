@@ -291,6 +291,8 @@ paths:
                       items:
                         type: object
                         properties:
+                          id:
+                            type: integer
                           content:
                             type: string
                           userName:
@@ -301,6 +303,7 @@ paths:
                           isOwner:
                             type: boolean
                         required:
+                        - id
                         - content
                         - userName
                         - userAvatar
@@ -372,6 +375,8 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         content:
                           type: string
                         userName:
@@ -382,6 +387,7 @@ paths:
                         isOwner:
                           type: boolean
                       required:
+                      - id
                       - content
                       - userName
                       - userAvatar
@@ -464,6 +470,8 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         content:
                           type: string
                         userName:
@@ -474,6 +482,7 @@ paths:
                         isOwner:
                           type: boolean
                       required:
+                      - id
                       - content
                       - userName
                       - userAvatar
@@ -545,6 +554,8 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: integer
                         content:
                           type: string
                         userName:
@@ -555,6 +566,7 @@ paths:
                         isOwner:
                           type: boolean
                       required:
+                      - id
                       - content
                       - userName
                       - userAvatar

@@ -11,28 +11,6 @@ RSpec.describe 'Api::Users', type: :request do
       let!(:users) { create_list(:user, 3) }
       before { sign_in users.first }
 
-      response '200', 'ユーザー一覧取得成功' do
-        schema type: :array,
-               items: {
-                 type: :object,
-                 properties: {
-                   name: { type: :string },
-                   avatarUrl: { type: :string, nullable: true },
-                   isFollowing: { type: :boolean }
-                 },
-                 required: %w[name avatarUrl isFollowing]
-               }
-
-        run_test! do
-          expect(response).to have_http_status(:ok)
-          expect(json_response).to be_an(Array)
-          expect(json_response.size).to eq(3)
-          expect(json_response.first).to have_key('name')
-          expect(json_response.first).to have_key('avatarUrl')
-          expect(json_response.first).to have_key('isFollowing')
-        end
-      end
-
       response '200', 'フォロー中ユーザーのisFollowingがtrueになる' do
         before { users.first.follow!(users.second) }
 
@@ -120,6 +98,28 @@ RSpec.describe 'Api::Users', type: :request do
         end
       end
 
+      response '200', 'ユーザー一覧取得成功' do
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: {
+                   name: { type: :string },
+                   avatarUrl: { type: :string, nullable: true },
+                   isFollowing: { type: :boolean }
+                 },
+                 required: %w[name avatarUrl isFollowing]
+               }
+
+        run_test! do
+          expect(response).to have_http_status(:ok)
+          expect(json_response).to be_an(Array)
+          expect(json_response.size).to eq(3)
+          expect(json_response.first).to have_key('name')
+          expect(json_response.first).to have_key('avatarUrl')
+          expect(json_response.first).to have_key('isFollowing')
+        end
+      end
+
     end
 
     get '未ログインではアクセスできない' do
@@ -147,31 +147,6 @@ RSpec.describe 'Api::Users', type: :request do
       let!(:current_user) { create(:user) }
       let!(:target_user) { create(:user) }
       before { sign_in current_user }
-
-      response '200', 'ユーザー詳細取得成功' do
-        schema type: :object,
-               properties: {
-                 name: { type: :string },
-                 avatarUrl: { type: :string, nullable: true },
-                 isFollowing: { type: :boolean },
-                 followingsCount: { type: :integer },
-                 followersCount: { type: :integer },
-                 postsCount: { type: :integer }
-               },
-               required: %w[name avatarUrl isFollowing followingsCount followersCount postsCount]
-
-        let(:id) { target_user.id }
-
-        run_test! do
-          expect(response).to have_http_status(:ok)
-          expect(json_response).to have_key('name')
-          expect(json_response).to have_key('avatarUrl')
-          expect(json_response).to have_key('isFollowing')
-          expect(json_response).to have_key('followingsCount')
-          expect(json_response).to have_key('followersCount')
-          expect(json_response).to have_key('postsCount')
-        end
-      end
 
       response '200', 'フォロー中ユーザーはisFollowingがtrue' do
         let(:id) { target_user.id }
@@ -219,6 +194,31 @@ RSpec.describe 'Api::Users', type: :request do
 
         run_test! do
           expect(json_response.keys).not_to include('email', 'encryptedPassword', 'password')
+        end
+      end
+
+      response '200', 'ユーザー詳細取得成功' do
+        schema type: :object,
+               properties: {
+                 name: { type: :string },
+                 avatarUrl: { type: :string, nullable: true },
+                 isFollowing: { type: :boolean },
+                 followingsCount: { type: :integer },
+                 followersCount: { type: :integer },
+                 postsCount: { type: :integer }
+               },
+               required: %w[name avatarUrl isFollowing followingsCount followersCount postsCount]
+
+        let(:id) { target_user.id }
+
+        run_test! do
+          expect(response).to have_http_status(:ok)
+          expect(json_response).to have_key('name')
+          expect(json_response).to have_key('avatarUrl')
+          expect(json_response).to have_key('isFollowing')
+          expect(json_response).to have_key('followingsCount')
+          expect(json_response).to have_key('followersCount')
+          expect(json_response).to have_key('postsCount')
         end
       end
 

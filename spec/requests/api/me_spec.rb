@@ -9,23 +9,6 @@ RSpec.describe 'Api::Me', type: :request do
       tags 'User'
       produces 'application/json'
 
-      response '200', '取得成功' do
-        schema type: :object,
-               properties: {
-                 name: { type: :string },
-                 avatarUrl: { type: :string, nullable: true },
-                 isFollowing: { type: :boolean },
-                 followingsCount: { type: :integer },
-                 followersCount: { type: :integer },
-                 postsCount: { type: :integer }
-               },
-               required: %w[name avatarUrl isFollowing followingsCount followersCount postsCount]
-
-        before { sign_in user }
-
-        run_test!
-      end
-
       response '200', 'isFollowingは常にfalse' do
         before { sign_in user }
 
@@ -47,6 +30,23 @@ RSpec.describe 'Api::Me', type: :request do
           expect(json_response['followersCount']).to eq(0)
           expect(json_response['postsCount']).to eq(2)
         end
+      end
+
+      response '200', '取得成功' do
+        schema type: :object,
+               properties: {
+                 name: { type: :string },
+                 avatarUrl: { type: :string, nullable: true },
+                 isFollowing: { type: :boolean },
+                 followingsCount: { type: :integer },
+                 followersCount: { type: :integer },
+                 postsCount: { type: :integer }
+               },
+               required: %w[name avatarUrl isFollowing followingsCount followersCount postsCount]
+
+        before { sign_in user }
+
+        run_test!
       end
 
       response '401', '未ログイン' do

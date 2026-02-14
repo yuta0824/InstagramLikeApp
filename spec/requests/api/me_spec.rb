@@ -130,7 +130,7 @@ RSpec.describe 'Api::Me', type: :request do
     let(:user) { create(:user) }
     before { sign_in user }
 
-    context '無効な名前（21文字超）の場合' do
+    context '無効な名前（20文字超）の場合' do
       it '422を返す' do
         patch '/api/me', params: { name: 'a' * 21 }
         expect(response).to have_http_status(:unprocessable_entity)

@@ -232,7 +232,7 @@ RSpec.describe 'Api::Posts', type: :request do
     end
   end
 
-  describe '認可チェック' do
+  describe '認可・バリデーション' do
     let(:owner) { create(:user) }
     let(:other_user) { create(:user) }
     let(:owners_post) { create(:post, user: owner) }

@@ -59,7 +59,9 @@ paths:
       schema:
         type: integer
     post:
-      summary: コメントを保存できる
+      summary: コメントを作成する
+      tags:
+      - Comment
       parameters: []
       responses:
         '201':
@@ -106,7 +108,9 @@ paths:
       schema:
         type: integer
     delete:
-      summary: コメントを削除できる
+      summary: コメントを削除する
+      tags:
+      - Comment
       responses:
         '204':
           description: 削除成功
@@ -746,7 +750,7 @@ paths:
                 - errors
   "/api/users":
     get:
-      summary: 未ログインではアクセスできない
+      summary: ユーザー一覧を取得する
       tags:
       - User
       parameters:
@@ -793,7 +797,7 @@ paths:
                 - error
   "/api/users/{id}":
     get:
-      summary: 未ログインではユーザー詳細にアクセスできない
+      summary: ユーザー詳細を取得する
       tags:
       - User
       parameters:

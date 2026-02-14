@@ -9,7 +9,8 @@ RSpec.describe 'Api::Users', type: :request do
       parameter name: :q, in: :query, type: :string, required: false, description: '名前で検索'
 
       let!(:users) { create_list(:user, 3) }
-      before { sign_in users.first }
+      let(:do_sign_in) { true }
+      before { sign_in users.first if do_sign_in }
 
       response '200', 'フォロー中ユーザーのisFollowingがtrueになる' do
         before { users.first.follow!(users.second) }
@@ -122,13 +123,9 @@ RSpec.describe 'Api::Users', type: :request do
         end
       end
 
-    end
-
-    get '未ログインではアクセスできない' do
-      tags 'User'
-      produces 'application/json'
-
       response '401', '未ログイン' do
+        let(:do_sign_in) { false }
+
         schema type: :object,
                properties: {
                  error: { type: :string }
@@ -148,7 +145,8 @@ RSpec.describe 'Api::Users', type: :request do
 
       let!(:current_user) { create(:user) }
       let!(:target_user) { create(:user) }
-      before { sign_in current_user }
+      let(:do_sign_in) { true }
+      before { sign_in current_user if do_sign_in }
 
       response '200', 'フォロー中ユーザーはisFollowingがtrue' do
         let(:id) { target_user.id }
@@ -233,14 +231,9 @@ RSpec.describe 'Api::Users', type: :request do
           expect(response).to have_http_status(:not_found)
         end
       end
-    end
-
-    get '未ログインではユーザー詳細にアクセスできない' do
-      tags 'User'
-      produces 'application/json'
-      parameter name: :id, in: :path, type: :integer, required: true, description: 'ユーザーID'
 
       response '401', '未ログイン' do
+        let(:do_sign_in) { false }
         let(:id) { create(:user).id }
 
         run_test!

@@ -88,7 +88,7 @@ RSpec.describe 'Api::Likes', type: :request do
     end
   end
 
-  describe '認可チェック' do
+  describe '異常系' do
     let(:user) { create(:user) }
 
     context 'POST /api/posts/:post_id/like 既にいいね済みの場合' do

@@ -5,7 +5,8 @@ RSpec.describe 'Api::Comments', type: :request do
   path '/api/posts/{post_id}/comments' do
     parameter name: :post_id, in: :path, required: true, schema: { type: :integer }
 
-    post 'コメントを保存できる' do
+    post 'コメントを作成する' do
+      tags 'Comment'
       consumes 'application/json'
       produces 'application/json'
 
@@ -60,7 +61,8 @@ RSpec.describe 'Api::Comments', type: :request do
     parameter name: :post_id, in: :path, required: true, schema: { type: :integer }
     parameter name: :id, in: :path, required: true, schema: { type: :integer }
 
-    delete 'コメントを削除できる' do
+    delete 'コメントを削除する' do
+      tags 'Comment'
       produces 'application/json'
 
       let!(:user) { create(:user) }
@@ -90,7 +92,7 @@ RSpec.describe 'Api::Comments', type: :request do
     end
   end
 
-  describe '認可チェック' do
+  describe '認可・バリデーション' do
     let!(:user) { create(:user) }
     let!(:other_user) { create(:user) }
     let!(:target_post) { create(:post) }

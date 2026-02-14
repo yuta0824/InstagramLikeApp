@@ -2,6 +2,8 @@ require 'rails_helper'
 require 'swagger_helper'
 
 RSpec.describe 'Api::ActiveUsers', type: :request do
+  include ActiveSupport::Testing::TimeHelpers
+
   path '/api/active_users' do
     get '未ログインではアクセスできない' do
       tags 'ActiveUser'
@@ -21,6 +23,7 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
     get 'アクティブユーザー一覧を取得する' do
       tags 'ActiveUser'
       produces 'application/json'
+      parameter name: :limit, in: :query, type: :integer, required: false, description: '取得件数（最大30）'
 
       let!(:active_user) { create(:user, name: 'ActiveUser') }
       let!(:inactive_user) { create(:user, name: 'InactiveUser') }
@@ -47,7 +50,11 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
 
       response '200', 'ちょうど24時間前の投稿のユーザーは含まれる' do
         let!(:boundary_user) { create(:user, name: 'BoundaryUser') }
-        before { create(:post, user: boundary_user, created_at: 24.hours.ago) }
+        before do
+          freeze_time
+          create(:post, user: boundary_user, created_at: 24.hours.ago)
+        end
+        after { travel_back }
 
         run_test! do
           names = json_response.map { |u| u['name'] }
@@ -62,7 +69,20 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
         end
       end
 
-      response '200', '最大30件まで' do
+      response '200', 'limitパラメータで取得件数を指定できる' do
+        let!(:active_users) do
+          create_list(:user, 10).each do |user|
+            create(:post, user: user, created_at: 1.hour.ago)
+          end
+        end
+        let(:limit) { 5 }
+
+        run_test! do
+          expect(json_response.size).to eq(5)
+        end
+      end
+
+      response '200', 'limitが30を超えても30件までに制限される' do
         let!(:many_active_users) do
           create_list(:user, 35).each do |user|
             create(:post, user: user, created_at: 1.hour.ago)

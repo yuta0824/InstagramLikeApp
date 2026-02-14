@@ -38,6 +38,13 @@ paths:
                   required:
                   - name
                   - avatarUrl
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        description: 取得件数（最大30）
+        schema:
+          type: integer
   "/api/posts/{post_id}/comments":
     parameters:
     - name: post_id

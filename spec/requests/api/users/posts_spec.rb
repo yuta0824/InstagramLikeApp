@@ -90,6 +90,65 @@ RSpec.describe 'Api::Users::Posts', type: :request do
         expect(json_response.last['id']).to eq(old_post.id)
       end
     end
+
+    context '不正なpageパラメータ' do
+      let!(:post) { create(:post, user: target_user) }
+
+      it 'page=0 は1ページ目として扱う' do
+        get "/api/users/#{target_user.id}/posts", params: { page: 0 }
+        expect(response).to have_http_status(:ok)
+        expect(json_response.size).to eq(1)
+      end
+
+      it 'page=-1 は1ページ目として扱う' do
+        get "/api/users/#{target_user.id}/posts", params: { page: -1 }
+        expect(response).to have_http_status(:ok)
+        expect(json_response.size).to eq(1)
+      end
+
+      it '非数値のpageは1ページ目として扱う' do
+        get "/api/users/#{target_user.id}/posts", params: { page: 'abc' }
+        expect(response).to have_http_status(:ok)
+        expect(json_response.size).to eq(1)
+      end
+    end
+  end
+
+  describe 'レスポンスフィールド検証' do
+    let(:user) { create(:user) }
+    let(:target_user) { create(:user) }
+
+    before { sign_in user }
+
+    context '他ユーザーの投稿を閲覧した場合' do
+      let!(:post) { create(:post, user: target_user) }
+
+      it 'isOwn が false を返す' do
+        get "/api/users/#{target_user.id}/posts"
+        expect(json_response.first['isOwn']).to be false
+      end
+    end
+
+    context '自分の投稿を閲覧した場合' do
+      let!(:post) { create(:post, user: user) }
+
+      it 'isOwn が true を返す' do
+        get "/api/users/#{user.id}/posts"
+        expect(json_response.first['isOwn']).to be true
+      end
+    end
+
+    context 'いいね済みの投稿がある場合' do
+      let!(:post) { create(:post, user: target_user) }
+
+      before { create(:like, user: user, post: post) }
+
+      it 'isLiked が true で likedCount が正しい値を返す' do
+        get "/api/users/#{target_user.id}/posts"
+        expect(json_response.first['isLiked']).to be true
+        expect(json_response.first['likedCount']).to eq(1)
+      end
+    end
   end
 
   def json_response

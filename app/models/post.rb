@@ -36,6 +36,9 @@ class Post < ApplicationRecord
     includes(:user, likes: :user)
       .with_attached_images
   }
+  scope :with_detail_associations, -> {
+    with_associations.includes(comments: [user: { avatar_attachment: :blob }])
+  }
 
   def owned_by?(user)
     return false unless user

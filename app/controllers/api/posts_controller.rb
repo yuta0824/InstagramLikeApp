@@ -1,7 +1,7 @@
 class Api::PostsController < ApplicationController
   def index
     posts = Post
-              .with_associations.includes(comments: [user: { avatar_attachment: :blob }])
+              .with_detail_associations
               .limit(20)
               .order(created_at: :desc)
     render json: posts, each_serializer: PostDetailSerializer, scope: current_user, status: :ok
@@ -47,8 +47,7 @@ class Api::PostsController < ApplicationController
 
   def find_post(id)
     Post
-      .with_associations
-      .includes(comments: [user: { avatar_attachment: :blob }])
+      .with_detail_associations
       .find(id)
   end
 end

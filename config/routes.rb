@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get 'token', to: 'token#show'
       delete 'logout', to: 'logout#destroy'
     end
+    resources :active_users, only: %i[index]
     resources :users, only: %i[index] do
       resource :relationship, only: %i[create destroy]
     end

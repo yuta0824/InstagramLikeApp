@@ -1,0 +1,101 @@
+require 'rails_helper'
+require 'swagger_helper'
+
+RSpec.describe 'Api::ActiveUsers', type: :request do
+  path '/api/active_users' do
+    get '未ログインではアクセスできない' do
+      tags 'ActiveUser'
+      produces 'application/json'
+
+      response '401', '未ログイン' do
+        schema type: :object,
+               properties: {
+                 error: { type: :string }
+               },
+               required: %w[error]
+
+        run_test!
+      end
+    end
+
+    get 'アクティブユーザー一覧を取得する' do
+      tags 'ActiveUser'
+      produces 'application/json'
+
+      let!(:active_user) { create(:user, name: 'ActiveUser') }
+      let!(:inactive_user) { create(:user, name: 'InactiveUser') }
+      let!(:expired_user) { create(:user, name: 'ExpiredUser') }
+      before do
+        create(:post, user: active_user, created_at: 1.hour.ago)
+        create(:post, user: expired_user, created_at: (24.hours + 1.minute).ago)
+        sign_in active_user
+      end
+
+      response '200', '投稿が24時間以降のユーザーは含まれない' do
+        run_test! do
+          names = json_response.map { |u| u['name'] }
+          expect(names).not_to include('ExpiredUser')
+        end
+      end
+
+      response '200', '投稿が24時間以内のユーザーは含まれる' do
+        run_test! do
+          names = json_response.map { |u| u['name'] }
+          expect(names).to include('ActiveUser')
+        end
+      end
+
+      response '200', 'ちょうど24時間前の投稿のユーザーは含まれる' do
+        let!(:boundary_user) { create(:user, name: 'BoundaryUser') }
+        before { create(:post, user: boundary_user, created_at: 24.hours.ago) }
+
+        run_test! do
+          names = json_response.map { |u| u['name'] }
+          expect(names).to include('BoundaryUser')
+        end
+      end
+
+      response '200', '投稿がないユーザーは含まれない' do
+        run_test! do
+          names = json_response.map { |u| u['name'] }
+          expect(names).not_to include('InactiveUser')
+        end
+      end
+
+      response '200', '最大30件まで' do
+        let!(:many_active_users) do
+          create_list(:user, 35).each do |user|
+            create(:post, user: user, created_at: 1.hour.ago)
+          end
+        end
+
+        run_test! do
+          expect(json_response.size).to be <= 30
+        end
+      end
+
+      response '200', 'アクティブユーザー一覧取得成功' do
+        schema type: :array,
+               items: {
+                 type: :object,
+                 properties: {
+                   name: { type: :string },
+                   avatarUrl: { type: :string, nullable: true }
+                 },
+                 required: %w[name avatarUrl]
+               }
+
+        run_test! do
+          expect(response).to have_http_status(:ok)
+          expect(json_response).to be_an(Array)
+          expect(json_response.first).to have_key('name')
+          expect(json_response.first).to have_key('avatarUrl')
+        end
+      end
+    end
+  end
+
+  def json_response
+    JSON.parse(response.body)
+  end
+end

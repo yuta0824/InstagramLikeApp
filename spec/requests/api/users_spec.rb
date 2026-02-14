@@ -103,17 +103,19 @@ RSpec.describe 'Api::Users', type: :request do
                items: {
                  type: :object,
                  properties: {
+                   id: { type: :integer },
                    name: { type: :string },
                    avatarUrl: { type: :string, nullable: true },
                    isFollowing: { type: :boolean }
                  },
-                 required: %w[name avatarUrl isFollowing]
+                 required: %w[id name avatarUrl isFollowing]
                }
 
         run_test! do
           expect(response).to have_http_status(:ok)
           expect(json_response).to be_an(Array)
           expect(json_response.size).to eq(3)
+          expect(json_response.first).to have_key('id')
           expect(json_response.first).to have_key('name')
           expect(json_response.first).to have_key('avatarUrl')
           expect(json_response.first).to have_key('isFollowing')
@@ -200,6 +202,7 @@ RSpec.describe 'Api::Users', type: :request do
       response '200', 'ユーザー詳細取得成功' do
         schema type: :object,
                properties: {
+                 id: { type: :integer },
                  name: { type: :string },
                  avatarUrl: { type: :string, nullable: true },
                  isFollowing: { type: :boolean },
@@ -207,12 +210,13 @@ RSpec.describe 'Api::Users', type: :request do
                  followersCount: { type: :integer },
                  postsCount: { type: :integer }
                },
-               required: %w[name avatarUrl isFollowing followingsCount followersCount postsCount]
+               required: %w[id name avatarUrl isFollowing followingsCount followersCount postsCount]
 
         let(:id) { target_user.id }
 
         run_test! do
           expect(response).to have_http_status(:ok)
+          expect(json_response).to have_key('id')
           expect(json_response).to have_key('name')
           expect(json_response).to have_key('avatarUrl')
           expect(json_response).to have_key('isFollowing')

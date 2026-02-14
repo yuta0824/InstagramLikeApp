@@ -154,16 +154,18 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
                items: {
                  type: :object,
                  properties: {
+                   id: { type: :integer },
                    name: { type: :string },
                    avatarUrl: { type: :string, nullable: true },
                    isFollowing: { type: :boolean }
                  },
-                 required: %w[name avatarUrl isFollowing]
+                 required: %w[id name avatarUrl isFollowing]
                }
 
         run_test! do
           expect(response).to have_http_status(:ok)
           expect(json_response).to be_an(Array)
+          expect(json_response.first).to have_key('id')
           expect(json_response.first).to have_key('name')
           expect(json_response.first).to have_key('avatarUrl')
           expect(json_response.first).to have_key('isFollowing')

@@ -46,7 +46,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   scope :search_by_name, ->(query) {
-    where("LOWER(name) LIKE LOWER(?)", "%#{sanitize_sql_like(query)}%")
+    where('LOWER(name) LIKE LOWER(?)', "%#{sanitize_sql_like(query)}%")
   }
 
   scope :recently_active, ->(limit: 30, within: 24.hours) {

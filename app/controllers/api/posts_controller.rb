@@ -1,15 +1,15 @@
 class Api::PostsController < ApplicationController
   def index
     posts = Post
-              .with_associations.includes(comments: [user: { avatar_attachment: :blob }])
+              .with_details
               .limit(20)
               .order(created_at: :desc)
-    render json: posts, each_serializer: PostDetailSerializer, scope: current_user, status: :ok
+    render json: posts, each_serializer: PostDetailSerializer, scope: current_user
   end
 
   def show
     post = find_post(params[:id])
-    render json: post, serializer: PostDetailSerializer, scope: current_user, status: :ok
+    render json: post, serializer: PostDetailSerializer, scope: current_user
   end
 
   def create
@@ -27,7 +27,7 @@ class Api::PostsController < ApplicationController
 
     if post.update(post_params)
       updated_post = find_post(post.id)
-      render json: updated_post, serializer: PostDetailSerializer, scope: current_user, status: :ok
+      render json: updated_post, serializer: PostDetailSerializer, scope: current_user
     else
       render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
     end
@@ -47,8 +47,7 @@ class Api::PostsController < ApplicationController
 
   def find_post(id)
     Post
-      .with_associations
-      .includes(comments: [user: { avatar_attachment: :blob }])
+      .with_details
       .find(id)
   end
 end

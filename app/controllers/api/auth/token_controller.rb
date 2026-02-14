@@ -1,4 +1,4 @@
-class Api::Users::TokenExchangesController < ApplicationController
+class Api::Auth::TokenController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show

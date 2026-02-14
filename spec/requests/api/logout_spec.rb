@@ -4,9 +4,9 @@ require 'swagger_helper'
 RSpec.describe 'User Logout API', type: :request do
   let(:user) { create(:user) }
 
-  path '/api/users/logout' do
+  path '/api/auth/logout' do
     delete 'ログアウトする' do
-      tags 'User'
+      tags 'Auth'
       produces 'application/json'
       parameter name: 'Authorization',
                 in: :header,

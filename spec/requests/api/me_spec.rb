@@ -126,6 +126,55 @@ RSpec.describe 'Api::Me', type: :request do
     end
   end
 
+  describe 'PATCH /api/me バリデーション失敗' do
+    let(:user) { create(:user) }
+    before { sign_in user }
+
+    context '無効な名前（20文字超）の場合' do
+      it '422を返す' do
+        patch '/api/me', params: { name: 'a' * 21 }
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context '無効な名前フォーマット（特殊文字）の場合' do
+      it '422を返す' do
+        patch '/api/me', params: { name: 'invalid@name!' }
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context '重複する名前の場合' do
+      let!(:other_user) { create(:user, name: 'taken_name') }
+
+      it '422を返す' do
+        patch '/api/me', params: { name: 'taken_name' }
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
+
+  describe 'PATCH /api/me エッジケース' do
+    let(:user) { create(:user, name: 'original_name') }
+    before { sign_in user }
+
+    context 'パラメータなしで更新した場合' do
+      it '変更なしで成功する' do
+        patch '/api/me'
+        expect(response).to have_http_status(:ok)
+        expect(user.reload.name).to eq('original_name')
+      end
+    end
+
+    context 'アバターのみ更新した場合' do
+      it '成功する' do
+        patch '/api/me', params: { avatar: fixture_file_upload('test.jpg', 'image/jpeg') }
+        expect(response).to have_http_status(:ok)
+        expect(user.reload.avatar).to be_attached
+      end
+    end
+  end
+
   def json_response
     JSON.parse(response.body)
   end

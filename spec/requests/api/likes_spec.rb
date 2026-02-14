@@ -88,6 +88,42 @@ RSpec.describe 'Api::Likes', type: :request do
     end
   end
 
+  describe '異常系' do
+    let(:user) { create(:user) }
+
+    context 'POST /api/posts/:post_id/like 既にいいね済みの場合' do
+      let(:target) { create(:post) }
+      before do
+        create(:like, user: user, post: target)
+        sign_in user
+      end
+
+      it '422を返す' do
+        post "/api/posts/#{target.id}/like", as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context 'DELETE /api/posts/:post_id/like 未いいね状態で解除しようとした場合' do
+      let(:target) { create(:post) }
+      before { sign_in user }
+
+      it '404を返す' do
+        delete "/api/posts/#{target.id}/like"
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'POST /api/posts/:post_id/like 存在しないpost_idの場合' do
+      before { sign_in user }
+
+      it '404を返す' do
+        post '/api/posts/999999/like', as: :json
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
   def json_response
     JSON.parse(response.body)
   end

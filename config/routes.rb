@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :active_users, only: %i[index]
     resources :users, only: %i[index show] do
       resource :relationship, only: %i[create destroy]
+      resources :posts, only: %i[index], controller: 'users/posts'
     end
     resource :me, only: %i[show update], controller: :me
     resources :posts, only: %i[index show create update destroy] do

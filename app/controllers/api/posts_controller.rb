@@ -4,11 +4,13 @@ class Api::PostsController < ApplicationController
               .with_details
               .limit(20)
               .order(created_at: :desc)
-    render json: posts, each_serializer: PostDetailSerializer, scope: current_user  end
+    render json: posts, each_serializer: PostDetailSerializer, scope: current_user
+  end
 
   def show
     post = find_post(params[:id])
-    render json: post, serializer: PostDetailSerializer, scope: current_user  end
+    render json: post, serializer: PostDetailSerializer, scope: current_user
+  end
 
   def create
     post = current_user.posts.new(post_params)
@@ -25,7 +27,8 @@ class Api::PostsController < ApplicationController
 
     if post.update(post_params)
       updated_post = find_post(post.id)
-      render json: updated_post, serializer: PostDetailSerializer, scope: current_user    else
+      render json: updated_post, serializer: PostDetailSerializer, scope: current_user
+    else
       render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
     end
   end

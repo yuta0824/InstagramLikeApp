@@ -35,6 +35,7 @@ RSpec.describe 'Api::Me', type: :request do
       response '200', '取得成功' do
         schema type: :object,
                properties: {
+                 id: { type: :integer },
                  name: { type: :string },
                  avatarUrl: { type: :string, nullable: true },
                  isFollowing: { type: :boolean },
@@ -42,7 +43,7 @@ RSpec.describe 'Api::Me', type: :request do
                  followersCount: { type: :integer },
                  postsCount: { type: :integer }
                },
-               required: %w[name avatarUrl isFollowing followingsCount followersCount postsCount]
+               required: %w[id name avatarUrl isFollowing followingsCount followersCount postsCount]
 
         before { sign_in user }
 
@@ -94,6 +95,7 @@ RSpec.describe 'Api::Me', type: :request do
       response '200', '更新成功' do
         schema type: :object,
                properties: {
+                 id: { type: :integer },
                  name: { type: :string },
                  avatarUrl: { type: :string, nullable: true },
                  isFollowing: { type: :boolean },
@@ -101,7 +103,7 @@ RSpec.describe 'Api::Me', type: :request do
                  followersCount: { type: :integer },
                  postsCount: { type: :integer }
                },
-               required: %w[name avatarUrl isFollowing followingsCount followersCount postsCount]
+               required: %w[id name avatarUrl isFollowing followingsCount followersCount postsCount]
 
         let(:name) { 'updated_name' }
         let(:avatar) { fixture_file_upload('test.jpg', 'image/jpeg') }

@@ -212,6 +212,8 @@ paths:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: integer
                   name:
                     type: string
                   avatarUrl:
@@ -226,6 +228,7 @@ paths:
                   postsCount:
                     type: integer
                 required:
+                - id
                 - name
                 - avatarUrl
                 - isFollowing
@@ -256,6 +259,8 @@ paths:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: integer
                   name:
                     type: string
                   avatarUrl:
@@ -270,6 +275,7 @@ paths:
                   postsCount:
                     type: integer
                 required:
+                - id
                 - name
                 - avatarUrl
                 - isFollowing

@@ -4,29 +4,6 @@ info:
   title: API Documentation
   version: '1.0'
 paths:
-  "/api/accounts":
-    get:
-      summary: アカウント一覧を取得する
-      tags:
-      - Account
-      responses:
-        '200':
-          description: アカウント一覧取得成功
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    avatarUrl:
-                      type: string
-                      nullable: true
-                  required:
-                  - name
-                  - avatarUrl
   "/api/posts/{post_id}/comments":
     parameters:
     - name: post_id
@@ -149,11 +126,11 @@ paths:
                     type: string
                 required:
                 - error
-  "/api/users/logout":
+  "/api/auth/logout":
     delete:
       summary: ログアウトする
       tags:
-      - User
+      - Auth
       parameters:
       - name: Authorization
         in: header
@@ -622,9 +599,9 @@ paths:
                     type: string
                 required:
                 - error
-  "/api/accounts/{account_id}/relationship":
+  "/api/users/{user_id}/relationship":
     parameters:
-    - name: account_id
+    - name: user_id
       in: path
       required: true
       schema:
@@ -651,11 +628,11 @@ paths:
           description: 未ログイン
         '404':
           description: フォローしていない相手を削除しようとした場合
-  "/api/users/token_exchange":
+  "/api/auth/token":
     get:
       summary: 認可コードからJWTを取得する
       tags:
-      - User
+      - Auth
       parameters:
       - name: auth_code
         in: query
@@ -690,6 +667,29 @@ paths:
                       type: string
                 required:
                 - errors
+  "/api/users":
+    get:
+      summary: ユーザー一覧を取得する
+      tags:
+      - User
+      responses:
+        '200':
+          description: アカウント一覧取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    avatarUrl:
+                      type: string
+                      nullable: true
+                  required:
+                  - name
+                  - avatarUrl
 servers:
 - url: https://{defaultHost}
   variables:

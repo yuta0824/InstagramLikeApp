@@ -12,9 +12,9 @@ RSpec.describe 'User Token Exchange API', type: :request do
     allow(Rails.application.config.x).to receive(:redis).and_return(redis)
   end
 
-  path '/api/users/token_exchange' do
+  path '/api/auth/token' do
     get '認可コードからJWTを取得する' do
-      tags 'User'
+      tags 'Auth'
       produces 'application/json'
       parameter name: :auth_code, in: :query, required: true, schema: { type: :string }
 

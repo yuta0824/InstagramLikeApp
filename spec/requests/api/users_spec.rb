@@ -1,10 +1,10 @@
 require 'rails_helper'
 require 'swagger_helper'
 
-RSpec.describe 'Api::Accounts', type: :request do
-  path '/api/accounts' do
-    get 'アカウント一覧を取得する' do
-      tags 'Account'
+RSpec.describe 'Api::Users', type: :request do
+  path '/api/users' do
+    get 'ユーザー一覧を取得する' do
+      tags 'User'
       produces 'application/json'
 
       let!(:users) { create_list(:user, 3) }

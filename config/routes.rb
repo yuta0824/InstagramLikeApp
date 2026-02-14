@@ -13,13 +13,13 @@ Rails.application.routes.draw do
   end
 
   namespace :api, defaults: { format: 'json' } do
-    namespace :users do
-      get '/auth', to: 'auth#index'
-      get 'token_exchange', to: 'token_exchanges#show'
+    namespace :auth do
+      get 'login', to: 'login#index'
+      get 'token', to: 'token#show'
       delete 'logout', to: 'logout#destroy'
     end
-    resources :accounts, only: %i[index] do
-      resource  :relationship, only: %i[create destroy]
+    resources :users, only: %i[index] do
+      resource :relationship, only: %i[create destroy]
     end
     resource :me, only: %i[show update], controller: :me
     resources :posts, only: %i[index show create update destroy] do

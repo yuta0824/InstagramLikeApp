@@ -22,5 +22,12 @@
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #
 class UserSerializer < ActiveModel::Serializer
-  attributes :name, :avatar_url
+  attributes :name, :avatar_url, :is_following
+
+  def is_following
+    following_ids = instance_options[:following_user_ids]
+    return following_ids.include?(object.id) if following_ids
+
+    false
+  end
 end

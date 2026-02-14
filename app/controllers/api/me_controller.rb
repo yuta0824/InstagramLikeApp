@@ -1,11 +1,11 @@
 class Api::MeController < ApplicationController
   def show
-    render json: current_user, serializer: UserSerializer
+    render json: current_user, serializer: UserDetailSerializer, following_user_ids: Set.new
   end
 
   def update
     current_user.update!(me_params)
-    render json: current_user, serializer: UserSerializer
+    render json: current_user, serializer: UserDetailSerializer, following_user_ids: Set.new
   end
 
   private

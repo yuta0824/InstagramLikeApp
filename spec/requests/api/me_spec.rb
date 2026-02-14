@@ -73,6 +73,24 @@ RSpec.describe 'Api::Me', type: :request do
                 required: false,
                 schema: { type: :string, format: :binary }
 
+      response '200', '更新後のレスポンスにカウント値とisFollowingが含まれる' do
+        let(:name) { 'updated_name' }
+        let!(:other_user) { create(:user) }
+        before do
+          sign_in user
+          user.follow!(other_user)
+          create_list(:post, 2, user: user)
+        end
+
+        run_test! do
+          expect(json_response['isFollowing']).to be false
+          expect(json_response['followingsCount']).to eq(1)
+          expect(json_response['followersCount']).to eq(0)
+          expect(json_response['postsCount']).to eq(2)
+          expect(json_response['name']).to eq('updated_name')
+        end
+      end
+
       response '200', '更新成功' do
         schema type: :object,
                properties: {

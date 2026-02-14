@@ -79,10 +79,6 @@ class User < ApplicationRecord
     following_relationships.exists?(following_id: target_user.id)
   end
 
-  def following_ids
-    Relationship.where(follower_id: id).pluck(:following_id).to_set
-  end
-
   def last_post_status_message
     # 既にロード済みの場合はメモリ上で検索。N+1クエリを避けるため
     last_post =

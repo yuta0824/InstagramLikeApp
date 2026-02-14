@@ -25,9 +25,6 @@ class UserSerializer < ActiveModel::Serializer
   attributes :name, :avatar_url, :is_following
 
   def is_following
-    following_ids = instance_options[:following_user_ids]
-    return following_ids.include?(object.id) if following_ids
-
-    false
+    instance_options.fetch(:following_user_ids).include?(object.id)
   end
 end

@@ -669,12 +669,19 @@ paths:
                 - errors
   "/api/users":
     get:
-      summary: ユーザー一覧を取得する
+      summary: 未ログインではアクセスできない
       tags:
       - User
+      parameters:
+      - name: q
+        in: query
+        required: false
+        description: 名前で検索
+        schema:
+          type: string
       responses:
         '200':
-          description: アカウント一覧取得成功
+          description: パスワードやメールアドレスが含まれない
           content:
             application/json:
               schema:
@@ -690,6 +697,17 @@ paths:
                   required:
                   - name
                   - avatarUrl
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
 servers:
 - url: https://{defaultHost}
   variables:

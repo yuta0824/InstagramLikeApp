@@ -32,10 +32,12 @@ RSpec.describe 'Api::Users', type: :request do
       end
 
       response '200', '新しい順にソートされる' do
+        let!(:old_user) { create(:user, name: 'OldUser', created_at: 3.days.ago) }
+        let!(:new_user) { create(:user, name: 'NewUser', created_at: 1.hour.ago) }
+
         run_test! do
           names = json_response.map { |u| u['name'] }
-          expected = User.order(created_at: :desc).limit(100).pluck(:name)
-          expect(names).to eq(expected)
+          expect(names.index(new_user.name)).to be < names.index(old_user.name)
         end
       end
 
@@ -82,6 +84,18 @@ RSpec.describe 'Api::Users', type: :request do
 
         run_test! do
           expect(json_response).to eq([])
+        end
+      end
+
+      response '200', 'LIKEワイルドカード文字がエスケープされる' do
+        let!(:user_with_underscore) { create(:user, name: 'foo_bar') }
+        let!(:user_without_underscore) { create(:user, name: 'fooXbar') }
+        let(:q) { '_' }
+
+        run_test! do
+          names = json_response.map { |u| u['name'] }
+          expect(names).to include('foo_bar')
+          expect(names).not_to include('fooXbar')
         end
       end
 

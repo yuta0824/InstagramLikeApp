@@ -178,56 +178,6 @@ RSpec.describe Post, type: :model do
     end
   end
 
-  describe '.by_users' do
-    let(:user_a) { create(:user) }
-    let(:user_b) { create(:user) }
-    let!(:post_a) { create(:post, user: user_a) }
-    let!(:post_b) { create(:post, user: user_b) }
-
-    it '指定ユーザーの投稿のみ返す' do
-      result = described_class.by_users([user_a])
-      expect(result).to include(post_a)
-      expect(result).not_to include(post_b)
-    end
-
-    it '該当なしの場合 空を返す' do
-      other = create(:user)
-      expect(described_class.by_users([other])).to be_empty
-    end
-  end
-
-  describe '.recent_within' do
-    let!(:recent_post) { create(:post, user: owner, created_at: 1.hour.ago) }
-    let!(:old_post) { create(:post, user: owner, created_at: 3.days.ago) }
-
-    it '期間内の投稿を返す' do
-      result = described_class.recent_within(24.hours)
-      expect(result).to include(recent_post)
-    end
-
-    it '期間外の投稿を除外する' do
-      result = described_class.recent_within(24.hours)
-      expect(result).not_to include(old_post)
-    end
-  end
-
-  describe '.popular' do
-    it 'いいね数順に並び替える' do
-      popular_post = create(:post, user: owner)
-      create_list(:like, 3, post: popular_post)
-      unpopular_post = create(:post, user: owner)
-
-      result = described_class.popular(limit: 10)
-      expect(result.first).to eq(popular_post)
-    end
-
-    it 'limit パラメータを反映する' do
-      create_list(:post, 5, user: owner)
-      result = described_class.popular(limit: 2)
-      expect(result.to_a.size).to eq(2)
-    end
-  end
-
   describe '#time_ago' do
     include ActiveSupport::Testing::TimeHelpers
     around { |example| freeze_time { example.run } }

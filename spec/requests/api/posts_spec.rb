@@ -232,6 +232,94 @@ RSpec.describe 'Api::Posts', type: :request do
     end
   end
 
+  describe '認可チェック' do
+    let(:owner) { create(:user) }
+    let(:other_user) { create(:user) }
+    let(:owners_post) { create(:post, user: owner) }
+
+    context 'PATCH /api/posts/:id 他人の投稿を更新しようとした場合' do
+      before { sign_in other_user }
+
+      it '404を返す' do
+        patch "/api/posts/#{owners_post.id}", params: { post: { caption: 'hacked' } }, as: :json
+        expect(response).to have_http_status(:not_found)
+        expect(owners_post.reload.caption).not_to eq('hacked')
+      end
+    end
+
+    context 'DELETE /api/posts/:id 他人の投稿を削除しようとした場合' do
+      before { sign_in other_user }
+
+      it '404を返す' do
+        owners_post # ensure created
+        expect {
+          delete "/api/posts/#{owners_post.id}"
+        }.not_to change(Post, :count)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'PATCH /api/posts/:id 存在しないIDを指定した場合' do
+      before { sign_in owner }
+
+      it '404を返す' do
+        patch '/api/posts/999999', params: { post: { caption: 'test' } }, as: :json
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'POST /api/posts 画像なしで投稿した場合' do
+      before { sign_in owner }
+
+      it '422を返す' do
+        post '/api/posts', params: { caption: 'no image' }, as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
+
+  describe 'レスポンスフィールド検証' do
+    let(:user) { create(:user) }
+
+    context 'GET /api/posts/:id 自分の投稿の場合' do
+      let(:my_post) { create(:post, user: user) }
+
+      before { sign_in user }
+
+      it 'isOwn が true を返す' do
+        get "/api/posts/#{my_post.id}"
+        expect(json_response['isOwn']).to be true
+      end
+    end
+
+    context 'GET /api/posts/:id いいね済みの投稿の場合' do
+      let(:target) { create(:post) }
+
+      before do
+        create(:like, user: user, post: target)
+        sign_in user
+      end
+
+      it 'isLiked が true で likedCount が正しい値を返す' do
+        get "/api/posts/#{target.id}"
+        expect(json_response['isLiked']).to be true
+        expect(json_response['likedCount']).to eq(1)
+      end
+    end
+
+    context 'GET /api/posts 最大件数制限' do
+      before do
+        create_list(:post, 25)
+        sign_in user
+      end
+
+      it '最大20件を返す' do
+        get '/api/posts'
+        expect(json_response.size).to eq(20)
+      end
+    end
+  end
+
   def json_response
     JSON.parse(response.body)
   end

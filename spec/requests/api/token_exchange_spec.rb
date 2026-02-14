@@ -55,6 +55,28 @@ RSpec.describe 'User Token Exchange API', type: :request do
     end
   end
 
+  describe 'エッジケース' do
+    context 'auth_codeパラメータが未指定の場合' do
+      it '401を返す' do
+        get '/api/auth/token'
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'auth_code使用後に再利用した場合' do
+      it '401を返す（ワンタイム）' do
+        auth_code = 'one-time-code'
+        redis_store["auth_code:#{auth_code}"] = user.id.to_s
+
+        get '/api/auth/token', params: { auth_code: auth_code }
+        expect(response).to have_http_status(:ok)
+
+        get '/api/auth/token', params: { auth_code: auth_code }
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
   def json_response
     JSON.parse(response.body)
   end

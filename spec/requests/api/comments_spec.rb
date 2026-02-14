@@ -90,6 +90,43 @@ RSpec.describe 'Api::Comments', type: :request do
     end
   end
 
+  describe '認可チェック' do
+    let!(:user) { create(:user) }
+    let!(:other_user) { create(:user) }
+    let!(:target_post) { create(:post) }
+
+    context 'DELETE /api/posts/:post_id/comments/:id 他人のコメントを削除しようとした場合' do
+      let!(:others_comment) { create(:comment, user: other_user, post: target_post) }
+
+      before { sign_in user }
+
+      it '404を返す' do
+        expect {
+          delete "/api/posts/#{target_post.id}/comments/#{others_comment.id}"
+        }.not_to change(Comment, :count)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'POST /api/posts/:post_id/comments 存在しないpost_idの場合' do
+      before { sign_in user }
+
+      it '404を返す' do
+        post '/api/posts/999999/comments', params: { comment: { content: 'test' } }, as: :json
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'POST /api/posts/:post_id/comments 空のcontentの場合' do
+      before { sign_in user }
+
+      it '422を返す' do
+        post "/api/posts/#{target_post.id}/comments", params: { comment: { content: '' } }, as: :json
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
+
   def json_response
     JSON.parse(response.body)
   end

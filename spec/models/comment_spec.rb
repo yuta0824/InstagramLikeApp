@@ -83,6 +83,23 @@ RSpec.describe Comment, type: :model do
     end
   end
 
+  describe 'dependent: :destroy' do
+    it 'Comment削除で notifications も削除される' do
+      mentioned = create(:user, name: 'mentioned_user')
+      comment = create(:comment, user: author, content: '@mentioned_user hello')
+      expect(Notification.count).to eq(1)
+      expect { comment.destroy! }.to change(Notification, :count).by(-1)
+    end
+  end
+
+  describe 'content のバリデーション' do
+    it '空文字の場合 invalid になる' do
+      comment = build(:comment, user: author, content: '')
+      expect(comment).to be_invalid
+      expect(comment.errors[:content]).to be_present
+    end
+  end
+
   describe '文字数バリデーション' do
     context 'コメントが100文字以下の場合' do
       it '保存できる' do

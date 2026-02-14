@@ -73,4 +73,23 @@ RSpec.describe 'Api::Relationships', type: :request do
       end
     end
   end
+
+  describe '存在しないユーザーへの操作' do
+    let(:current_user) { create(:user) }
+    before { sign_in current_user }
+
+    context 'POST /api/users/:user_id/relationship 存在しないuser_idの場合' do
+      it '404を返す' do
+        post '/api/users/999999/relationship', as: :json
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'DELETE /api/users/:user_id/relationship 存在しないuser_idの場合' do
+      it '404を返す' do
+        delete '/api/users/999999/relationship'
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
 end

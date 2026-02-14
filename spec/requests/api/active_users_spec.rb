@@ -25,13 +25,14 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
       produces 'application/json'
       parameter name: :limit, in: :query, type: :integer, required: false, description: '取得件数（最大30）'
 
+      let!(:viewer) { create(:user, name: 'Viewer') }
       let!(:active_user) { create(:user, name: 'ActiveUser') }
       let!(:inactive_user) { create(:user, name: 'InactiveUser') }
       let!(:expired_user) { create(:user, name: 'ExpiredUser') }
       before do
         create(:post, user: active_user, created_at: 1.hour.ago)
         create(:post, user: expired_user, created_at: (24.hours + 1.minute).ago)
-        sign_in active_user
+        sign_in viewer
       end
 
       response '200', '投稿が24時間以降のユーザーは含まれない' do
@@ -66,6 +67,17 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
         run_test! do
           names = json_response.map { |u| u['name'] }
           expect(names).not_to include('InactiveUser')
+        end
+      end
+
+      response '200', '自分自身は一覧に含まれない' do
+        before do
+          create(:post, user: viewer, created_at: 1.hour.ago)
+        end
+
+        run_test! do
+          ids = json_response.map { |u| u['id'] }
+          expect(ids).not_to include(viewer.id)
         end
       end
 
@@ -132,7 +144,7 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
         let!(:another_active_user) { create(:user, name: 'FollowedActive') }
         before do
           create(:post, user: another_active_user, created_at: 1.hour.ago)
-          active_user.follow!(another_active_user)
+          viewer.follow!(another_active_user)
         end
 
         run_test! do

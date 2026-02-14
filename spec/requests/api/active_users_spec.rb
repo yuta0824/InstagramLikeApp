@@ -128,6 +128,19 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
         end
       end
 
+      response '200', 'フォロー中ユーザーのisFollowingがtrueになる' do
+        let!(:another_active_user) { create(:user, name: 'FollowedActive') }
+        before do
+          create(:post, user: another_active_user, created_at: 1.hour.ago)
+          active_user.follow!(another_active_user)
+        end
+
+        run_test! do
+          followed = json_response.find { |u| u['name'] == 'FollowedActive' }
+          expect(followed['isFollowing']).to be true
+        end
+      end
+
       response '200', 'パスワードやメールアドレスが含まれない' do
         run_test! do
           json_response.each do |user|
@@ -142,9 +155,10 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
                  type: :object,
                  properties: {
                    name: { type: :string },
-                   avatarUrl: { type: :string, nullable: true }
+                   avatarUrl: { type: :string, nullable: true },
+                   isFollowing: { type: :boolean }
                  },
-                 required: %w[name avatarUrl]
+                 required: %w[name avatarUrl isFollowing]
                }
 
         run_test! do
@@ -152,6 +166,7 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
           expect(json_response).to be_an(Array)
           expect(json_response.first).to have_key('name')
           expect(json_response.first).to have_key('avatarUrl')
+          expect(json_response.first).to have_key('isFollowing')
         end
       end
     end

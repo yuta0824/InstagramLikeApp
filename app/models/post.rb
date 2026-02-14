@@ -24,6 +24,11 @@ class Post < ApplicationRecord
   validates :images, presence: true, length: { minimum: 1, maximum: 3 }
   validates :caption, length: { maximum: 100 }
 
+  scope :with_details, -> {
+    includes(:user, likes: :user, comments: [user: { avatar_attachment: :blob }])
+      .with_attached_images
+  }
+
   def owned_by?(user)
     return false unless user
     user_id == user.id

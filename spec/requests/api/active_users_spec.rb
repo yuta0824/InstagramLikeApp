@@ -69,6 +69,31 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
         end
       end
 
+      response '200', '最新の投稿順にソートされる' do
+        let!(:recent_poster) { create(:user, name: 'RecentPoster') }
+        let!(:older_poster) { create(:user, name: 'OlderPoster') }
+        before do
+          create(:post, user: older_poster, created_at: 12.hours.ago)
+          create(:post, user: recent_poster, created_at: 10.minutes.ago)
+        end
+
+        run_test! do
+          names = json_response.map { |u| u['name'] }
+          expect(names.index('RecentPoster')).to be < names.index('OlderPoster')
+        end
+      end
+
+      response '200', '複数投稿しても同じユーザーは重複しない' do
+        before do
+          3.times { create(:post, user: active_user, created_at: 1.hour.ago) }
+        end
+
+        run_test! do
+          names = json_response.map { |u| u['name'] }
+          expect(names.count('ActiveUser')).to eq(1)
+        end
+      end
+
       response '200', 'limitパラメータで取得件数を指定できる' do
         let!(:active_users) do
           create_list(:user, 10).each do |user|
@@ -88,9 +113,26 @@ RSpec.describe 'Api::ActiveUsers', type: :request do
             create(:post, user: user, created_at: 1.hour.ago)
           end
         end
+        let(:limit) { 50 }
 
         run_test! do
-          expect(json_response.size).to be <= 30
+          expect(json_response.size).to eq(30)
+        end
+      end
+
+      response '200', 'limitが0以下の場合は1件以上返る' do
+        let(:limit) { -1 }
+
+        run_test! do
+          expect(json_response.size).to be >= 1
+        end
+      end
+
+      response '200', 'パスワードやメールアドレスが含まれない' do
+        run_test! do
+          json_response.each do |user|
+            expect(user.keys).not_to include('email', 'encryptedPassword', 'password')
+          end
         end
       end
 

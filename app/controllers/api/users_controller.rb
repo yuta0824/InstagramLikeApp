@@ -1,6 +1,7 @@
 class Api::UsersController < ApplicationController
   def index
-    searchable_users = User.select(:id, :name).with_attached_avatar.limit(100)
-    render json: searchable_users, each_serializer: UserSerializer
+    users = User.select(:id, :name, :created_at).with_attached_avatar.order(created_at: :desc).limit(100)
+    users = users.search_by_name(params[:q]) if params[:q].present?
+    render json: users, each_serializer: UserSerializer
   end
 end

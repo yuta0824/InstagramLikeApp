@@ -45,6 +45,10 @@ class User < ApplicationRecord
   has_many :followers, through: :follower_relationships, source: :follower
   has_one_attached :avatar
 
+  scope :search_by_name, ->(query) {
+    where('LOWER(name) LIKE LOWER(?)', "%#{sanitize_sql_like(query)}%")
+  }
+
   scope :recently_active, ->(limit: 30, within: 24.hours) {
     joins(:posts)
       .where('posts.created_at >= ?', within.ago)

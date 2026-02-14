@@ -9,5 +9,6 @@ class Api::Users::PostsController < ApplicationController
                 .order(created_at: :desc)
                 .offset((page - 1) * PER_PAGE)
                 .limit(PER_PAGE)
-    render json: posts, each_serializer: PostDetailSerializer, scope: current_user  end
+    render json: posts, each_serializer: PostDetailSerializer, scope: current_user
+  end
 end

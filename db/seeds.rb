@@ -4,7 +4,6 @@ ActiveJob::Base.queue_adapter = :inline # Seed 時は同期実行に切り替え
 ActionMailer::Base.perform_deliveries = false # Sandbox からメールを送らないようにする
 
 begin
-  Notification.delete_all
   Comment.delete_all
   Like.delete_all
   Relationship.delete_all
@@ -134,7 +133,6 @@ begin
       rand(2..5).times do
         commenter = demo_users_list.reject { |u| u == post.user }.sample
         content = comments_list.sample
-        content = "@#{post.user.name} #{content}" if rand < 0.3
         post.comments.create!(user: commenter, content: content)
       end
     end

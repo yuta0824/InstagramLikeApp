@@ -74,6 +74,24 @@ RSpec.describe 'Api::Relationships', type: :request do
     end
   end
 
+  describe '通知' do
+    context 'フォロー時' do
+      it '相手に通知が作成される' do
+        follower = create(:user)
+        target = create(:user)
+        sign_in follower
+
+        expect {
+          post "/api/users/#{target.id}/relationship", as: :json
+        }.to change(Notification, :count).by(1)
+
+        notification = Notification.last
+        expect(notification.recipient).to eq(target)
+        expect(notification.notification_type).to eq('followed')
+      end
+    end
+  end
+
   describe '存在しないユーザーへの操作' do
     let(:current_user) { create(:user) }
     before { sign_in current_user }

@@ -92,6 +92,33 @@ RSpec.describe 'Api::Comments', type: :request do
     end
   end
 
+  describe '通知' do
+    let(:post_owner) { create(:user) }
+    let(:commenter) { create(:user) }
+    let(:target) { create(:post, user: post_owner) }
+
+    context 'コメント時' do
+      it '投稿者に通知が作成される' do
+        sign_in commenter
+        expect {
+          post "/api/posts/#{target.id}/comments", params: { comment: { content: 'Great post!' } }, as: :json
+        }.to change(Notification, :count).by(1)
+
+        notification = Notification.last
+        expect(notification.recipient).to eq(post_owner)
+        expect(notification.notification_type).to eq('commented')
+        expect(notification.comment_content).to eq('Great post!')
+      end
+
+      it '自分の投稿へのコメントでは通知が作成されない' do
+        sign_in post_owner
+        expect {
+          post "/api/posts/#{target.id}/comments", params: { comment: { content: 'Self comment' } }, as: :json
+        }.not_to change(Notification, :count)
+      end
+    end
+  end
+
   describe '認可・バリデーション' do
     let!(:user) { create(:user) }
     let!(:other_user) { create(:user) }

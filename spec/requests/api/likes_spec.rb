@@ -88,6 +88,40 @@ RSpec.describe 'Api::Likes', type: :request do
     end
   end
 
+  describe '通知' do
+    context 'いいね時' do
+      it '投稿者に通知が作成される' do
+        sign_in liker
+        expect {
+          post "/api/posts/#{target_post.id}/like", as: :json
+        }.to change(Notification, :count).by(1)
+
+        notification = Notification.last
+        expect(notification.recipient).to eq(post_owner)
+        expect(notification.notification_type).to eq('liked')
+      end
+
+      it '自分の投稿へのいいねでは通知が作成されない' do
+        sign_in post_owner
+        expect {
+          post "/api/posts/#{target_post.id}/like", as: :json
+        }.not_to change(Notification, :count)
+      end
+    end
+
+    context 'いいね取消時' do
+      it '通知のactor_countが減算される' do
+        like = create(:like, user: liker, post: target_post)
+        Notification.notify_if_needed(actor: liker, recipient: post_owner, notifiable: like, notification_type: :liked)
+
+        sign_in liker
+        expect {
+          delete "/api/posts/#{target_post.id}/like"
+        }.to change(Notification, :count).by(-1)
+      end
+    end
+  end
+
   describe '異常系' do
     let(:user) { create(:user) }
 

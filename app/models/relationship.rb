@@ -22,6 +22,7 @@
 class Relationship < ApplicationRecord
   belongs_to :follower, class_name: 'User'
   belongs_to :following, class_name: 'User'
+  has_one :notification, as: :notifiable, dependent: :destroy
 
   validates :follower_id, uniqueness: { scope: :following_id }
   validate :cannot_follow_self

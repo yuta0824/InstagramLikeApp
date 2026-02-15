@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_15_025953) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_15_062849) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -70,6 +70,28 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_15_025953) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "recipient_id", null: false
+    t.string "notification_type", null: false
+    t.string "notifiable_type"
+    t.bigint "notifiable_id"
+    t.bigint "target_post_id"
+    t.bigint "latest_actor_id"
+    t.jsonb "recent_actor_ids", default: [], null: false
+    t.integer "actor_count", default: 1, null: false
+    t.string "comment_content"
+    t.boolean "read", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["latest_actor_id"], name: "index_notifications_on_latest_actor_id"
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
+    t.index ["recipient_id", "notification_type", "target_post_id"], name: "idx_notifications_liked_unique", unique: true, where: "((notification_type)::text = 'liked'::text)"
+    t.index ["recipient_id", "read"], name: "index_notifications_on_recipient_id_and_read"
+    t.index ["recipient_id", "updated_at"], name: "index_notifications_on_recipient_id_and_updated_at"
+    t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
+    t.index ["target_post_id"], name: "index_notifications_on_target_post_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "caption"
@@ -112,6 +134,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_15_025953) do
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "notifications", "posts", column: "target_post_id", on_delete: :nullify
+  add_foreign_key "notifications", "users", column: "latest_actor_id", on_delete: :nullify
+  add_foreign_key "notifications", "users", column: "recipient_id"
   add_foreign_key "posts", "users"
   add_foreign_key "relationships", "users", column: "follower_id"
   add_foreign_key "relationships", "users", column: "following_id"

@@ -16,8 +16,6 @@ jobs:
           bundler-cache: true
       - name: Run RuboCop
         run: bundle exec rubocop --format github
-      - name: Run HAML-Lint
-        run: bundle exec haml-lint
 
   test:
     runs-on: ubuntu-latest

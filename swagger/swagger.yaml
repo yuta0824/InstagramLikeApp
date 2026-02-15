@@ -302,6 +302,135 @@ paths:
           multipart/form-data:
             schema:
               type: string
+  "/api/notifications/read_all":
+    post:
+      summary: 全通知を一括既読にする
+      tags:
+      - Notification
+      responses:
+        '204':
+          description: 一括既読成功
+        '401':
+          description: 未ログイン
+  "/api/notifications/{notification_id}/read":
+    parameters:
+    - name: notification_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    patch:
+      summary: 通知を既読にする
+      tags:
+      - Notification
+      responses:
+        '204':
+          description: 既読成功
+        '401':
+          description: 未ログイン
+  "/api/notifications/unread_count":
+    get:
+      summary: 未読通知数を取得する
+      tags:
+      - Notification
+      responses:
+        '200':
+          description: 取得成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unreadCount:
+                    type: integer
+                required:
+                - unreadCount
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  "/api/notifications":
+    get:
+      summary: 通知一覧を取得する
+      tags:
+      - Notification
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: 取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    notificationType:
+                      type: string
+                      enum:
+                      - liked
+                      - commented
+                      - followed
+                    actorCount:
+                      type: integer
+                    recentActors:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          avatarUrl:
+                            type: string
+                            nullable: true
+                        required:
+                        - name
+                        - avatarUrl
+                    postId:
+                      type: integer
+                      nullable: true
+                    postImageUrl:
+                      type: string
+                      nullable: true
+                    commentContent:
+                      type: string
+                      nullable: true
+                    read:
+                      type: boolean
+                    timeAgo:
+                      type: string
+                  required:
+                  - id
+                  - notificationType
+                  - actorCount
+                  - recentActors
+                  - read
+                  - timeAgo
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
   "/api/posts":
     get:
       summary: 投稿一覧を取得する

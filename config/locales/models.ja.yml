@@ -1,8 +1,5 @@
 ja:
   models:
-    user:
-      no_posts_yet: "まだ投稿していません"
-      last_post_was: "最後の投稿は%{time_ago}"
     post:
       single_like: "%{name}があなたの投稿にいいねしました"
       multiple_likes: "%{name}と他%{count}人があなたの投稿にいいねしました"

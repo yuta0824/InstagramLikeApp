@@ -1,8 +1,5 @@
 en:
   models:
-    user:
-      no_posts_yet: "Haven't posted yet"
-      last_post_was: "The last post was %{time_ago}"
     post:
       single_like: "%{name} liked your post"
       multiple_likes: "%{name} and %{count} other liked your post"

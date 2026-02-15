@@ -288,20 +288,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#following?' do
-    let(:user) { create(:user) }
-    let(:target) { create(:user) }
-
-    it 'フォロー中の場合 true を返す' do
-      user.follow!(target)
-      expect(user.following?(target)).to be true
-    end
-
-    it '未フォローの場合 false を返す' do
-      expect(user.following?(target)).to be false
-    end
-  end
-
   describe '#avatar_url' do
     let(:user) { create(:user) }
 
@@ -317,23 +303,6 @@ RSpec.describe User, type: :model do
       )
       expect(user.avatar_url).to be_a(String)
       expect(user.avatar_url).to include('test.jpg')
-    end
-  end
-
-  describe '#last_post_status_message' do
-    include ActiveSupport::Testing::TimeHelpers
-    let(:user) { create(:user) }
-
-    it '投稿なしの場合 no_posts_yet メッセージを返す' do
-      expect(user.last_post_status_message).to eq(I18n.t('models.user.no_posts_yet'))
-    end
-
-    it '投稿ありの場合 last_post_was メッセージを返す' do
-      freeze_time do
-        create(:post, user: user, created_at: 5.minutes.ago)
-        message = user.last_post_status_message
-        expect(message).to include(I18n.t('models.post.minutes_ago', count: 5))
-      end
     end
   end
 

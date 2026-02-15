@@ -24,8 +24,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
+  devise :database_authenticatable, :validatable,
          :omniauthable, :jwt_authenticatable,
          omniauth_providers: %i[google_oauth2],
          jwt_revocation_strategy: JwtDenylist
@@ -72,23 +71,6 @@ class User < ApplicationRecord
   def unfollow!(target_user)
     relation = following_relationships.find_by!(following_id: target_user.id)
     relation.destroy!
-  end
-
-  def following?(target_user)
-    following_relationships.exists?(following_id: target_user.id)
-  end
-
-  def last_post_status_message
-    # 既にロード済みの場合はメモリ上で検索。N+1クエリを避けるため
-    last_post =
-      if posts.loaded?
-        posts.max_by(&:created_at)
-      else
-        posts.order(created_at: :desc).first
-      end
-    return I18n.t('models.user.no_posts_yet') unless last_post
-
-    I18n.t('models.user.last_post_was', time_ago: last_post.time_ago)
   end
 
   def self.from_omniauth(auth)

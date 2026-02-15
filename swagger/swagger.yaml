@@ -312,22 +312,6 @@ paths:
           description: 一括既読成功
         '401':
           description: 未ログイン
-  "/api/notifications/{notification_id}/read":
-    parameters:
-    - name: notification_id
-      in: path
-      required: true
-      schema:
-        type: integer
-    patch:
-      summary: 通知を既読にする
-      tags:
-      - Notification
-      responses:
-        '204':
-          description: 既読成功
-        '401':
-          description: 未ログイン
   "/api/notifications/unread_count":
     get:
       summary: 未読通知数を取得する

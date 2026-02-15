@@ -21,7 +21,6 @@ Rails.application.routes.draw do
     end
     resource :me, only: %i[show update], controller: :me
     resources :notifications, only: %i[index] do
-      resource :read, only: %i[update], module: :notifications
       collection do
         resource :unread_count, only: %i[show], module: :notifications, controller: :unread_counts
         post :read_all, to: 'notifications/read_all#create'

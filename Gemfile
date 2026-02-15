@@ -18,16 +18,12 @@ gem 'devise-i18n'
 gem 'devise-jwt'
 # Rails internationalization [https://github.com/svenfuchs/rails-i18n]
 gem 'rails-i18n'
-# Use Haml for templating [https://haml.info]
-gem 'hamlit'
 # AWS SDK for Ruby - S3 [https://github.com/aws/aws-sdk-ruby]
 gem 'aws-sdk-s3', require: false
 # Serializer [https://github.com/rails-api/active_model_serializers]
 gem 'active_model_serializers'
 # rswag [https://github.com/rswag/rswag]
 gem 'rswag'
-# sidekiq [https://github.com/sidekiq/sidekiq]
-gem 'sidekiq'
 # omniauth
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
@@ -61,13 +57,6 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'
-  # Convert ERB templates to HAML [https://github.com/dhl/erb2haml]
-  gem 'erb2haml'
   # Annotate models and routes with schema information [https://github.com/ctran/annotate_models]
   gem 'annotate'
-  # HAML files clean and readable [https://github.com/sds/haml-lint]
-  gem 'haml_lint', require: false
-  # Preview email in browser [https://github.com/ryanb/letter_opener]
-  gem 'letter_opener'
-  gem 'letter_opener_web', '~> 3.0'
 end

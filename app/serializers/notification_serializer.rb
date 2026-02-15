@@ -5,7 +5,7 @@ class NotificationSerializer < ActiveModel::Serializer
              :post_id, :post_image_url, :comment_content, :read, :time_ago
 
   def recent_actors
-    users = User.where(id: object.recent_actor_ids).index_by(&:id)
+    users = instance_options[:actors_by_id] || User.where(id: object.recent_actor_ids).index_by(&:id)
     object.recent_actor_ids.filter_map do |actor_id|
       user = users[actor_id]
       next unless user

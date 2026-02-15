@@ -171,5 +171,65 @@ RSpec.describe Notification, type: :model do
         described_class.retract_if_needed(actor: actor, recipient: recipient, target_post_id: 999)
       }.not_to change(described_class, :count)
     end
+
+    it 'latest_actorを取消した場合、次のアクターに更新される' do
+      first_like = create(:like, user: actor, post: post_record)
+      described_class.notify_if_needed(actor: actor, recipient: recipient, notifiable: first_like, notification_type: :liked)
+
+      second_actor = create(:user)
+      second_like = create(:like, user: second_actor, post: post_record)
+      described_class.notify_if_needed(actor: second_actor, recipient: recipient, notifiable: second_like, notification_type: :liked)
+
+      described_class.retract_if_needed(actor: second_actor, recipient: recipient, target_post_id: post_record.id)
+
+      notification = described_class.last
+      expect(notification.latest_actor_id).to eq(actor.id)
+    end
+  end
+
+  describe 'エラー耐性' do
+    it 'notify_if_neededで例外が発生しても呼び出し元にraiseしない' do
+      allow(described_class).to receive(:upsert_liked).and_raise(StandardError, 'DB error')
+      like = create(:like, user: actor, post: post_record)
+
+      expect {
+        described_class.notify_if_needed(actor: actor, recipient: recipient, notifiable: like, notification_type: :liked)
+      }.not_to raise_error
+    end
+
+    it 'retract_if_neededで例外が発生しても呼び出し元にraiseしない' do
+      like = create(:like, user: actor, post: post_record)
+      described_class.notify_if_needed(actor: actor, recipient: recipient, notifiable: like, notification_type: :liked)
+
+      allow(described_class).to receive(:find_by).and_raise(StandardError, 'DB error')
+
+      expect {
+        described_class.retract_if_needed(actor: actor, recipient: recipient, target_post_id: post_record.id)
+      }.not_to raise_error
+    end
+  end
+
+  describe 'actor_count重複防止' do
+    it '同じアクターが再度いいねしてもactor_countが増加しない' do
+      like = create(:like, user: actor, post: post_record)
+      described_class.notify_if_needed(actor: actor, recipient: recipient, notifiable: like, notification_type: :liked)
+
+      second_actor = create(:user)
+      second_like = create(:like, user: second_actor, post: post_record)
+      described_class.notify_if_needed(actor: second_actor, recipient: recipient, notifiable: second_like, notification_type: :liked)
+
+      # actorが再度recent_actor_idsに含まれる状態でupsertされた場合
+      notification = described_class.last
+      expect(notification.actor_count).to eq(2)
+
+      # 同じactorで再度notify（recent_actor_idsに既に存在）
+      third_like = build(:like, user: actor, post: post_record)
+      allow(third_like).to receive(:post_id).and_return(post_record.id)
+      described_class.send(:upsert_liked, actor: actor, recipient: recipient, notifiable: third_like)
+
+      notification.reload
+      expect(notification.actor_count).to eq(2)
+      expect(notification.recent_actor_ids).to eq([actor.id, second_actor.id])
+    end
   end
 end

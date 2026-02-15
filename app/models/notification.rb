@@ -56,6 +56,9 @@ class Notification < ApplicationRecord
     else
       create_individual(actor: actor, recipient: recipient, notifiable: notifiable, notification_type: notification_type)
     end
+  rescue StandardError => e
+    Rails.logger.error("Notification creation failed: #{e.message}")
+    nil
   end
 
   def self.retract_if_needed(actor:, recipient:, target_post_id:)
@@ -68,9 +71,13 @@ class Notification < ApplicationRecord
       new_ids = notification.recent_actor_ids - [actor.id]
       notification.update!(
         actor_count: notification.actor_count - 1,
-        recent_actor_ids: new_ids
+        recent_actor_ids: new_ids,
+        latest_actor_id: new_ids.first
       )
     end
+  rescue StandardError => e
+    Rails.logger.error("Notification retraction failed: #{e.message}")
+    nil
   end
 
   class << self
@@ -80,11 +87,12 @@ class Notification < ApplicationRecord
       existing = find_by(recipient: recipient, notification_type: :liked, target_post_id: notifiable.post_id)
 
       if existing
+        already_present = existing.recent_actor_ids.include?(actor.id)
         new_ids = ([actor.id] + existing.recent_actor_ids).uniq.first(MAX_RECENT_ACTORS)
         existing.update!(
           latest_actor_id: actor.id,
           recent_actor_ids: new_ids,
-          actor_count: existing.actor_count + 1,
+          actor_count: already_present ? existing.actor_count : existing.actor_count + 1,
           read: false
         )
       else
@@ -98,6 +106,8 @@ class Notification < ApplicationRecord
           actor_count: 1
         )
       end
+    rescue ActiveRecord::RecordNotUnique
+      retry
     end
 
     def create_individual(actor:, recipient:, notifiable:, notification_type:)

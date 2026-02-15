@@ -7,7 +7,9 @@ class Api::NotificationsController < ApplicationController
                                 .recent_first
                                 .limit(PER_PAGE)
                                 .offset(offset)
-    render json: notifications, each_serializer: NotificationSerializer
+    actor_ids = notifications.flat_map(&:recent_actor_ids).uniq
+    actors_by_id = User.where(id: actor_ids).index_by(&:id)
+    render json: notifications, each_serializer: NotificationSerializer, actors_by_id: actors_by_id
   end
 
   private

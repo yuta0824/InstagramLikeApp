@@ -30,13 +30,14 @@ RAILS_ENV=test bundle exec rake rswag:specs:swaggerize
 ```
 
 実装完了後、コミット前に必ず以下を実行すること:
+
 1. `bundle exec annotate --models`（モデルやマイグレーションに変更がある場合）
 2. `bundle exec rubocop --auto-correct`
 3. `RAILS_ENV=test bundle exec rake rswag:specs:swaggerize`（APIに変更がある場合）
 
 ## Git ルール
 
-- **mainブランチでの作業禁止**: 必ずfeatureブランチを作成して作業すること
+- **mainブランチでの作業禁止**: 必ず作業用ブランチ（`feature/`, `fix/`, `refactor/` 等）を作成して作業すること
 - **git push は実行しない**: push はユーザーが手動で行う
 - **大きな変更はコミットを分割する**: 1コミットにまとめず、レビューしやすい論理単位で分ける
 

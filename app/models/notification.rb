@@ -48,6 +48,19 @@ class Notification < ApplicationRecord
 
   MAX_RECENT_ACTORS = 10
 
+  def time_ago
+    seconds_diff = (Time.current - updated_at).to_i
+    return I18n.t('models.post.now') if seconds_diff < 60
+
+    minutes = seconds_diff / 60
+    return I18n.t('models.post.minutes_ago', count: minutes) if minutes < 60
+
+    hours = minutes / 60
+    return I18n.t('models.post.hours_ago', count: hours) if hours < 24
+
+    updated_at.strftime('%Y/%m/%d')
+  end
+
   def self.notify_if_needed(actor:, recipient:, notifiable:, notification_type:)
     return if actor.id == recipient.id
 

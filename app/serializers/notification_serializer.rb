@@ -29,15 +29,6 @@ class NotificationSerializer < ActiveModel::Serializer
   end
 
   def time_ago
-    seconds_diff = (Time.current - object.updated_at).to_i
-    return I18n.t('models.post.now') if seconds_diff < 60
-
-    minutes = seconds_diff / 60
-    return I18n.t('models.post.minutes_ago', count: minutes) if minutes < 60
-
-    hours = minutes / 60
-    return I18n.t('models.post.hours_ago', count: hours) if hours < 24
-
-    object.updated_at.strftime('%Y/%m/%d')
+    object.time_ago
   end
 end

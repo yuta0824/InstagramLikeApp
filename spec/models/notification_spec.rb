@@ -209,6 +209,25 @@ RSpec.describe Notification, type: :model do
     end
   end
 
+  describe 'MAX_RECENT_ACTORS制限' do
+    it 'recent_actor_idsはMAX_RECENT_ACTORS件を超えない' do
+      first_like = create(:like, user: actor, post: post_record)
+      described_class.notify_if_needed(actor: actor, recipient: recipient, notifiable: first_like, notification_type: :liked)
+
+      additional_actors = Array.new(11) do
+        a = create(:user)
+        l = create(:like, user: a, post: post_record)
+        described_class.notify_if_needed(actor: a, recipient: recipient, notifiable: l, notification_type: :liked)
+        a
+      end
+
+      notification = described_class.last
+      expect(notification.recent_actor_ids.size).to eq(Notification::MAX_RECENT_ACTORS)
+      expect(notification.actor_count).to eq(12)
+      expect(notification.recent_actor_ids.first).to eq(additional_actors.last.id)
+    end
+  end
+
   describe 'actor_count重複防止' do
     it '同じアクターが再度いいねしてもactor_countが増加しない' do
       like = create(:like, user: actor, post: post_record)

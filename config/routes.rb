@@ -20,6 +20,12 @@ Rails.application.routes.draw do
       resources :posts, only: %i[index], controller: 'users/posts'
     end
     resource :me, only: %i[show update], controller: :me
+    resources :notifications, only: %i[index] do
+      collection do
+        resource :unread_count, only: %i[show], module: :notifications, controller: :unread_counts
+        post :read_all, to: 'notifications/read_all#create'
+      end
+    end
     resources :posts, only: %i[index show create update destroy] do
       resource :like, only: %i[create destroy], module: :posts
       resources :comments, only: %i[create destroy], module: :posts

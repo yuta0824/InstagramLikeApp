@@ -34,6 +34,7 @@ class User < ApplicationRecord
             uniqueness: true,
             length: { maximum: 20 },
             format: { with: /\A[a-zA-Z0-9_]+\z/, message: :invalid_format }
+  has_many :notifications, foreign_key: 'recipient_id', dependent: :destroy, inverse_of: :recipient
   has_many :likes, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy

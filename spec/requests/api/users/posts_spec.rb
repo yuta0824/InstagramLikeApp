@@ -19,8 +19,8 @@ RSpec.describe 'Api::Users::Posts', type: :request do
         schema type: :array,
                items: {
                  type: :object,
-                 properties: POST_DETAIL_PROPERTIES,
-                 required: POST_DETAIL_REQUIRED
+                 properties: POST_LIST_PROPERTIES,
+                 required: POST_LIST_REQUIRED
                }
 
         let!(:target_posts) { create_list(:post, 3, user: target_user) }
@@ -147,6 +147,18 @@ RSpec.describe 'Api::Users::Posts', type: :request do
         get "/api/users/#{target_user.id}/posts"
         expect(json_response.first['isLiked']).to be true
         expect(json_response.first['likedCount']).to eq(1)
+      end
+    end
+
+    context '一覧レスポンスの形式' do
+      let!(:post) { create(:post, user: target_user) }
+
+      before { create_list(:comment, 2, post: post) }
+
+      it 'commentsCount が正しい値を返し comments キーが含まれない' do
+        get "/api/users/#{target_user.id}/posts"
+        expect(json_response.first['commentsCount']).to eq(2)
+        expect(json_response.first).not_to have_key('comments')
       end
     end
   end

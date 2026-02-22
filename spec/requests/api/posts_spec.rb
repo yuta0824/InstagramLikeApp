@@ -15,8 +15,8 @@ RSpec.describe 'Api::Posts', type: :request do
         schema type: :array,
                items: {
                  type: :object,
-                 properties: POST_DETAIL_PROPERTIES,
-                 required: POST_DETAIL_REQUIRED
+                 properties: POST_LIST_PROPERTIES,
+                 required: POST_LIST_REQUIRED
                }
 
         before { sign_in user }
@@ -288,6 +288,22 @@ RSpec.describe 'Api::Posts', type: :request do
         get "/api/posts/#{target.id}"
         expect(json_response['isLiked']).to be true
         expect(json_response['likedCount']).to eq(1)
+      end
+    end
+
+    context 'GET /api/posts 一覧レスポンスの形式' do
+      let!(:target) { create(:post) }
+
+      before do
+        create_list(:comment, 3, post: target)
+        sign_in user
+      end
+
+      it 'commentsCount が正しい値を返し comments キーが含まれない' do
+        get '/api/posts'
+        post_json = json_response.find { |p| p['id'] == target.id }
+        expect(post_json['commentsCount']).to eq(3)
+        expect(post_json).not_to have_key('comments')
       end
     end
 

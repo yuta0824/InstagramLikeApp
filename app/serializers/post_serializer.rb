@@ -16,8 +16,12 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-class PostDetailSerializer < ActiveModel::Serializer
+class PostSerializer < ActiveModel::Serializer
   include PostAttributes
 
-  has_many :comments, serializer: CommentSerializer
+  attributes :comments_count
+
+  def comments_count
+    object.comments.size
+  end
 end

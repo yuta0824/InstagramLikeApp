@@ -140,25 +140,28 @@ RSpec.describe 'Api::Me', type: :request do
     before { sign_in user }
 
     context '無効な名前（20文字超）の場合' do
-      it '422を返す' do
+      it '422とJSONエラーを返す' do
         patch '/api/me', params: { name: 'a' * 21 }
         expect(response).to have_http_status(:unprocessable_entity)
+        expect(json_response['errors']).to be_present
       end
     end
 
     context '無効な名前フォーマット（特殊文字）の場合' do
-      it '422を返す' do
+      it '422とJSONエラーを返す' do
         patch '/api/me', params: { name: 'invalid@name!' }
         expect(response).to have_http_status(:unprocessable_entity)
+        expect(json_response['errors']).to be_present
       end
     end
 
     context '重複する名前の場合' do
       let!(:other_user) { create(:user, name: 'taken_name') }
 
-      it '422を返す' do
+      it '422とJSONエラーを返す' do
         patch '/api/me', params: { name: 'taken_name' }
         expect(response).to have_http_status(:unprocessable_entity)
+        expect(json_response['errors']).to be_present
       end
     end
   end

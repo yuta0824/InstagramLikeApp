@@ -37,6 +37,11 @@ class Post < ApplicationRecord
       .with_attached_images
   }
 
+  scope :timeline_for, ->(user) {
+    following_ids = Relationship.where(follower_id: user.id).select(:following_id)
+    where(user_id: following_ids).or(where(user_id: user.id))
+  }
+
   def owned_by?(user)
     return false unless user
     user_id == user.id

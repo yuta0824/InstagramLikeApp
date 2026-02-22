@@ -87,6 +87,42 @@ RSpec.describe Post, type: :model do
     end
   end
 
+  describe '.timeline_for' do
+    let(:followed_user) { create(:user) }
+    let(:unfollowed_user) { create(:user) }
+
+    before { create(:relationship, follower: owner, following: followed_user) }
+
+    it 'フォロー中ユーザーの投稿を含む' do
+      post = create(:post, user: followed_user)
+      expect(Post.timeline_for(owner)).to include(post)
+    end
+
+    it '自分の投稿を含む' do
+      post = create(:post, user: owner)
+      expect(Post.timeline_for(owner)).to include(post)
+    end
+
+    it '未フォローユーザーの投稿を含まない' do
+      post = create(:post, user: unfollowed_user)
+      expect(Post.timeline_for(owner)).not_to include(post)
+    end
+
+    it '複数フォローユーザーの投稿を全て含む' do
+      second_followed = create(:user)
+      create(:relationship, follower: owner, following: second_followed)
+      post1 = create(:post, user: followed_user)
+      post2 = create(:post, user: second_followed)
+      expect(Post.timeline_for(owner)).to include(post1, post2)
+    end
+
+    it 'フォローも投稿もないユーザーは空を返す' do
+      loner = create(:user)
+      create(:post, user: unfollowed_user)
+      expect(Post.timeline_for(loner)).to be_empty
+    end
+  end
+
   describe '#owned_by?' do
     let(:post) { create(:post, user: owner) }
     let(:other_user) { create(:user) }

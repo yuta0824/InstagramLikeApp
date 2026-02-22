@@ -118,14 +118,7 @@ begin
     demo_users_list.reject { |u| u == user }.sample(rand(2..5)).each { |followed_user| user.follow!(followed_user) }
   end
 
-  comments_list = [
-    '素敵ですね！', 'いい写真！', '羨ましいです', '楽しそう！', '行ってみたい！',
-    '美味しそう！', '綺麗ですね', '最高！', 'お疲れ様です', 'また見に来ます！',
-    'Nice!', 'Beautiful!', 'Looks great!', 'Amazing!', 'Cool!',
-    'すごい！', 'いいね〜', '最高の一日ですね', '素敵な場所', 'また行きたい',
-    '憧れます', '楽しみですね', '良いですね', '素晴らしい',
-    '癒されました', 'おしゃれ', 'かっこいい', '参考になります', '真似したい'
-  ]
+  comments_list = YAML.load_file(Rails.root.join('config/simulator/comments.yml'))
 
   Post.all.each do |post|
     if rand < 0.7

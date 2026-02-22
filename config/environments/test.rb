@@ -65,6 +65,6 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
 
-  # Use inline adapter for ActiveJob in tests to execute jobs synchronously
-  config.active_job.queue_adapter = :inline
+  # Use test adapter for ActiveJob to enable have_enqueued_job matcher
+  config.active_job.queue_adapter = :test
 end

@@ -45,6 +45,8 @@ class User < ApplicationRecord
   has_many :followers, through: :follower_relationships, source: :follower
   has_one_attached :avatar
 
+  after_create_commit :welcome_follow, unless: :bot?
+
   scope :bots, -> { where(bot: true) }
 
   scope :search_by_name, ->(query) {
@@ -88,6 +90,10 @@ class User < ApplicationRecord
 
     user.save!
     user
+  end
+
+  def welcome_follow
+    SimulatorService.welcome_follow(self)
   end
 
   def self.build_unique_name(auth)

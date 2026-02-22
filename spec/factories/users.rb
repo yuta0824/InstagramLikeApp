@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  bot                    :boolean          default(FALSE), not null
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  name                   :string           not null
@@ -28,5 +29,9 @@ FactoryBot.define do
     sequence(:email) { |n| "user#{n}@example.com" }
     sequence(:name) { |n| "user_#{n}" }
     password { Devise.friendly_token[0, 20] }
+
+    trait :bot do
+      bot { true }
+    end
   end
 end

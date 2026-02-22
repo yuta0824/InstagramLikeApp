@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  bot                    :boolean          default(FALSE), not null
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  name                   :string           not null
@@ -43,6 +44,8 @@ class User < ApplicationRecord
   has_many :follower_relationships, foreign_key: 'following_id', class_name: 'Relationship', dependent: :destroy
   has_many :followers, through: :follower_relationships, source: :follower
   has_one_attached :avatar
+
+  scope :bots, -> { where(bot: true) }
 
   scope :search_by_name, ->(query) {
     where('LOWER(name) LIKE LOWER(?)', "%#{sanitize_sql_like(query)}%")

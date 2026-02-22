@@ -14,12 +14,19 @@ RSpec.describe 'Api::Notifications', type: :request do
       let(:target_post) { create(:post, user: user) }
 
       response '200', '取得成功' do
-        schema type: :array,
-               items: {
-                 type: :object,
-                 properties: NOTIFICATION_PROPERTIES,
-                 required: NOTIFICATION_REQUIRED
-               }
+        schema type: :object,
+               properties: {
+                 notifications: {
+                   type: :array,
+                   items: {
+                     type: :object,
+                     properties: NOTIFICATION_PROPERTIES,
+                     required: NOTIFICATION_REQUIRED
+                   }
+                 },
+                 hasMore: { type: :boolean }
+               },
+               required: %w[notifications hasMore]
 
         before do
           create(:like, user: other_user, post: target_post)
@@ -29,17 +36,17 @@ RSpec.describe 'Api::Notifications', type: :request do
         end
 
         run_test! do
-          expect(json_response.size).to eq(3)
+          expect(json_response['notifications'].size).to eq(3)
 
-          liked = json_response.find { |n| n['notificationType'] == 'liked' }
+          liked = json_response['notifications'].find { |n| n['notificationType'] == 'liked' }
           expect(liked['actorCount']).to eq(1)
           expect(liked['recentActors'].first['name']).to eq(other_user.name)
           expect(liked['postId']).to eq(target_post.id)
 
-          commented = json_response.find { |n| n['notificationType'] == 'commented' }
+          commented = json_response['notifications'].find { |n| n['notificationType'] == 'commented' }
           expect(commented['commentContent']).to eq('great!')
 
-          followed = json_response.find { |n| n['notificationType'] == 'followed' }
+          followed = json_response['notifications'].find { |n| n['notificationType'] == 'followed' }
           expect(followed['postId']).to be_nil
         end
       end
@@ -67,14 +74,16 @@ RSpec.describe 'Api::Notifications', type: :request do
       sign_in user
     end
 
-    it 'ページ1は最大20件を返す' do
+    it 'ページ1は最大20件を返しhasMoreがtrueになる' do
       get '/api/notifications', params: { page: 1 }
-      expect(json_response.size).to eq(20)
+      expect(json_response['notifications'].size).to eq(20)
+      expect(json_response['hasMore']).to be true
     end
 
-    it 'ページ2は残りを返す' do
+    it 'ページ2は残りを返しhasMoreがfalseになる' do
       get '/api/notifications', params: { page: 2 }
-      expect(json_response.size).to eq(5)
+      expect(json_response['notifications'].size).to eq(5)
+      expect(json_response['hasMore']).to be false
     end
   end
 
@@ -90,7 +99,7 @@ RSpec.describe 'Api::Notifications', type: :request do
 
     it '他ユーザーの通知は取得できない' do
       get '/api/notifications'
-      expect(json_response.size).to eq(0)
+      expect(json_response['notifications'].size).to eq(0)
     end
   end
 

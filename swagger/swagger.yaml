@@ -301,7 +301,16 @@ paths:
         content:
           multipart/form-data:
             schema:
-              type: string
+              type: object
+              properties:
+                name:
+                  type: string
+                avatar:
+                  type: string
+                  format: binary
+                remove_avatar:
+                  type: boolean
+                  description: trueでアバターを削除
   "/api/notifications/read_all":
     post:
       summary: 全通知を一括既読にする

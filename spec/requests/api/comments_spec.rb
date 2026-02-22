@@ -117,6 +117,18 @@ RSpec.describe 'Api::Comments', type: :request do
         }.not_to change(Notification, :count)
       end
     end
+
+    context 'コメント削除時' do
+      it '通知も削除される' do
+        comment = create(:comment, user: commenter, post: target, content: 'hello')
+        expect(Notification.count).to eq(1)
+
+        sign_in commenter
+        expect {
+          delete "/api/posts/#{target.id}/comments/#{comment.id}"
+        }.to change(Notification, :count).by(-1)
+      end
+    end
   end
 
   describe '認可・バリデーション' do

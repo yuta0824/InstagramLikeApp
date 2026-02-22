@@ -90,6 +90,20 @@ RSpec.describe 'Api::Relationships', type: :request do
         expect(notification.notification_type).to eq('followed')
       end
     end
+
+    context 'フォロー解除時' do
+      it '通知も削除される' do
+        follower = create(:user)
+        target = create(:user)
+        create(:relationship, follower: follower, following: target)
+        expect(Notification.count).to eq(1)
+
+        sign_in follower
+        expect {
+          delete "/api/users/#{target.id}/relationship"
+        }.to change(Notification, :count).by(-1)
+      end
+    end
   end
 
   describe '存在しないユーザーへの操作' do

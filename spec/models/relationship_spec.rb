@@ -66,4 +66,14 @@ RSpec.describe Relationship, type: :model do
       expect(notification.latest_actor_id).to eq(follower.id)
     end
   end
+
+  describe '通知のカスケード削除' do
+    it 'フォロー解除で通知も削除される（dependent: :destroy）' do
+      relationship = create(:relationship, follower: follower, following: following)
+      expect(Notification.count).to eq(1)
+
+      relationship.destroy!
+      expect(Notification.count).to eq(0)
+    end
+  end
 end

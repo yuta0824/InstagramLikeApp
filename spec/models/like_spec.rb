@@ -69,4 +69,13 @@ RSpec.describe Like, type: :model do
       expect(Notification.count).to eq(0)
     end
   end
+
+  describe '投稿削除時のカスケード' do
+    it '投稿削除時にRecordNotFoundをrescueして安全に処理する' do
+      create(:like, user: user, post: post)
+      expect(Notification.count).to eq(1)
+
+      expect { post.destroy! }.not_to raise_error
+    end
+  end
 end

@@ -71,4 +71,25 @@ RSpec.describe Comment, type: :model do
       }.not_to change(Notification, :count)
     end
   end
+
+  describe '通知のカスケード削除' do
+    let(:post_owner) { create(:user) }
+    let(:target_post) { create(:post, user: post_owner) }
+
+    it 'コメント削除で通知も削除される（dependent: :destroy）' do
+      comment = create(:comment, user: author, post: target_post, content: 'hello')
+      expect(Notification.count).to eq(1)
+
+      comment.destroy!
+      expect(Notification.count).to eq(0)
+    end
+
+    it '投稿削除でコメント通知も連鎖削除される' do
+      create(:comment, user: author, post: target_post, content: 'hello')
+      expect(Notification.count).to eq(1)
+
+      target_post.destroy!
+      expect(Notification.count).to eq(0)
+    end
+  end
 end

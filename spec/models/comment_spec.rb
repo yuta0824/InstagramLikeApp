@@ -48,4 +48,27 @@ RSpec.describe Comment, type: :model do
       end
     end
   end
+
+  describe 'after_create_commit :notify_recipient' do
+    let(:post_owner) { create(:user) }
+    let(:target_post) { create(:post, user: post_owner) }
+
+    it '投稿者に通知が作成される' do
+      expect {
+        create(:comment, user: author, post: target_post, content: 'nice!')
+      }.to change(Notification, :count).by(1)
+
+      notification = Notification.last
+      expect(notification.notification_type).to eq('commented')
+      expect(notification.recipient).to eq(post_owner)
+      expect(notification.latest_actor_id).to eq(author.id)
+    end
+
+    it '自分の投稿への自分のコメントでは通知が作成されない' do
+      own_post = create(:post, user: author)
+      expect {
+        create(:comment, user: author, post: own_post, content: 'memo')
+      }.not_to change(Notification, :count)
+    end
+  end
 end

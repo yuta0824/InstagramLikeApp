@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         post :read_all, to: 'notifications/read_all#create'
       end
     end
+    resources :timeline, only: %i[index], controller: :timelines
     resources :posts, only: %i[index show create update destroy] do
       resource :like, only: %i[create destroy], module: :posts
       resources :comments, only: %i[create destroy], module: :posts

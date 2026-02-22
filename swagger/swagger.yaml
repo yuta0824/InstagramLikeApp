@@ -863,6 +863,72 @@ paths:
           description: 未ログイン
         '404':
           description: フォローしていない相手を削除しようとした場合
+  "/api/timeline":
+    get:
+      summary: タイムラインを取得する
+      tags:
+      - Timeline
+      responses:
+        '200':
+          description: 取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    caption:
+                      type: string
+                      nullable: true
+                    imageUrls:
+                      type: array
+                      items:
+                        type: string
+                    userName:
+                      type: string
+                    userAvatar:
+                      type: string
+                      nullable: true
+                    likedCount:
+                      type: integer
+                    likesSummary:
+                      type: string
+                      nullable: true
+                    timeAgo:
+                      type: string
+                    isLiked:
+                      type: boolean
+                    isOwn:
+                      type: boolean
+                    mostRecentLikerName:
+                      type: string
+                    commentsCount:
+                      type: integer
+                  required:
+                  - id
+                  - imageUrls
+                  - userName
+                  - userAvatar
+                  - likedCount
+                  - timeAgo
+                  - isLiked
+                  - isOwn
+                  - mostRecentLikerName
+                  - commentsCount
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
   "/api/auth/token":
     get:
       summary: 認可コードからJWTを取得する

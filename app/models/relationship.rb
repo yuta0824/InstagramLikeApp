@@ -27,7 +27,13 @@ class Relationship < ApplicationRecord
   validates :follower_id, uniqueness: { scope: :following_id }
   validate :cannot_follow_self
 
+  after_create_commit :notify_recipient
+
   private
+
+  def notify_recipient
+    Notification.notify_if_needed(actor: follower, recipient: following, notifiable: self, notification_type: :followed)
+  end
 
   def cannot_follow_self
     errors.add(:following_id, 'cannot follow yourself') if follower_id == following_id

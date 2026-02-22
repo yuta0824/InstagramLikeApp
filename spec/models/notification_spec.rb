@@ -35,6 +35,20 @@
 require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
+  before(:all) do
+    Like.skip_callback(:commit, :after, :notify_recipient)
+    Like.skip_callback(:commit, :after, :retract_notification)
+    Comment.skip_callback(:commit, :after, :notify_recipient)
+    Relationship.skip_callback(:commit, :after, :notify_recipient)
+  end
+
+  after(:all) do
+    Like.set_callback(:commit, :after, :notify_recipient, on: :create)
+    Like.set_callback(:commit, :after, :retract_notification, on: :destroy)
+    Comment.set_callback(:commit, :after, :notify_recipient, on: :create)
+    Relationship.set_callback(:commit, :after, :notify_recipient, on: :create)
+  end
+
   let(:actor) { create(:user) }
   let(:recipient) { create(:user) }
   let(:post_record) { create(:post, user: recipient) }

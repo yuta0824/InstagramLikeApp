@@ -24,4 +24,19 @@ class Like < ApplicationRecord
   belongs_to :post
   has_one :notification, as: :notifiable, dependent: :nullify
   validates :post_id, uniqueness: { scope: :user_id }
+
+  after_create_commit :notify_recipient
+  after_destroy_commit :retract_notification
+
+  private
+
+  def notify_recipient
+    Notification.notify_if_needed(actor: user, recipient: post.user, notifiable: self, notification_type: :liked)
+  end
+
+  def retract_notification
+    Notification.retract_if_needed(actor: user, recipient: post.user, target_post_id: post_id)
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
 end

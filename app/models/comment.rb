@@ -24,4 +24,12 @@ class Comment < ApplicationRecord
   belongs_to :post
   has_one :notification, as: :notifiable, dependent: :destroy
   validates :content, presence: true, length: { maximum: 100 }
+
+  after_create_commit :notify_recipient
+
+  private
+
+  def notify_recipient
+    Notification.notify_if_needed(actor: user, recipient: post.user, notifiable: self, notification_type: :commented)
+  end
 end

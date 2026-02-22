@@ -22,15 +22,9 @@ RSpec.describe 'Api::Notifications', type: :request do
                }
 
         before do
-          like = create(:like, user: other_user, post: target_post)
-          Notification.notify_if_needed(actor: other_user, recipient: user, notifiable: like, notification_type: :liked)
-
-          comment = create(:comment, user: other_user, post: target_post, content: 'great!')
-          Notification.notify_if_needed(actor: other_user, recipient: user, notifiable: comment, notification_type: :commented)
-
-          relationship = create(:relationship, follower: other_user, following: user)
-          Notification.notify_if_needed(actor: other_user, recipient: user, notifiable: relationship, notification_type: :followed)
-
+          create(:like, user: other_user, post: target_post)
+          create(:comment, user: other_user, post: target_post, content: 'great!')
+          create(:relationship, follower: other_user, following: user)
           sign_in user
         end
 
@@ -68,8 +62,7 @@ RSpec.describe 'Api::Notifications', type: :request do
     before do
       25.times do
         actor = create(:user)
-        relationship = create(:relationship, follower: actor, following: user)
-        Notification.notify_if_needed(actor: actor, recipient: user, notifiable: relationship, notification_type: :followed)
+        create(:relationship, follower: actor, following: user)
       end
       sign_in user
     end
@@ -91,8 +84,7 @@ RSpec.describe 'Api::Notifications', type: :request do
 
     before do
       actor = create(:user)
-      relationship = create(:relationship, follower: actor, following: other_user)
-      Notification.notify_if_needed(actor: actor, recipient: other_user, notifiable: relationship, notification_type: :followed)
+      create(:relationship, follower: actor, following: other_user)
       sign_in user
     end
 

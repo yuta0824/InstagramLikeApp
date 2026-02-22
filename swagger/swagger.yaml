@@ -405,53 +405,61 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    notificationType:
-                      type: string
-                      enum:
-                      - liked
-                      - commented
-                      - followed
-                    actorCount:
-                      type: integer
-                    recentActors:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          name:
-                            type: string
-                          avatarUrl:
-                            type: string
-                            nullable: true
-                        required:
-                        - name
-                        - avatarUrl
-                    postId:
-                      type: integer
-                      nullable: true
-                    postImageUrl:
-                      type: string
-                      nullable: true
-                    commentContent:
-                      type: string
-                      nullable: true
-                    read:
-                      type: boolean
-                    timeAgo:
-                      type: string
-                  required:
-                  - id
-                  - notificationType
-                  - actorCount
-                  - recentActors
-                  - read
-                  - timeAgo
+                type: object
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        notificationType:
+                          type: string
+                          enum:
+                          - liked
+                          - commented
+                          - followed
+                        actorCount:
+                          type: integer
+                        recentActors:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              avatarUrl:
+                                type: string
+                                nullable: true
+                            required:
+                            - name
+                            - avatarUrl
+                        postId:
+                          type: integer
+                          nullable: true
+                        postImageUrl:
+                          type: string
+                          nullable: true
+                        commentContent:
+                          type: string
+                          nullable: true
+                        read:
+                          type: boolean
+                        timeAgo:
+                          type: string
+                      required:
+                      - id
+                      - notificationType
+                      - actorCount
+                      - recentActors
+                      - read
+                      - timeAgo
+                  hasMore:
+                    type: boolean
+                required:
+                - notifications
+                - hasMore
         '401':
           description: 未ログイン
           content:
@@ -1012,35 +1020,61 @@ paths:
       tags:
       - User Follower
       parameters:
-      - name: page
+      - name: cursor
         in: query
         required: false
+        description: 前回取得した最後のrelationshipのID
         schema:
-          type: integer
+          type: string
       responses:
         '200':
           description: フォロワー一覧取得成功
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
+                type: object
+                properties:
+                  followers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        avatarUrl:
+                          type: string
+                          nullable: true
+                        isFollowing:
+                          type: boolean
+                      required:
+                      - id
+                      - name
+                      - avatarUrl
+                      - isFollowing
+                  nextCursor:
+                    type: string
+                    nullable: true
+                  hasMore:
+                    type: boolean
+                required:
+                - followers
+                - nextCursor
+                - hasMore
+        '400':
+          description: cursorが不正
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
                       type: string
-                    avatarUrl:
-                      type: string
-                      nullable: true
-                    isFollowing:
-                      type: boolean
-                  required:
-                  - id
-                  - name
-                  - avatarUrl
-                  - isFollowing
+                required:
+                - errors
         '401':
           description: 未ログイン
           content:
@@ -1066,35 +1100,61 @@ paths:
       tags:
       - User Following
       parameters:
-      - name: page
+      - name: cursor
         in: query
         required: false
+        description: 前回取得した最後のrelationshipのID
         schema:
-          type: integer
+          type: string
       responses:
         '200':
           description: フォロー中一覧取得成功
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
+                type: object
+                properties:
+                  followings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        avatarUrl:
+                          type: string
+                          nullable: true
+                        isFollowing:
+                          type: boolean
+                      required:
+                      - id
+                      - name
+                      - avatarUrl
+                      - isFollowing
+                  nextCursor:
+                    type: string
+                    nullable: true
+                  hasMore:
+                    type: boolean
+                required:
+                - followings
+                - nextCursor
+                - hasMore
+        '400':
+          description: cursorが不正
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
                       type: string
-                    avatarUrl:
-                      type: string
-                      nullable: true
-                    isFollowing:
-                      type: boolean
-                  required:
-                  - id
-                  - name
-                  - avatarUrl
-                  - isFollowing
+                required:
+                - errors
         '401':
           description: 未ログイン
           content:
@@ -1120,61 +1180,87 @@ paths:
       tags:
       - User Post
       parameters:
-      - name: page
+      - name: cursor
         in: query
         required: false
+        description: 前回取得した最後の投稿のID
         schema:
-          type: integer
+          type: string
       responses:
         '200':
           description: 取得成功
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    caption:
+                type: object
+                properties:
+                  posts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        caption:
+                          type: string
+                          nullable: true
+                        imageUrls:
+                          type: array
+                          items:
+                            type: string
+                        userName:
+                          type: string
+                        userAvatar:
+                          type: string
+                          nullable: true
+                        likedCount:
+                          type: integer
+                        likesSummary:
+                          type: string
+                          nullable: true
+                        timeAgo:
+                          type: string
+                        isLiked:
+                          type: boolean
+                        isOwn:
+                          type: boolean
+                        mostRecentLikerName:
+                          type: string
+                        commentsCount:
+                          type: integer
+                      required:
+                      - id
+                      - imageUrls
+                      - userName
+                      - userAvatar
+                      - likedCount
+                      - timeAgo
+                      - isLiked
+                      - isOwn
+                      - mostRecentLikerName
+                      - commentsCount
+                  nextCursor:
+                    type: string
+                    nullable: true
+                  hasMore:
+                    type: boolean
+                required:
+                - posts
+                - nextCursor
+                - hasMore
+        '400':
+          description: cursorが不正
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
                       type: string
-                      nullable: true
-                    imageUrls:
-                      type: array
-                      items:
-                        type: string
-                    userName:
-                      type: string
-                    userAvatar:
-                      type: string
-                      nullable: true
-                    likedCount:
-                      type: integer
-                    likesSummary:
-                      type: string
-                      nullable: true
-                    timeAgo:
-                      type: string
-                    isLiked:
-                      type: boolean
-                    isOwn:
-                      type: boolean
-                    mostRecentLikerName:
-                      type: string
-                    commentsCount:
-                      type: integer
-                  required:
-                  - id
-                  - imageUrls
-                  - userName
-                  - userAvatar
-                  - likedCount
-                  - timeAgo
-                  - isLiked
-                  - isOwn
-                  - mostRecentLikerName
-                  - commentsCount
+                required:
+                - errors
         '401':
           description: 未ログイン
           content:

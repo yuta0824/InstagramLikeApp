@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :users, only: %i[index show] do
       resource :relationship, only: %i[create destroy]
       resources :posts, only: %i[index], controller: 'users/posts'
+      resources :followers, only: %i[index], controller: 'users/followers'
+      resources :followings, only: %i[index], controller: 'users/followings'
     end
     resource :me, only: %i[show update], controller: :me
     resources :notifications, only: %i[index] do

@@ -149,6 +149,18 @@ RSpec.describe 'Api::Users::Posts', type: :request do
         expect(json_response.first['likedCount']).to eq(1)
       end
     end
+
+    context '一覧レスポンスの形式' do
+      let!(:post) { create(:post, user: target_user) }
+
+      before { create_list(:comment, 2, post: post) }
+
+      it 'commentsCount が正しい値を返し comments キーが含まれない' do
+        get "/api/users/#{target_user.id}/posts"
+        expect(json_response.first['commentsCount']).to eq(2)
+        expect(json_response.first).not_to have_key('comments')
+      end
+    end
   end
 
   def json_response

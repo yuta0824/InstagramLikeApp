@@ -291,6 +291,22 @@ RSpec.describe 'Api::Posts', type: :request do
       end
     end
 
+    context 'GET /api/posts 一覧レスポンスの形式' do
+      let!(:target) { create(:post) }
+
+      before do
+        create_list(:comment, 3, post: target)
+        sign_in user
+      end
+
+      it 'commentsCount が正しい値を返し comments キーが含まれない' do
+        get '/api/posts'
+        post_json = json_response.find { |p| p['id'] == target.id }
+        expect(post_json['commentsCount']).to eq(3)
+        expect(post_json).not_to have_key('comments')
+      end
+    end
+
     context 'GET /api/posts 最大件数制限' do
       before do
         create_list(:post, 25)

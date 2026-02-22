@@ -2,6 +2,7 @@ original_queue_adapter = ActiveJob::Base.queue_adapter
 ActiveJob::Base.queue_adapter = :inline # Seed 時は同期実行に切り替えて Redis を使わない
 
 begin
+  Notification.delete_all
   Comment.delete_all
   Like.delete_all
   Relationship.delete_all

@@ -861,6 +861,114 @@ paths:
                       type: string
                 required:
                 - errors
+  "/api/users/{user_id}/followers":
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: 特定ユーザーのフォロワー一覧を取得する
+      tags:
+      - User Follower
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: フォロワー一覧取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    avatarUrl:
+                      type: string
+                      nullable: true
+                    isFollowing:
+                      type: boolean
+                  required:
+                  - id
+                  - name
+                  - avatarUrl
+                  - isFollowing
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '404':
+          description: 存在しないユーザー
+  "/api/users/{user_id}/followings":
+    parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: 特定ユーザーのフォロー中一覧を取得する
+      tags:
+      - User Following
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: フォロー中一覧取得成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    avatarUrl:
+                      type: string
+                      nullable: true
+                    isFollowing:
+                      type: boolean
+                  required:
+                  - id
+                  - name
+                  - avatarUrl
+                  - isFollowing
+        '401':
+          description: 未ログイン
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '404':
+          description: 存在しないユーザー
   "/api/users/{user_id}/posts":
     parameters:
     - name: user_id

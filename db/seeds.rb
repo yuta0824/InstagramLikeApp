@@ -1,6 +1,11 @@
 original_queue_adapter = ActiveJob::Base.queue_adapter
 ActiveJob::Base.queue_adapter = :inline # Seed 時は同期実行に切り替えて Redis を使わない
 
+Like.skip_callback(:commit, :after, :notify_recipient)
+Like.skip_callback(:commit, :after, :retract_notification)
+Comment.skip_callback(:commit, :after, :notify_recipient)
+Relationship.skip_callback(:commit, :after, :notify_recipient)
+
 begin
   Comment.delete_all
   Like.delete_all
@@ -141,5 +146,9 @@ begin
   end
 
 ensure
+  Like.set_callback(:commit, :after, :notify_recipient, on: :create)
+  Like.set_callback(:commit, :after, :retract_notification, on: :destroy)
+  Comment.set_callback(:commit, :after, :notify_recipient, on: :create)
+  Relationship.set_callback(:commit, :after, :notify_recipient, on: :create)
   ActiveJob::Base.queue_adapter = original_queue_adapter
 end

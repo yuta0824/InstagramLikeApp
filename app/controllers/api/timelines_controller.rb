@@ -1,11 +1,10 @@
 class Api::TimelinesController < ApplicationController
+  include CursorPagination
+
   PER_PAGE = 20
 
   def index
-    if params[:cursor].present? && !cursor
-      render json: { errors: ['cursor is invalid'] }, status: :bad_request
-      return
-    end
+    return unless validate_cursor!
 
     posts = Post
               .timeline_for(current_user)
@@ -25,14 +24,5 @@ class Api::TimelinesController < ApplicationController
       nextCursor: has_more ? posts.last&.id&.to_s : nil,
       hasMore: has_more
     }
-  end
-
-  private
-
-  def cursor
-    return nil if params[:cursor].blank?
-
-    value = Integer(params[:cursor], exception: false)
-    value if value&.positive?
   end
 end

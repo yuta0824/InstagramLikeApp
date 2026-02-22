@@ -5,11 +5,21 @@ class Api::NotificationsController < ApplicationController
     notifications = current_user.notifications
                                 .with_details
                                 .recent_first
-                                .limit(PER_PAGE)
                                 .offset(offset)
+                                .limit(PER_PAGE + 1)
+                                .to_a
+
+    has_more = notifications.size > PER_PAGE
+    notifications = notifications.first(PER_PAGE)
+
     actor_ids = notifications.flat_map(&:recent_actor_ids).uniq
     actors_by_id = User.where(id: actor_ids).index_by(&:id)
-    render json: notifications, each_serializer: NotificationSerializer, actors_by_id: actors_by_id
+    render json: {
+      notifications: ActiveModelSerializers::SerializableResource.new(
+        notifications, each_serializer: NotificationSerializer, actors_by_id: actors_by_id
+      ),
+      hasMore: has_more
+    }
   end
 
   private

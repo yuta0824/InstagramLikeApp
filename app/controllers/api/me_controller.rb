@@ -4,8 +4,10 @@ class Api::MeController < ApplicationController
   end
 
   def update
-    current_user.avatar.purge if remove_avatar?
-    current_user.update!(me_params)
+    ActiveRecord::Base.transaction do
+      current_user.avatar.purge if remove_avatar?
+      current_user.update!(me_params)
+    end
     render json: current_user, serializer: UserDetailSerializer, following_user_ids: Set.new
   end
 
@@ -16,6 +18,6 @@ class Api::MeController < ApplicationController
   end
 
   def remove_avatar?
-    ActiveModel::Type::Boolean.new.cast(params[:remove_avatar])
+    params[:remove_avatar] == 'true'
   end
 end

@@ -207,6 +207,26 @@ RSpec.describe 'Api::Me', type: :request do
         expect(response).to have_http_status(:ok)
       end
     end
+
+    context 'remove_avatar=trueかつバリデーションエラーの場合' do
+      before { user.avatar.attach(fixture_file_upload('test.jpg', 'image/jpeg')) }
+
+      it 'アバターが削除されない（トランザクションでロールバック）' do
+        patch '/api/me', params: { name: 'invalid@name!', remove_avatar: 'true' }
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(user.reload.avatar).to be_attached
+      end
+    end
+
+    context 'remove_avatar=falseの場合' do
+      before { user.avatar.attach(fixture_file_upload('test.jpg', 'image/jpeg')) }
+
+      it 'アバターが削除されない' do
+        patch '/api/me', params: { remove_avatar: 'false' }
+        expect(response).to have_http_status(:ok)
+        expect(user.reload.avatar).to be_attached
+      end
+    end
   end
 
   def json_response

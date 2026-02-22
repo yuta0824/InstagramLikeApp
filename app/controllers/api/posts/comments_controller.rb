@@ -4,7 +4,6 @@ class Api::Posts::CommentsController < ApplicationController
     comment = current_user.comments.build(comment_params.merge(post: post))
 
     if comment.save
-      Notification.notify_if_needed(actor: current_user, recipient: post.user, notifiable: comment, notification_type: :commented)
       render json: comment, scope: current_user, status: :created
     else
       render json: { errors: comment.errors.full_messages }, status: :unprocessable_entity

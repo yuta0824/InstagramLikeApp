@@ -13,8 +13,7 @@ RSpec.describe 'Api::Notifications::ReadAll', type: :request do
         before do
           3.times do
             a = create(:user)
-            relationship = create(:relationship, follower: a, following: user)
-            Notification.notify_if_needed(actor: a, recipient: user, notifiable: relationship, notification_type: :followed)
+            create(:relationship, follower: a, following: user)
           end
           sign_in user
         end
@@ -36,8 +35,7 @@ RSpec.describe 'Api::Notifications::ReadAll', type: :request do
 
     it '他ユーザーの通知は既読にならない' do
       actor = create(:user)
-      relationship = create(:relationship, follower: actor, following: other_user)
-      Notification.notify_if_needed(actor: actor, recipient: other_user, notifiable: relationship, notification_type: :followed)
+      create(:relationship, follower: actor, following: other_user)
 
       sign_in user
       post '/api/notifications/read_all'

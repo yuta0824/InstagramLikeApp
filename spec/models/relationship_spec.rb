@@ -53,4 +53,27 @@ RSpec.describe Relationship, type: :model do
       expect(build(:relationship, following: nil)).not_to be_valid
     end
   end
+
+  describe 'after_create_commit :notify_recipient' do
+    it 'フォロー先ユーザーに通知が作成される' do
+      expect {
+        create(:relationship, follower: follower, following: following)
+      }.to change(Notification, :count).by(1)
+
+      notification = Notification.last
+      expect(notification.notification_type).to eq('followed')
+      expect(notification.recipient).to eq(following)
+      expect(notification.latest_actor_id).to eq(follower.id)
+    end
+  end
+
+  describe '通知のカスケード削除' do
+    it 'フォロー解除で通知も削除される（dependent: :destroy）' do
+      relationship = create(:relationship, follower: follower, following: following)
+      expect(Notification.count).to eq(1)
+
+      relationship.destroy!
+      expect(Notification.count).to eq(0)
+    end
+  end
 end

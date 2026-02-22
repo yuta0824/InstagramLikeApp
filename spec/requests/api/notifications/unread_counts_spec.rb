@@ -19,8 +19,7 @@ RSpec.describe 'Api::Notifications::UnreadCounts', type: :request do
         before do
           2.times do
             actor = create(:user)
-            relationship = create(:relationship, follower: actor, following: user)
-            Notification.notify_if_needed(actor: actor, recipient: user, notifiable: relationship, notification_type: :followed)
+            create(:relationship, follower: actor, following: user)
           end
           # 1件は既読にする
           user.notifications.first.update!(read: true)

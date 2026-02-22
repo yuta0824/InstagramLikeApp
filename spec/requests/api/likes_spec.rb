@@ -111,9 +111,7 @@ RSpec.describe 'Api::Likes', type: :request do
 
     context 'いいね取消時' do
       it '通知のactor_countが減算される' do
-        like = create(:like, user: liker, post: target_post)
-        Notification.notify_if_needed(actor: liker, recipient: post_owner, notifiable: like, notification_type: :liked)
-
+        create(:like, user: liker, post: target_post)
         sign_in liker
         expect {
           delete "/api/posts/#{target_post.id}/like"

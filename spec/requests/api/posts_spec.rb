@@ -180,6 +180,30 @@ RSpec.describe 'Api::Posts', type: :request do
         end
       end
 
+      context '通知のクリーンアップ' do
+        let(:commenter) { create(:user) }
+        let(:liker) { create(:user) }
+
+        before do
+          create(:comment, user: commenter, post: target_post, content: 'nice')
+          create(:like, user: liker, post: target_post)
+          sign_in user
+        end
+
+        it '投稿削除でコメント通知は削除され、いいね通知のtarget_post_idはNULL化される' do
+          expect(Notification.count).to eq(2)
+
+          delete "/api/posts/#{target_post.id}"
+
+          commented_notifications = Notification.where(notification_type: :commented)
+          liked_notifications = Notification.where(notification_type: :liked)
+
+          expect(commented_notifications.count).to eq(0)
+          expect(liked_notifications.count).to eq(1)
+          expect(liked_notifications.first.target_post_id).to be_nil
+        end
+      end
+
       response '401', '未ログイン' do
         schema type: :object,
                 properties: {

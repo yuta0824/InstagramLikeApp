@@ -109,6 +109,22 @@ RSpec.describe 'Api::Users::Followers', type: :request do
       end
     end
 
+    context '並び順' do
+      let!(:old_follower) { create(:user, created_at: 2.days.ago) }
+      let!(:new_follower) { create(:user, created_at: 1.hour.ago) }
+
+      before do
+        old_follower.follow!(target_user)
+        new_follower.follow!(target_user)
+      end
+
+      it '新しいフォロワーが先に返る' do
+        get "/api/users/#{target_user.id}/followers"
+        expect(json_response.first['id']).to eq(new_follower.id)
+        expect(json_response.last['id']).to eq(old_follower.id)
+      end
+    end
+
     context '不正なpageパラメータ' do
       let!(:follower) { create(:user).tap { |f| f.follow!(target_user) } }
 

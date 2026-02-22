@@ -126,6 +126,26 @@ RSpec.describe 'Api::Users::Posts', type: :request do
       end
     end
 
+    context '投稿が0件の場合' do
+      it '空配列でhasMoreがfalse、nextCursorがnilになる' do
+        get "/api/users/#{target_user.id}/posts"
+        expect(json_response['posts']).to eq([])
+        expect(json_response['hasMore']).to be false
+        expect(json_response['nextCursor']).to be_nil
+      end
+    end
+
+    context '並び順' do
+      let!(:first_post) { create(:post, user: target_user) }
+      let!(:second_post) { create(:post, user: target_user) }
+
+      it '新しい投稿（IDが大きい）が先に返る' do
+        get "/api/users/#{target_user.id}/posts"
+        ids = json_response['posts'].map { |p| p['id'] }
+        expect(ids).to eq([second_post.id, first_post.id])
+      end
+    end
+
     context '不正なcursor値の場合' do
       it '非数値文字列で400を返す' do
         get "/api/users/#{target_user.id}/posts", params: { cursor: 'abc' }

@@ -158,6 +158,15 @@ RSpec.describe 'Api::Users::Followings', type: :request do
       end
     end
 
+    context 'フォロー中が0人の場合' do
+      it '空配列でhasMoreがfalse、nextCursorがnilになる' do
+        get "/api/users/#{target_user.id}/followings"
+        expect(json_response['followings']).to eq([])
+        expect(json_response['hasMore']).to be false
+        expect(json_response['nextCursor']).to be_nil
+      end
+    end
+
     context '並び順' do
       let!(:first_following) { create(:user) }
       let!(:second_following) { create(:user) }

@@ -1,5 +1,7 @@
 class SimulatorService
-  COMMENT_TEMPLATES = YAML.load_file(Rails.root.join('config/simulator/comments.yml'))
+  def self.comment_templates
+    @comment_templates ||= YAML.load_file(Rails.root.join('config/simulator/comments.yml'))
+  end
 
   def self.welcome_follow(user)
     return if user.bot?
@@ -7,6 +9,8 @@ class SimulatorService
     random_bots(exclude: user, count: rand(3..5)).each do |bot|
       Relationship.create!(follower: bot, following: user)
     end
+  rescue StandardError => e
+    Rails.logger.error("[SimulatorService] welcome_follow failed: #{e.message}")
   end
 
   def self.react_to_post(post)
@@ -19,8 +23,10 @@ class SimulatorService
     end
 
     bots.sample(rand(1..2)).each do |bot|
-      Comment.create!(user: bot, post: post, content: COMMENT_TEMPLATES.sample)
+      Comment.create!(user: bot, post: post, content: comment_templates.sample)
     end
+  rescue StandardError => e
+    Rails.logger.error("[SimulatorService] react_to_post failed: #{e.message}")
   end
 
   def self.delay_react_to_post(post)

@@ -1,15 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe SimulatorService, type: :model do
+RSpec.describe SimulatorService do
   describe '.welcome_follow' do
     let!(:bots) { create_list(:user, 5, :bot) }
     let(:user) { build(:user) }
 
     context 'botでないユーザーの場合' do
       it 'botがユーザーをフォローする（3〜5人）' do
-        # コールバック経由ではなく直接呼ぶためsave後に手動実行
         user.save!
-        # after_create_commitで既に実行済み
         follower_count = user.followers.count
         expect(follower_count).to be_between(3, 5)
         expect(user.followers).to all(satisfy(&:bot?))
@@ -17,7 +15,7 @@ RSpec.describe SimulatorService, type: :model do
 
       it 'フォロー通知が生成される' do
         expect {
-          user.save! # after_create_commit → welcome_follow
+          user.save!
         }.to change(Notification, :count)
       end
     end
@@ -37,6 +35,15 @@ RSpec.describe SimulatorService, type: :model do
         expect {
           create(:user)
         }.not_to change(Relationship, :count)
+      end
+    end
+
+    context 'エラーが発生した場合' do
+      it 'エラーを握りつぶしてログに記録する' do
+        allow(Relationship).to receive(:create!).and_raise(ActiveRecord::RecordInvalid)
+        user.save!
+
+        expect(user.followers.count).to eq(0)
       end
     end
   end
@@ -68,7 +75,7 @@ RSpec.describe SimulatorService, type: :model do
         SimulatorService.react_to_post(post)
 
         post.comments.each do |comment|
-          expect(SimulatorService::COMMENT_TEMPLATES).to include(comment.content)
+          expect(SimulatorService.comment_templates).to include(comment.content)
         end
       end
     end
@@ -77,10 +84,29 @@ RSpec.describe SimulatorService, type: :model do
       let(:bot_author) { bots.first }
       let(:bot_post) { create(:post, user: bot_author) }
 
-      it '何もしない' do
+      it 'いいねを生成しない' do
         expect {
           SimulatorService.react_to_post(bot_post)
         }.not_to change(Like, :count)
+      end
+
+      it 'コメントも生成しない' do
+        expect {
+          SimulatorService.react_to_post(bot_post)
+        }.not_to change(Comment, :count)
+      end
+    end
+
+    context 'エラーが発生した場合' do
+      let(:author) { create(:user) }
+      let(:post) { create(:post, user: author) }
+
+      it 'エラーを握りつぶしてログに記録する' do
+        allow(Like).to receive(:create!).and_raise(ActiveRecord::RecordInvalid)
+
+        expect {
+          SimulatorService.react_to_post(post)
+        }.not_to raise_error
       end
     end
   end

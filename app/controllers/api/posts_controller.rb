@@ -16,7 +16,6 @@ class Api::PostsController < ApplicationController
     post = current_user.posts.new(post_params)
 
     if post.save
-      SimulatorService.delay_react_to_post(post)
       render json: post, serializer: PostDetailSerializer, scope: current_user, status: :created
     else
       render json: { errors: post.errors.full_messages }, status: :unprocessable_entity

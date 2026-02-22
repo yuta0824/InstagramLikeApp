@@ -21,8 +21,11 @@ class Post < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :comments, -> { order(created_at: :asc) }, dependent: :destroy
   has_many_attached :images
+
   validates :images, presence: true, length: { minimum: 1, maximum: 3 }
   validates :caption, length: { maximum: 100 }
+
+  after_create_commit :delay_react, unless: -> { user.bot? }
 
   scope :with_details, -> {
     includes(:user, likes: :user, comments: [user: { avatar_attachment: :blob }])
@@ -66,5 +69,11 @@ class Post < ApplicationRecord
     return I18n.t('models.post.hours_ago', count: hours) if hours < 24
 
     created_at.strftime('%Y/%m/%d')
+  end
+
+  private
+
+  def delay_react
+    SimulatorService.delay_react_to_post(self)
   end
 end

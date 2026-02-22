@@ -21,7 +21,9 @@ Rails.application.routes.draw do
       resources :followers, only: %i[index], controller: 'users/followers'
       resources :followings, only: %i[index], controller: 'users/followings'
     end
-    resource :me, only: %i[show update], controller: :me
+    resource :me, only: %i[show update], controller: :me do
+      resource :name_availability, only: %i[show], module: :me
+    end
     resources :notifications, only: %i[index] do
       collection do
         resource :unread_count, only: %i[show], module: :notifications, controller: :unread_counts

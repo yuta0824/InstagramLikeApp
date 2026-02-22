@@ -73,6 +73,11 @@ RSpec.describe 'Api::Me', type: :request do
                 in: :formData,
                 required: false,
                 schema: { type: :string, format: :binary }
+      parameter name: :remove_avatar,
+                in: :formData,
+                required: false,
+                schema: { type: :boolean },
+                description: 'trueでアバターを削除'
 
       response '200', '更新後のレスポンスにカウント値とisFollowingが含まれる' do
         let(:name) { 'updated_name' }
@@ -171,6 +176,35 @@ RSpec.describe 'Api::Me', type: :request do
         patch '/api/me', params: { avatar: fixture_file_upload('test.jpg', 'image/jpeg') }
         expect(response).to have_http_status(:ok)
         expect(user.reload.avatar).to be_attached
+      end
+    end
+
+    context 'remove_avatar=trueの場合' do
+      before { user.avatar.attach(fixture_file_upload('test.jpg', 'image/jpeg')) }
+
+      it 'アバターが削除されavatarUrlがnilになる' do
+        patch '/api/me', params: { remove_avatar: true }
+        expect(response).to have_http_status(:ok)
+        expect(user.reload.avatar).not_to be_attached
+        expect(json_response['avatarUrl']).to be_nil
+      end
+    end
+
+    context 'remove_avatar=trueと名前変更を同時に送った場合' do
+      before { user.avatar.attach(fixture_file_upload('test.jpg', 'image/jpeg')) }
+
+      it 'アバター削除と名前変更が両方反映される' do
+        patch '/api/me', params: { name: 'new_name', remove_avatar: true }
+        expect(response).to have_http_status(:ok)
+        expect(user.reload.name).to eq('new_name')
+        expect(user.avatar).not_to be_attached
+      end
+    end
+
+    context 'アバター未設定でremove_avatar=trueの場合' do
+      it '冪等に成功する' do
+        patch '/api/me', params: { remove_avatar: true }
+        expect(response).to have_http_status(:ok)
       end
     end
   end

@@ -90,6 +90,22 @@ RSpec.describe 'Api::Me::NameAvailabilities', type: :request do
         expect(json_response['errors']).to include('name is required')
       end
     end
+
+    context '無効なフォーマットの場合' do
+      it 'falseを返す' do
+        get '/api/me/name_availability', params: { name: 'invalid name!' }
+        expect(response).to have_http_status(:ok)
+        expect(json_response['available']).to be false
+      end
+    end
+
+    context '21文字以上の場合' do
+      it 'falseを返す' do
+        get '/api/me/name_availability', params: { name: 'a' * 21 }
+        expect(response).to have_http_status(:ok)
+        expect(json_response['available']).to be false
+      end
+    end
   end
 
   def json_response

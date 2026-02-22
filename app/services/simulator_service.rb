@@ -40,7 +40,11 @@ class SimulatorService
 
   class ReactJob < ApplicationJob
     def perform(post_id)
-      post = Post.find_by(id: post_id) or return
+      post = Post.find_by(id: post_id)
+      unless post
+        Rails.logger.info("[SimulatorService::ReactJob] post##{post_id} not found, skipping")
+        return
+      end
       SimulatorService.react_to_post(post)
     end
   end

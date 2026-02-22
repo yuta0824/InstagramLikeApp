@@ -28,7 +28,8 @@ begin
       provider: 'google_oauth2',
       uid: "seed-google-#{index + 1}",
       password: password,
-      password_confirmation: password
+      password_confirmation: password,
+      bot: true
     )
 
     avatar_path = Rails.root.join("app/assets/images/icon_avatar#{u[:avatar_idx]}.webp")

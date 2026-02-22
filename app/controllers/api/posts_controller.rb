@@ -16,6 +16,7 @@ class Api::PostsController < ApplicationController
     post = current_user.posts.new(post_params)
 
     if post.save
+      enqueue_reactive_activity(post)
       render json: post, serializer: PostDetailSerializer, scope: current_user, status: :created
     else
       render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
@@ -40,6 +41,10 @@ class Api::PostsController < ApplicationController
   end
 
   private
+
+  def enqueue_reactive_activity(post)
+    Simulator::ReactiveActivityJob.set(wait: 5.seconds).perform_later(post.id)
+  end
 
   def post_params
     params.fetch(:post, params).permit(:caption, images: [])

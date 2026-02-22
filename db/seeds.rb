@@ -119,7 +119,7 @@ begin
     demo_users_list.reject { |u| u == user }.sample(rand(2..5)).each { |followed_user| user.follow!(followed_user) }
   end
 
-  comments_list = YAML.load_file(Rails.root.join('config/simulator/comments.yml'))
+  comments_list = YAML.safe_load_file(Rails.root.join('config/simulator/comments.yml'))
 
   Post.all.each do |post|
     if rand < 0.7

@@ -53,7 +53,12 @@ RSpec.describe SimulatorService do
 
     context '通常のユーザーの投稿の場合' do
       let(:author) { create(:user) }
-      let(:post) { create(:post, user: author) }
+      let(:post) do
+        Post.skip_callback(:commit, :after, :react_by_bots)
+        p = create(:post, user: author)
+        Post.set_callback(:commit, :after, :react_by_bots)
+        p
+      end
 
       it 'いいねが2〜4件生成される' do
         SimulatorService.react_to_post(post)
@@ -99,7 +104,12 @@ RSpec.describe SimulatorService do
 
     context 'エラーが発生した場合' do
       let(:author) { create(:user) }
-      let(:post) { create(:post, user: author) }
+      let(:post) do
+        Post.skip_callback(:commit, :after, :react_by_bots)
+        p = create(:post, user: author)
+        Post.set_callback(:commit, :after, :react_by_bots)
+        p
+      end
 
       it 'エラーを握りつぶしてログに記録する' do
         allow(Like).to receive(:create!).and_raise(ActiveRecord::RecordInvalid)

@@ -92,10 +92,6 @@ class User < ApplicationRecord
     user
   end
 
-  def welcome_follow
-    SimulatorService.welcome_follow(self)
-  end
-
   def self.build_unique_name(auth)
     base = auth.info.email.to_s.split('@').first
     sanitized = base.to_s.gsub(/[^a-zA-Z0-9_]/, '_')[0, 20]
@@ -112,4 +108,9 @@ class User < ApplicationRecord
     end
   end
 
+  private
+
+  def welcome_follow
+    SimulatorService.welcome_follow(self)
+  end
 end

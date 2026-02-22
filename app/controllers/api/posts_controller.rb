@@ -1,10 +1,10 @@
 class Api::PostsController < ApplicationController
   def index
     posts = Post
-              .with_details
+              .with_list
               .limit(20)
               .order(created_at: :desc)
-    render json: posts, each_serializer: PostDetailSerializer, scope: current_user
+    render json: posts, each_serializer: PostSerializer, scope: current_user
   end
 
   def show

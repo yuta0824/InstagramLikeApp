@@ -457,28 +457,8 @@ paths:
                       type: boolean
                     mostRecentLikerName:
                       type: string
-                    comments:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                          content:
-                            type: string
-                          userName:
-                            type: string
-                          userAvatar:
-                            type: string
-                            nullable: true
-                          isOwner:
-                            type: boolean
-                        required:
-                        - id
-                        - content
-                        - userName
-                        - userAvatar
-                        - isOwner
+                    commentsCount:
+                      type: integer
                   required:
                   - id
                   - imageUrls
@@ -489,7 +469,7 @@ paths:
                   - isLiked
                   - isOwn
                   - mostRecentLikerName
-                  - comments
+                  - commentsCount
         '401':
           description: 未ログイン
           content:
@@ -1023,28 +1003,8 @@ paths:
                       type: boolean
                     mostRecentLikerName:
                       type: string
-                    comments:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: integer
-                          content:
-                            type: string
-                          userName:
-                            type: string
-                          userAvatar:
-                            type: string
-                            nullable: true
-                          isOwner:
-                            type: boolean
-                        required:
-                        - id
-                        - content
-                        - userName
-                        - userAvatar
-                        - isOwner
+                    commentsCount:
+                      type: integer
                   required:
                   - id
                   - imageUrls
@@ -1055,7 +1015,7 @@ paths:
                   - isLiked
                   - isOwn
                   - mostRecentLikerName
-                  - comments
+                  - commentsCount
         '401':
           description: 未ログイン
           content:

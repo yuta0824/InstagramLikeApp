@@ -32,6 +32,11 @@ class Post < ApplicationRecord
       .with_attached_images
   }
 
+  scope :with_list, -> {
+    includes(:user, :comments, likes: :user)
+      .with_attached_images
+  }
+
   def owned_by?(user)
     return false unless user
     user_id == user.id

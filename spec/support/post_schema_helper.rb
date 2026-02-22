@@ -38,3 +38,31 @@ POST_DETAIL_REQUIRED = %w[
   mostRecentLikerName
   comments
 ].freeze
+
+POST_LIST_PROPERTIES = {
+  id: { type: :integer },
+  caption: { type: :string, nullable: true },
+  imageUrls: { type: :array, items: { type: :string } },
+  userName: { type: :string },
+  userAvatar: { type: :string, nullable: true },
+  likedCount: { type: :integer },
+  likesSummary: { type: :string, nullable: true },
+  timeAgo: { type: :string },
+  isLiked: { type: :boolean },
+  isOwn: { type: :boolean },
+  mostRecentLikerName: { type: :string },
+  commentsCount: { type: :integer }
+}.freeze
+
+POST_LIST_REQUIRED = %w[
+  id
+  imageUrls
+  userName
+  userAvatar
+  likedCount
+  timeAgo
+  isLiked
+  isOwn
+  mostRecentLikerName
+  commentsCount
+].freeze

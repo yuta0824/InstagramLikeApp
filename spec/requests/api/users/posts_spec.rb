@@ -19,8 +19,8 @@ RSpec.describe 'Api::Users::Posts', type: :request do
         schema type: :array,
                items: {
                  type: :object,
-                 properties: POST_DETAIL_PROPERTIES,
-                 required: POST_DETAIL_REQUIRED
+                 properties: POST_LIST_PROPERTIES,
+                 required: POST_LIST_REQUIRED
                }
 
         let!(:target_posts) { create_list(:post, 3, user: target_user) }

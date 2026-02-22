@@ -15,8 +15,8 @@ RSpec.describe 'Api::Posts', type: :request do
         schema type: :array,
                items: {
                  type: :object,
-                 properties: POST_DETAIL_PROPERTIES,
-                 required: POST_DETAIL_REQUIRED
+                 properties: POST_LIST_PROPERTIES,
+                 required: POST_LIST_REQUIRED
                }
 
         before { sign_in user }

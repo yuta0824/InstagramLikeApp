@@ -14,7 +14,7 @@ RSpec.describe 'Api::Me::NameAvailabilities', type: :request do
                 schema: { type: :string },
                 description: '確認するユーザー名'
 
-      response '200', '利用可能' do
+      response '200', '利用可否を返却' do
         schema type: :object,
                properties: {
                  available: { type: :boolean }
@@ -29,13 +29,18 @@ RSpec.describe 'Api::Me::NameAvailabilities', type: :request do
         end
       end
 
-      response '200', '既に使用されている' do
-        let!(:other_user) { create(:user, name: 'taken_name') }
-        let(:name) { 'taken_name' }
+      response '400', 'nameパラメータが未指定' do
+        schema type: :object,
+               properties: {
+                 errors: { type: :array, items: { type: :string } }
+               },
+               required: %w[errors]
+
+        let(:name) { '' }
         before { sign_in user }
 
         run_test! do
-          expect(json_response['available']).to be false
+          expect(json_response['errors']).to include('name is required')
         end
       end
 
@@ -47,8 +52,18 @@ RSpec.describe 'Api::Me::NameAvailabilities', type: :request do
     end
   end
 
-  describe 'GET /api/me/name_availability エッジケース' do
+  describe 'GET /api/me/name_availability' do
     before { sign_in user }
+
+    context '既に使用されている名前の場合' do
+      let!(:other_user) { create(:user, name: 'taken_name') }
+
+      it 'falseを返す' do
+        get '/api/me/name_availability', params: { name: 'taken_name' }
+        expect(response).to have_http_status(:ok)
+        expect(json_response['available']).to be false
+      end
+    end
 
     context '自分自身の名前の場合' do
       it 'trueを返す（自分は除外される）' do
@@ -61,10 +76,18 @@ RSpec.describe 'Api::Me::NameAvailabilities', type: :request do
     context '大文字小文字が異なる場合' do
       let!(:other_user) { create(:user, name: 'TakenName') }
 
-      it '別名として扱われる（DBのユニーク制約は大文字小文字を区別）' do
+      it 'falseを返す（大文字小文字を区別しない）' do
         get '/api/me/name_availability', params: { name: 'takenname' }
         expect(response).to have_http_status(:ok)
-        expect(json_response['available']).to be true
+        expect(json_response['available']).to be false
+      end
+    end
+
+    context 'nameパラメータが未指定の場合' do
+      it '400を返す' do
+        get '/api/me/name_availability'
+        expect(response).to have_http_status(:bad_request)
+        expect(json_response['errors']).to include('name is required')
       end
     end
   end

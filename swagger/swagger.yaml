@@ -217,7 +217,7 @@ paths:
         description: 確認するユーザー名
       responses:
         '200':
-          description: 既に使用されている
+          description: 利用可否を返却
           content:
             application/json:
               schema:
@@ -227,6 +227,19 @@ paths:
                     type: boolean
                 required:
                 - available
+        '400':
+          description: nameパラメータが未指定
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - errors
         '401':
           description: 未ログイン
   "/api/me":

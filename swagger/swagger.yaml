@@ -697,6 +697,19 @@ paths:
                 - isOwn
                 - mostRecentLikerName
                 - comments
+        '404':
+          description: 投稿が存在しない
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - errors
         '401':
           description: 未ログイン
           content:

@@ -2,6 +2,7 @@ original_queue_adapter = ActiveJob::Base.queue_adapter
 ActiveJob::Base.queue_adapter = :inline # Seed 時は同期実行に切り替えて Redis を使わない
 
 begin
+  Notification.delete_all
   Comment.delete_all
   Like.delete_all
   Relationship.delete_all
@@ -28,7 +29,8 @@ begin
       provider: 'google_oauth2',
       uid: "seed-google-#{index + 1}",
       password: password,
-      password_confirmation: password
+      password_confirmation: password,
+      bot: true
     )
 
     avatar_path = Rails.root.join("app/assets/images/icon_avatar#{u[:avatar_idx]}.webp")
@@ -117,14 +119,7 @@ begin
     demo_users_list.reject { |u| u == user }.sample(rand(2..5)).each { |followed_user| user.follow!(followed_user) }
   end
 
-  comments_list = [
-    '素敵ですね！', 'いい写真！', '羨ましいです', '楽しそう！', '行ってみたい！',
-    '美味しそう！', '綺麗ですね', '最高！', 'お疲れ様です', 'また見に来ます！',
-    'Nice!', 'Beautiful!', 'Looks great!', 'Amazing!', 'Cool!',
-    'すごい！', 'いいね〜', '最高の一日ですね', '素敵な場所', 'また行きたい',
-    '憧れます', '楽しみですね', '良いですね', '素晴らしい',
-    '癒されました', 'おしゃれ', 'かっこいい', '参考になります', '真似したい'
-  ]
+  comments_list = YAML.safe_load_file(Rails.root.join('config/simulator/comments.yml'))
 
   Post.all.each do |post|
     if rand < 0.7

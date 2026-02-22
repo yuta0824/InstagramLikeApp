@@ -17,49 +17,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class PostDetailSerializer < ActiveModel::Serializer
-  include Rails.application.routes.url_helpers
-
-  attributes :id, :caption, :image_urls, :user_name, :user_avatar, :liked_count, :likes_summary, :time_ago, :is_liked, :is_own, :most_recent_liker_name
+  include PostAttributes
 
   has_many :comments, serializer: CommentSerializer
-
-  def image_urls
-    url_options = ActiveStorage::Current.url_options || {}
-    return object.images.map { |image| rails_blob_path(image, only_path: true) } unless url_options[:host]
-
-    object.images.map { |image| rails_blob_url(image, url_options) }
-  end
-
-  def user_name
-    object.user.name
-  end
-
-  def user_avatar
-    object.user.avatar_url
-  end
-
-  def liked_count
-    object.liked_count
-  end
-
-  def likes_summary
-    object.likes_summary
-  end
-
-  def time_ago
-    object.time_ago
-  end
-
-  def is_liked
-    object.liked_by?(scope)
-  end
-
-  def is_own
-    object.owned_by?(scope)
-  end
-
-  def most_recent_liker_name
-    object.most_recent_liker_name.to_s
-  end
-
 end

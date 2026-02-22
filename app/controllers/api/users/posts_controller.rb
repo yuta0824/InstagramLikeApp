@@ -3,12 +3,37 @@ class Api::Users::PostsController < ApplicationController
 
   def index
     user = User.find(params[:user_id])
-    page = [params.fetch(:page, 1).to_i, 1].max
+
+    if params[:cursor].present? && !cursor
+      render json: { errors: ['cursor is invalid'] }, status: :bad_request
+      return
+    end
+
     posts = user.posts
                 .with_list
-                .order(created_at: :desc)
-                .offset((page - 1) * PER_PAGE)
-                .limit(PER_PAGE)
-    render json: posts, each_serializer: PostSerializer, scope: current_user
+                .order(id: :desc)
+
+    posts = posts.where('posts.id < ?', cursor) if cursor
+    posts = posts.limit(PER_PAGE + 1).to_a
+
+    has_more = posts.size > PER_PAGE
+    posts = posts.first(PER_PAGE)
+
+    render json: {
+      posts: ActiveModelSerializers::SerializableResource.new(
+        posts, each_serializer: PostSerializer, scope: current_user
+      ),
+      nextCursor: has_more ? posts.last&.id&.to_s : nil,
+      hasMore: has_more
+    }
+  end
+
+  private
+
+  def cursor
+    return nil if params[:cursor].blank?
+
+    value = Integer(params[:cursor], exception: false)
+    value if value&.positive?
   end
 end

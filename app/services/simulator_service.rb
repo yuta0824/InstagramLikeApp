@@ -29,23 +29,8 @@ class SimulatorService
     Rails.logger.error("[SimulatorService] react_to_post failed: #{e.message}")
   end
 
-  def self.delay_react_to_post(post)
-    ReactJob.set(wait: 5.seconds).perform_later(post.id)
-  end
-
   def self.random_bots(exclude:, count:)
     User.bots.where.not(id: exclude.id).order('RANDOM()').limit(count).to_a
   end
   private_class_method :random_bots
-
-  class ReactJob < ApplicationJob
-    def perform(post_id)
-      post = Post.find_by(id: post_id)
-      unless post
-        Rails.logger.info("[SimulatorService::ReactJob] post##{post_id} not found, skipping")
-        return
-      end
-      SimulatorService.react_to_post(post)
-    end
-  end
 end

@@ -40,8 +40,6 @@ module InstagramLikeApp
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    config.active_job.queue_adapter = :async
-
     # I18n
     config.i18n.default_locale = :en
     config.i18n.available_locales = [:en, :ja]

@@ -110,39 +110,4 @@ RSpec.describe SimulatorService do
       end
     end
   end
-
-  describe '.delay_react_to_post' do
-    let(:post) { create(:post) }
-
-    it 'ReactJobを5秒後にエンキューする' do
-      expect {
-        SimulatorService.delay_react_to_post(post)
-      }.to have_enqueued_job(SimulatorService::ReactJob)
-        .with(post.id)
-        .at(a_value_within(1.second).of(5.seconds.from_now))
-    end
-  end
-
-  describe SimulatorService::ReactJob do
-    let!(:bots) { create_list(:user, 5, :bot) }
-    let(:author) { create(:user) }
-    let(:post) { create(:post, user: author) }
-
-    it 'SimulatorService.react_to_postを呼び出す' do
-      allow(SimulatorService).to receive(:react_to_post)
-
-      described_class.perform_now(post.id)
-
-      expect(SimulatorService).to have_received(:react_to_post).with(post)
-    end
-
-    it '削除済み投稿はスキップする' do
-      post_id = post.id
-      post.destroy!
-
-      expect {
-        described_class.perform_now(post_id)
-      }.not_to change(Like, :count)
-    end
-  end
 end

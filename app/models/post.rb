@@ -25,7 +25,7 @@ class Post < ApplicationRecord
   validates :images, presence: true, length: { minimum: 1, maximum: 3 }
   validates :caption, length: { maximum: 100 }
 
-  after_create_commit :delay_react, unless: -> { user.bot? }
+  after_create_commit :react_by_bots, unless: -> { user.bot? }
 
   scope :with_details, -> {
     includes(:user, likes: :user, comments: [user: { avatar_attachment: :blob }])
@@ -73,7 +73,7 @@ class Post < ApplicationRecord
 
   private
 
-  def delay_react
-    SimulatorService.delay_react_to_post(self)
+  def react_by_bots
+    SimulatorService.react_to_post(self)
   end
 end

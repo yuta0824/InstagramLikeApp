@@ -108,6 +108,20 @@ RSpec.describe 'Api::Posts', type: :request do
         run_test!
       end
 
+      response '404', '投稿が存在しない' do
+        schema type: :object,
+               properties: {
+                 errors: { type: :array, items: { type: :string } }
+               },
+               required: %w[errors]
+
+        let(:id) { 999_999 }
+
+        before { sign_in user }
+
+        run_test!
+      end
+
       response '401', '未ログイン' do
         schema type: :object,
                properties: {
@@ -248,6 +262,15 @@ RSpec.describe 'Api::Posts', type: :request do
 
       it '404を返す' do
         patch '/api/posts/999999', params: { post: { caption: 'test' } }, as: :json
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context 'GET /api/posts/:id 存在しないIDを指定した場合' do
+      before { sign_in owner }
+
+      it '404を返す' do
+        get '/api/posts/999999'
         expect(response).to have_http_status(:not_found)
       end
     end

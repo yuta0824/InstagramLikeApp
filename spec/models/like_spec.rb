@@ -71,11 +71,16 @@ RSpec.describe Like, type: :model do
   end
 
   describe '投稿削除時のカスケード' do
-    it '投稿削除時にRecordNotFoundをrescueして安全に処理する' do
+    it '投稿削除時にエラーなく処理され、いいね通知のtarget_post_idがNULL化される' do
       create(:like, user: user, post: post)
       expect(Notification.count).to eq(1)
 
       expect { post.destroy! }.not_to raise_error
+
+      notification = Notification.first
+      expect(notification).to be_present
+      expect(notification.notification_type).to eq('liked')
+      expect(notification.target_post_id).to be_nil
     end
   end
 end

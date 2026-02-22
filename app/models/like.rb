@@ -37,6 +37,8 @@ class Like < ApplicationRecord
   def retract_notification
     Notification.retract_if_needed(actor: user, recipient: post.user, target_post_id: post_id)
   rescue ActiveRecord::RecordNotFound
+    # 投稿削除によるカスケード時、post.user のアソシエーション解決で発生する。
+    # FK ON DELETE nullify で通知の target_post_id は既にNULL化済みのため対処不要。
     nil
   end
 end

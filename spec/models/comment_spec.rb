@@ -62,6 +62,7 @@ RSpec.describe Comment, type: :model do
       expect(notification.notification_type).to eq('commented')
       expect(notification.recipient).to eq(post_owner)
       expect(notification.latest_actor_id).to eq(author.id)
+      expect(notification.comment_content).to eq('nice!')
     end
 
     it '自分の投稿への自分のコメントでは通知が作成されない' do

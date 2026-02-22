@@ -1,13 +1,11 @@
 module RelationshipCursorPagination
   extend ActiveSupport::Concern
+  include CursorPagination
 
   private
 
   def paginate_relationships(user, association:, target:, response_key:)
-    if params[:cursor].present? && !cursor
-      render json: { errors: ['cursor is invalid'] }, status: :bad_request
-      return
-    end
+    return unless validate_cursor!
 
     relationships = user.public_send(association)
                         .includes(target => { avatar_attachment: :blob })
@@ -28,12 +26,5 @@ module RelationshipCursorPagination
       nextCursor: has_more ? relationships.last&.id&.to_s : nil,
       hasMore: has_more
     }
-  end
-
-  def cursor
-    return nil if params[:cursor].blank?
-
-    value = Integer(params[:cursor], exception: false)
-    value if value&.positive?
   end
 end

@@ -68,16 +68,20 @@ RSpec.describe 'Api::Me', type: :request do
       parameter name: :name,
                 in: :formData,
                 required: false,
-                schema: { type: :string }
+                schema: {
+                  type: :object,
+                  properties: {
+                    name: { type: :string },
+                    avatar: { type: :string, format: :binary },
+                    remove_avatar: { type: :boolean, description: 'trueでアバターを削除' }
+                  }
+                }
       parameter name: :avatar,
                 in: :formData,
-                required: false,
-                schema: { type: :string, format: :binary }
+                required: false
       parameter name: :remove_avatar,
                 in: :formData,
-                required: false,
-                schema: { type: :boolean },
-                description: 'trueでアバターを削除'
+                required: false
 
       response '200', '更新後のレスポンスにカウント値とisFollowingが含まれる' do
         let(:name) { 'updated_name' }

@@ -2,12 +2,18 @@ class Api::TimelinesController < ApplicationController
   PER_PAGE = 20
 
   def index
+    if params[:cursor].present? && !cursor
+      render json: { errors: ['cursor is invalid'] }, status: :bad_request
+      return
+    end
+
     posts = Post
               .timeline_for(current_user)
               .with_list
-              .then { |rel| cursor ? rel.where('posts.id < ?', cursor) : rel }
               .order(id: :desc)
-              .limit(PER_PAGE + 1)
+
+    posts = posts.where('posts.id < ?', cursor) if cursor
+    posts = posts.limit(PER_PAGE + 1).to_a
 
     has_more = posts.size > PER_PAGE
     posts = posts.first(PER_PAGE)
@@ -24,6 +30,9 @@ class Api::TimelinesController < ApplicationController
   private
 
   def cursor
-    params[:cursor]&.to_i
+    return nil if params[:cursor].blank?
+
+    value = Integer(params[:cursor], exception: false)
+    value if value&.positive?
   end
 end

@@ -935,7 +935,21 @@ paths:
                     type: boolean
                 required:
                 - posts
+                - nextCursor
                 - hasMore
+        '400':
+          description: cursorが不正
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - errors
         '401':
           description: 未ログイン
           content:

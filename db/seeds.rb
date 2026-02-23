@@ -83,18 +83,25 @@ begin
     }
   end
 
+  # created_at を先に割り振り、昇順でinsertすることでID順 = 時系列順を保証
   all_posts_data.sort_by! { |p| p[:user].id }
 
+  now = Time.current
+  hours_elapsed_today = [((now - now.beginning_of_day) / 1.hour).to_i, 1].max
   user_post_counts = Hash.new(0)
+
   all_posts_data.each do |post_data|
     user = post_data[:user]
-    now = Time.current
-    hours_elapsed_today = [((now - now.beginning_of_day) / 1.hour).to_i, 1].max
-
     created_at = user_post_counts[user.id] == 0 ? now - rand(1..hours_elapsed_today).hours : now - rand(1..720).hours
     user_post_counts[user.id] += 1
+    post_data[:created_at] = created_at
+  end
 
-    post = user.posts.build(caption: post_data[:caption], created_at: created_at, updated_at: created_at)
+  all_posts_data.sort_by! { |p| p[:created_at] }
+
+  all_posts_data.each do |post_data|
+    user = post_data[:user]
+    post = user.posts.build(caption: post_data[:caption], created_at: post_data[:created_at], updated_at: post_data[:created_at])
 
     attached_count = 0
     (1..3).each do |img_suffix|

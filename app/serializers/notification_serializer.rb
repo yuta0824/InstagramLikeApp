@@ -59,7 +59,7 @@ class NotificationSerializer < ActiveModel::Serializer
     url_options = ActiveStorage::Current.url_options || {}
     return rails_blob_path(image, only_path: true) unless url_options[:host]
 
-    rails_blob_url(image, url_options)
+    image.url
   end
 
   def time_ago

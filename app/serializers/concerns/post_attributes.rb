@@ -13,7 +13,7 @@ module PostAttributes
     url_options = ActiveStorage::Current.url_options || {}
     return object.images.map { |image| rails_blob_path(image, only_path: true) } unless url_options[:host]
 
-    object.images.map { |image| rails_blob_url(image, url_options) }
+    object.images.map(&:url)
   end
 
   def user_name

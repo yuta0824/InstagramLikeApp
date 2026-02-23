@@ -67,7 +67,7 @@ class User < ApplicationRecord
     url_options = ActiveStorage::Current.url_options || {}
     return Rails.application.routes.url_helpers.rails_blob_path(avatar, only_path: true) unless url_options[:host]
 
-    Rails.application.routes.url_helpers.rails_blob_url(avatar, url_options)
+    avatar.url
   end
 
   def follow!(target_user)

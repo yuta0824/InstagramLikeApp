@@ -48,12 +48,6 @@ ja:
       email_label: "メールアドレス"
       password_label: "パスワード"
       submit: "ログイン"
-      guest_login:
-        title: "ゲストログイン"
-        email: "メールアドレス: %{email}"
-        password: "パスワード: %{password}"
-        button: "ゲストとしてログイン"
-        note: "* データは定期的にリセットされます。"
     registration:
       title: "アカウント作成"
       name_label: "名前"

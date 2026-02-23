@@ -48,12 +48,6 @@ en:
       email_label: "Email"
       password_label: "Password"
       submit: "LOGIN"
-      guest_login:
-        title: "Guest Login"
-        email: "Email: %{email}"
-        password: "Password: %{password}"
-        button: "Login as Guest"
-        note: "* Data may be reset periodically."
     registration:
       title: "Sign Up"
       name_label: "Name"

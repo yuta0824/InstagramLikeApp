@@ -6,6 +6,7 @@
 #  bot                    :boolean          default(FALSE), not null
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  guest                  :boolean          default(FALSE), not null
 #  name                   :string           not null
 #  provider               :string
 #  remember_created_at    :datetime

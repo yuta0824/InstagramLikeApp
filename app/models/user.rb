@@ -6,6 +6,7 @@
 #  bot                    :boolean          default(FALSE), not null
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  guest                  :boolean          default(FALSE), not null
 #  name                   :string           not null
 #  provider               :string
 #  remember_created_at    :datetime
@@ -45,9 +46,10 @@ class User < ApplicationRecord
   has_many :followers, through: :follower_relationships, source: :follower
   has_one_attached :avatar
 
-  after_create_commit :welcome_follow, unless: :bot?
+  after_create_commit :welcome_follow, unless: -> { bot? || guest? }
 
   scope :bots, -> { where(bot: true) }
+  scope :guests, -> { where(guest: true) }
 
   scope :search_by_name, ->(query) {
     where('LOWER(name) LIKE LOWER(?)', "%#{sanitize_sql_like(query)}%")
@@ -77,6 +79,24 @@ class User < ApplicationRecord
   def unfollow!(target_user)
     relation = following_relationships.find_by!(following_id: target_user.id)
     relation.destroy!
+  end
+
+  def self.create_guest_user
+    retries = 0
+    begin
+      user = create!(
+        name: "guest_#{SecureRandom.hex(4)}",
+        email: "guest_#{SecureRandom.hex(8)}@guest.example.com",
+        password: Devise.friendly_token,
+        guest: true
+      )
+    rescue ActiveRecord::RecordNotUnique => e
+      retries += 1
+      retry if retries < 5
+      raise e
+    end
+
+    user
   end
 
   def self.from_omniauth(auth)

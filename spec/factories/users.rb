@@ -6,6 +6,7 @@
 #  bot                    :boolean          default(FALSE), not null
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  guest                  :boolean          default(FALSE), not null
 #  name                   :string           not null
 #  provider               :string
 #  remember_created_at    :datetime
@@ -32,6 +33,12 @@ FactoryBot.define do
 
     trait :bot do
       bot { true }
+    end
+
+    trait :guest do
+      guest { true }
+      provider { nil }
+      uid { nil }
     end
   end
 end

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       get 'login', to: 'login#index'
       get 'token', to: 'token#show'
       delete 'logout', to: 'logout#destroy'
+      resource :guest_session, only: %i[create]
     end
     resources :active_users, only: %i[index]
     resources :users, only: %i[index show] do

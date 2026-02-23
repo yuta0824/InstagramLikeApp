@@ -38,19 +38,6 @@ begin
     demo_users_list << user
   end
 
-  guest_password = Devise.friendly_token[0, 20]
-  guest_user = User.create!(
-    email: 'guest@example.com',
-    name: 'guest',
-    provider: 'google_oauth2',
-    uid: 'seed-google-guest',
-    password: guest_password,
-    password_confirmation: guest_password
-  )
-
-  default_avatar_path = Rails.root.join('app/assets/images/icon_avatar-default.png')
-  guest_user.avatar.attach(io: File.open(default_avatar_path), filename: 'icon_avatar-default.png') if File.exist?(default_avatar_path)
-
   captions = [
     '海に行きました', 'カフェに行きました', '紅葉を見に行きました', 'お寺に行きました', '山に登りました',
     'スポーツを観戦にきました', '新しいレシピに挑戦しました', '友達とランチを楽しみました', '自宅で映画鑑賞をしました', 'ペットと散歩に行きました',

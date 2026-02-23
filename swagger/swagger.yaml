@@ -116,6 +116,26 @@ paths:
           description: 削除成功
         '401':
           description: 未認証
+  "/api/auth/guest_session":
+    post:
+      summary: ゲストログインする
+      tags:
+      - Auth
+      responses:
+        '201':
+          description: ゲストユーザー作成・JWT発行
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwt:
+                    type: string
+                  exp:
+                    type: integer
+                required:
+                - jwt
+                - exp
   "/api/posts/{post_id}/like":
     parameters:
     - name: post_id

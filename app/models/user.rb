@@ -90,7 +90,7 @@ class User < ApplicationRecord
         password: Devise.friendly_token,
         guest: true
       )
-    rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordNotUnique => e
       retries += 1
       retry if retries < 5
       raise e
